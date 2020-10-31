@@ -1,8 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>逻辑型向量及其运算</title>
+    <url>/2020/10/31/R/</url>
+    <content><![CDATA[<h1 id="逻辑型向量及其运算"><a href="#逻辑型向量及其运算" class="headerlink" title="逻辑型向量及其运算"></a>逻辑型向量及其运算</h1><h2 id="逻辑型向量与比较运算"><a href="#逻辑型向量与比较运算" class="headerlink" title="逻辑型向量与比较运算"></a>逻辑型向量与比较运算</h2><p>逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如</p>
+<pre><code>&gt; sele &lt;- (log10(15) &lt; 2)
+&gt; print(sele)
+
+## [1] TRUE</code></pre>
+<p>向量比较结果为逻辑型向量。如</p>
+<pre><code>&gt; c(1, 3, 5) &gt; 2
+## [1] FALSE  TRUE  TRUE
+
+&gt; (1:4) &gt;= (4:1)    
+## [1] FALSE FALSE  TRUE  TRUE</code></pre>
+<p>从例子可以看出，向量比较也遵从R的向量间运算的一般规则： 向量与标量的运算是向量每个元素与标量都分别运算一次， 等长向量的运算时对应元素的运算， 不等长但长度为倍数关系的向量运算是把短的从头重复利用。</p>
+<p>与NA比较产生NA，如</p>
+<pre><code>&gt; c(1, NA, 3) &gt; 2
+## [1] FALSE    NA  TRUE
+
+&gt; NA == NA
+## [1] NA</code></pre>
+<p>为了判断向量每个元素是否NA， 用is.na()函数，如</p>
+<pre><code>&gt; is.na(c(1, NA, 3) &gt; 2)
+## [1] FALSE  TRUE FALSE</code></pre>
+<p>用**is.finite()**判断向量每个元素是否Inf值。</p>
+<p>比较运算符包括</p>
+<blockquote>
+<p>&lt;   &lt;=  &gt;  &gt;=  ==  !=  %in%<br>分别表示小于、小于等于、大于、大于等于、等于、不等于、属于。 要注意等于比较用了两个等号。</p>
+</blockquote>
+<p>%in%是比较特殊的比较， x %in% y的运算把向量y看成集合， 运算结果是一个逻辑型向量， 第个元素的值为x的第元素是否属于y的逻辑型值。 如</p>
+<pre><code>&gt; c(1,3) %in% c(2,3,4)
+## [1] FALSE  TRUE
+
+&gt; c(NA,3) %in% c(2,3,4)
+## [1] FALSE  TRUE
+
+&gt; c(1,3) %in% c(NA, 3, 4)
+## [1] FALSE  TRUE
+
+&gt; c(NA,3) %in% c(NA, 3, 4)
+## [1] TRUE TRUE</code></pre>
+<p>函数match(x, y)起到和x %in% y运算类似的作用， 但是其返回结果不是找到与否， 而是对x的每个元素， 找到其在y中首次出现的下标，找不到时取缺失值，如</p>
+<pre><code>&gt; match(c(1, 3), c(2,3,4,3))
+## [1] NA  2</code></pre>
+<h2 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h2><p>为了表达如“而且”, “或者”之类的复合比较， 需要使用逻辑运算把两个比较连接起来。 逻辑运算符为&amp;, |和!, 分别表示“同时成立”、“两者至少其一成立”、“条件的反面”。 比如，设age&lt;=3表示婴儿，sex==’女’表示女性，则 age&lt;=3 &amp; sex==’女’表示女婴, age&lt;=3 | sex==’女’表示婴儿或妇女, !(age&lt;=3 | sex==’女’)表示既非婴儿也非妇女。 为了确定运算的先后次序可以用圆括号()指定。</p>
+<p>用xor(x, y)表示x与y的异或运算， 即值不相等时为真值，相等时为假值， 有缺失值参加运算时为缺失值。</p>
+<p>逻辑向量与逻辑标量之间的逻辑运算， 两个逻辑向量之间的逻辑运算规则遵从一般R向量间运算规则。</p>
+<p>在右运算符是缺失值时， 如果左运算符能够确定结果真假， 可以得到非缺失的结果。 例如，TRUE | NA为TRUE, FALSE &amp; NA为FALSE。 不能确定结果时返回NA， 比如， TRUE &amp; NA为NA, FALSE | NA为NA。</p>
+<p>&amp;&amp;和||分别为短路的标量逻辑与和短路的标量逻辑或， 仅对两个标量进行运算，如果有向量也仅使用第一个元素。 一般用在if语句、while语句中， 且只要第一个比较已经决定最终结果就不计算第二个比较。 例如</p>
+<pre><code>&gt; if(TRUE || sqrt(-1)&gt;0) 3+2 
+
+## [1] 5</code></pre>
+<p>其中的sqrt(-1)部分不会执行。</p>
+<p>这里结果为TRUE, 第二部分没有参加计算， 否则第二部分的计算会发生函数自变量范围错误。</p>
+<h2 id="逻辑运算函数"><a href="#逻辑运算函数" class="headerlink" title="逻辑运算函数"></a>逻辑运算函数</h2><p>因为R中比较与逻辑运算都支持向量之间、向量与标量之间的运算， 所以在需要一个标量结果时要特别注意， 后面讲到的if结构、while结构都需要逻辑标量而且不能是缺失值。 这时，应该对缺失值结果单独考虑。</p>
+<p>若cond是逻辑向量， 用all(cond)测试cond的所有元素为真； 用any(cond)测试cond至少一个元素为真。 cond中允许有缺失值，结果可能为缺失值。 如</p>
+<pre><code>&gt; c(1, NA, 3) &gt; 2
+## [1] FALSE    NA  TRUE
+
+&gt; all(c(1, NA, 3) &gt; 2)
+## [1] FALSE
+
+&gt; any(c(1, NA, 3) &gt; 2)
+## [1] TRUE
+
+&gt; all(NA)
+## [1] NA
+
+&gt; any(NA)
+## [1] NA</code></pre>
+<p>函数which()返回真值对应的所有下标，如</p>
+<pre><code>&gt; which(c(FALSE, TRUE, TRUE, FALSE, NA))
+## [1] 2 3
+
+&gt; which((11:15) &gt; 12)
+## [1] 3 4 5</code></pre>
+<p>函数identical(x,y)比较两个R对象x与y的内容是否完全相同， 结果只会取标量TRUE与FALSE两种。 如</p>
+<pre><code>&gt; identical(c(1,2,3), c(1,2,NA))
+## [1] FALSE
+
+&gt; identical(c(1L,2L,3L), c(1,2,3))
+## [1] FALSE</code></pre>
+<p>其中第二个结果假值是因为前一向量是整数型， 后一向量是实数型。</p>
+<p>函数all.equal()与identical()类似， 但是在比较数值型时不区分整数型与实数型， 而且相同时返回标量TRUE， 但是不同时会返回一个说明有何不同的字符串。如</p>
+<pre><code>&gt; all.equal(c(1,2,3), c(1,2,NA))
+## [1] &quot;&#39;is.NA&#39; value mismatch: 1 in current 0 in target&quot;
+
+&gt; all.equal(c(1L,2L,3L), c(1,2,3))
+## [1] TRUE</code></pre>
+<p>函数duplicated()返回每个元素是否为重复值的结果，如：</p>
+<pre><code>&gt; duplicated(c(1,2,1,3,NA,4,NA))
+## [1] FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE</code></pre>
+<p>用函数unique()可以返回去掉重复值的结果。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>【R&lt;-数据】数值型向量及其运算</title>
-    <url>/2020/10/31/hello-world/</url>
+    <url>/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/</url>
     <content><![CDATA[<h1 id="数值型向量及其运算"><a href="#数值型向量及其运算" class="headerlink" title="数值型向量及其运算"></a>数值型向量及其运算</h1><h2 id="数值型向量"><a href="#数值型向量" class="headerlink" title="数值型向量"></a>数值型向量</h2><p><strong>向量</strong>是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。</p>
 <p>用c()函数把多个元素或向量组合成一个向量。如</p>
 <pre><code>&gt; marks &lt;- c(10, 6, 4, 7, 8)
@@ -256,8 +351,8 @@ x ^ 2
 ]]></content>
   </entry>
   <entry>
-    <title>R</title>
-    <url>/2020/10/31/R/</url>
+    <title>逻辑型向量及其运算</title>
+    <url>/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/</url>
     <content><![CDATA[]]></content>
   </entry>
 </search>
