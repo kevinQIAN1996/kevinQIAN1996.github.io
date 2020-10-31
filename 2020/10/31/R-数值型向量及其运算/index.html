@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="数值型向量向量是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。 用c()函数把多个元素或向量组合成一个向量。如 &gt; marks &lt;- c(10, 6, 4, 7, 8) &gt; x &lt;- c(1:3, 10:13) &gt; x1 &lt;- c(1, 2) &gt; x2 &lt;- c(3,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数值型向量及其运算">
+<meta property="og:url" content="http://example.com/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="数值型向量向量是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。 用c()函数把多个元素或向量组合成一个向量。如 &gt; marks &lt;- c(10, 6, 4, 7, 8) &gt; x &lt;- c(1:3, 10:13) &gt; x1 &lt;- c(1, 2) &gt; x2 &lt;- c(3,">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-10-31T03:35:16.000Z">
+<meta property="article:modified_time" content="2020-10-31T10:18:34.934Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>数值型向量及其运算 | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">时光匆匆独白，将颠沛磨成卡带</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">数值型向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E8%BF%90%E7%AE%97"><span class="nav-number">2.</span> <span class="nav-text">向量运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%90%91%E9%87%8F%E8%BF%90%E7%AE%97"><span class="nav-number">2.1.</span> <span class="nav-text">等长向量运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E7%AD%89%E9%95%BF%E5%90%91%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97"><span class="nav-number">2.2.</span> <span class="nav-text">不等长向量的运算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">向量函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%8C%96%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">向量化的函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">排序函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">统计函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0"><span class="nav-number">6.</span> <span class="nav-text">练习</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health(SINH), CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health(SINH), CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数值型向量及其运算
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2020-10-31 11:35:16 / Modified: 18:18:34" itemprop="dateCreated datePublished" datetime="2020-10-31T11:35:16+08:00">2020-10-31</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="数值型向量"><a href="#数值型向量" class="headerlink" title="数值型向量"></a>数值型向量</h2><p><strong>向量</strong>是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。</p>
+<p>用c()函数把多个元素或向量组合成一个向量。如</p>
+<pre><code>&gt; marks &lt;- c(10, 6, 4, 7, 8)
+&gt; x &lt;- c(1:3, 10:13)
+&gt; x1 &lt;- c(1, 2)
+&gt; x2 &lt;- c(3, 4)
+&gt; x &lt;- c(x1, x2)
+&gt; x
+
+运行结果
+## [1] 1 2 3 4</code></pre>
+<p>10:13这样的写法表示从10到13的整数组成的向量。</p>
+<p>用print()函数显示向量或在命令行中显示向量时， 每行显示的行首会有方括号和数字序号， 代表该行显示的第一个向量元素的下标。如</p>
+<pre><code>&gt; 12345678901:12345678920
+
+运行结果：
+##  [1] 12345678901 12345678902 12345678903 12345678904 12345678905 12345678906
+##  [7] 12345678907 12345678908 12345678909 12345678910 12345678911 12345678912
+## [13] 12345678913 12345678914 12345678915 12345678916 12345678917 12345678918
+## [19] 12345678919 12345678920</code></pre>
+<p>length(x)可以求x的长度。 长度为零的向量表示为numeric(0)。 numeric()函数可以用来初始化一个指定元素个数而元素都等于零的数值型向量， 如numeric(10)会生成元素为10个零的向量。</p>
+<pre><code>&gt; x &lt;- numeric(10)
+&gt; x
+## [1] 0 0 0 0 0 0 0 0 0 0</code></pre>
+<h2 id="向量运算"><a href="#向量运算" class="headerlink" title="向量运算"></a>向量运算</h2><p>###标量和标量运算</p>
+<p>单个数值称为标量， R没有单独的标量类型， 标量实际是长度为1的向量。</p>
+<p>R中四则运算用+ - * / ^表示(加、减、乘、除、乘方)，如</p>
+<pre><code>&gt; 1.5 + 2.3 - 0.6 + 2.1*1.2 - 1.5/0.5 + 2^3
+
+## [1] 10.72</code></pre>
+<p>R中四则运算仍遵从通常的优先级规则， 可以用圆括号()改变运算的先后次序。 如</p>
+<pre><code>&gt; 1.5 + 2.3 - (0.6 + 2.1)*1.2 - 1.5/0.5 + 2^3
+## [1] 5.56</code></pre>
+<p>除了加、减、乘、除、乘方， R还支持整除运算和求余运算。 用%/%表示整除，用%%表示求余。如</p>
+<pre><code>&gt; 5 %/% 3
+
+## [1] 1
+
+
+&gt; 5 %% 3
+## [1] 2
+
+&gt; 5.1 %/% 2.5
+## [1] 2
+
+
+&gt; 5.1 %% 2.5
+## [1] 0.1</code></pre>
+<p>向量与标量运算<br>向量与标量的运算为每个元素与标量的运算, 如</p>
+<pre><code>&gt; x &lt;c(1, 10)
+&gt; x + 2
+
+## [1]  3 12
+
+
+&gt; x - 2
+
+## [1] -1  8
+
+
+
+&gt; x * 2
+
+
+## [1]  2 20
+
+
+&gt; x / 2
+
+
+## [1] 0.5 5.0
+
+
+x ^ 2
+
+
+## [1]   1 100
+
+
+2 / x
+
+
+## [1] 2.0 0.2
+
+
+
+ 2 ^ x
+
+
+## [1]2 1024</code></pre>
+<p>一个向量乘以一个标量， 就是线性代数中的数乘运算。</p>
+<p>四则运算时如果有缺失值，缺失元素参加的运算相应结果元素仍缺失。 如</p>
+<pre><code>&gt; c(1, NA, 3) + 10
+## [1] 11 NA 13</code></pre>
+<h3 id="等长向量运算"><a href="#等长向量运算" class="headerlink" title="等长向量运算"></a>等长向量运算</h3><p>等长向量的运算为对应元素两两运算。 如</p>
+<pre><code>&gt; x1 &lt;- c(1, 10)
+&gt; x2 &lt;- c(4, 2)
+&gt; x1 + x2
+## [1]  5 12
+&gt; x1 - x2
+## [1] -3  8
+&gt; x1 * x2
+## [1]  4 20
+&gt; x1 / x2
+## [1] 0.25 5.00</code></pre>
+<p>两个等长向量的加、减运算就是线性代数中两个向量的加、减运算。</p>
+<h3 id="不等长向量的运算"><a href="#不等长向量的运算" class="headerlink" title="不等长向量的运算"></a>不等长向量的运算</h3><p>两个不等长向量的四则运算， 如果其长度为倍数关系，规则是每次从头重复利用短的一个。 如</p>
+<pre><code>&gt; x1 &lt;- c(10, 20)
+&gt; x2 &lt;- c(1, 3, 5, 7)
+
+&gt; x1 + x2
+## [1] 11 23 15 27
+
+&gt; x1 * x2
+## [1]  10  60  50 140</code></pre>
+<p>不仅是四则运算，R中有两个或多个向量按照元素一一对应参与某种运算或函数调用时， 如果向量长度不同，一般都采用这样的规则。</p>
+<p>如果两个向量的长度不是倍数关系，会给出警告信息。如</p>
+<pre><code>c(1,2) + c(1,2,3)
+
+## Warning in c(1, 2) + c(1, 2, 3): 长的对象长度不是短的对象长度的整倍数
+## [1] 2 4 4</code></pre>
+<h2 id="向量函数"><a href="#向量函数" class="headerlink" title="向量函数"></a>向量函数</h2><h3 id="向量化的函数"><a href="#向量化的函数" class="headerlink" title="向量化的函数"></a>向量化的函数</h3><p>R中的函数一般都是向量化的: 在R中， 如果普通的一元函数以向量为自变量，一般会对每个元素计算。 这样的函数包括sqrt, log10, log, exp, sin, cos, tan等许多。 如</p>
+<pre><code>&gt; sqrt(c(1, 4, 6.25))
+## [1] 1.0 2.0 2.5</code></pre>
+<p>为了查看这些基础的数学函数的列表，运行命令help.start()， 点击链接“Search Engine and Keywords”， 找到“Mathematics”栏目， 浏览其中的“arith”和“math”链接中的说明。 常用的数学函数有：</p>
+<ul>
+<li>舍入：ceiling, floor, round, signif, trunc, zapsmall</li>
+<li>符号函数 sign</li>
+<li>绝对值 abs</li>
+<li>平方根 sqrt</li>
+<li>对数与指数函数 log, exp, log10, log2</li>
+<li>三角函数 sin, cos, tan</li>
+<li>反三角函数 asin, acos, atan, atan2</li>
+<li>双曲函数 sinh, cosh, tanh</li>
+<li>反双曲函数 asinh, acosh, atanh</li>
+</ul>
+<p>有一些不太常用的数学函数：</p>
+<ul>
+<li>贝塔函数 beta, lbeta</li>
+<li>伽玛函数 gamma, lgamma, digamma, trigamma, tetragamma, pentagamma</li>
+<li>组合数 choose, lchoose</li>
+<li>富利叶变换和卷积 fft, mvfft, convolve</li>
+<li>正交多项式 poly</li>
+<li>求根 polyroot, uniroot</li>
+<li>最优化 optimize, optim</li>
+<li>Bessel函数 besselI, besselK, besselJ, besselY</li>
+<li>样条插值 spline, splinefun</li>
+<li>简单的微分 deriv</li>
+</ul>
+<p>如果自己编写的函数没有考虑向量化问题， 可以用Vectorize()函数将其转换成向量化版本。</p>
+<h2 id="排序函数"><a href="#排序函数" class="headerlink" title="排序函数"></a>排序函数</h2><p>sort(x)返回排序结果。 rev(x)返回把各元素排列次序反转后的结果。 order(x)返回排序用的下标。如</p>
+<pre><code>&gt; x &lt;- c(33, 55, 11)
+
+&gt; sort(x)
+## [1] 11 33 55
+
+&gt; rev(sort(x))
+## [1] 55 33 11
+
+&gt; order(x)
+## [1] 3 1 2
+
+&gt; x[order(x)]
+## [1] 11 33 55</code></pre>
+<p>例子中， order(x)结果中3是x的最小元素11所在的位置下标， 1是x的第二小元素33所在的位置下标， 2是x的最大元素55所在的位置下标。</p>
+<h2 id="统计函数"><a href="#统计函数" class="headerlink" title="统计函数"></a>统计函数</h2><p>sum(求和), mean(求平均值), var(求样本方差), sd(求样本标准差), min(求最小值), max(求最大值), range(求最小值和最大值)等函数称为统计函数， 把输入向量看作样本，计算样本统计量。 prod求所有元素的乘积。</p>
+<p>cumsum和cumprod计算累加和累乘积。如</p>
+<pre><code>&gt; cumsum(1:5)
+## [1]  1  3  6 10 15
+&gt; cumprod(1:5)
+## [1]   1   2   6  24 120</code></pre>
+<p>其它一些类似函数有pmax, pmin, cummax, cummin等。</p>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p><strong>1. 显示1到100的整数的平方根和立方根（提示：立方根就是三分之一次方）。</strong></p>
+<pre><code>计算平方根
+&gt; sqrt(seq(1:100))
+  [1]  1.000000  1.414214  1.732051  2.000000  2.236068  2.449490  2.645751  2.828427
+  [9]  3.000000  3.162278  3.316625  3.464102  3.605551  3.741657  3.872983  4.000000
+ [17]  4.123106  4.242641  4.358899  4.472136  4.582576  4.690416  4.795832  4.898979
+ [25]  5.000000  5.099020  5.196152  5.291503  5.385165  5.477226  5.567764  5.656854
+ [33]  5.744563  5.830952  5.916080  6.000000  6.082763  6.164414  6.244998  6.324555
+ [41]  6.403124  6.480741  6.557439  6.633250  6.708204  6.782330  6.855655  6.928203
+ [49]  7.000000  7.071068  7.141428  7.211103  7.280110  7.348469  7.416198  7.483315
+ [57]  7.549834  7.615773  7.681146  7.745967  7.810250  7.874008  7.937254  8.000000
+ [65]  8.062258  8.124038  8.185353  8.246211  8.306624  8.366600  8.426150  8.485281
+ [73]  8.544004  8.602325  8.660254  8.717798  8.774964  8.831761  8.888194  8.944272
+ [81]  9.000000  9.055385  9.110434  9.165151  9.219544  9.273618  9.327379  9.380832
+ [89]  9.433981  9.486833  9.539392  9.591663  9.643651  9.695360  9.746794  9.797959
+ [97]  9.848858  9.899495  9.949874 10.000000
+
+#计算立方根
+&gt; sqrtn &lt;- function(x,n) x^(1/n)
+&gt; sqrtn(seq(1:100),3)
+  [1] 1.000000 1.259921 1.442250 1.587401 1.709976 1.817121 1.912931 2.000000 2.080084
+ [10] 2.154435 2.223980 2.289428 2.351335 2.410142 2.466212 2.519842 2.571282 2.620741
+ [19] 2.668402 2.714418 2.758924 2.802039 2.843867 2.884499 2.924018 2.962496 3.000000
+ [28] 3.036589 3.072317 3.107233 3.141381 3.174802 3.207534 3.239612 3.271066 3.301927
+ [37] 3.332222 3.361975 3.391211 3.419952 3.448217 3.476027 3.503398 3.530348 3.556893
+ [46] 3.583048 3.608826 3.634241 3.659306 3.684031 3.708430 3.732511 3.756286 3.779763
+ [55] 3.802952 3.825862 3.848501 3.870877 3.892996 3.914868 3.936497 3.957892 3.979057
+ [64] 4.000000 4.020726 4.041240 4.061548 4.081655 4.101566 4.121285 4.140818 4.160168
+ [73] 4.179339 4.198336 4.217163 4.235824 4.254321 4.272659 4.290840 4.308869 4.326749
+ [82] 4.344481 4.362071 4.379519 4.396830 4.414005 4.431048 4.447960 4.464745 4.481405
+ [91] 4.497941 4.514357 4.530655 4.546836 4.562903 4.578857 4.594701 4.610436 4.626065
+[100] 4.641589</code></pre>
+<p><strong>2. 设有10个人的小测验成绩为:</strong></p>
+<blockquote>
+<p>77 60 91 73 85 82 83 100 66 75</p>
+</blockquote>
+<ol>
+<li>把这10个成绩存入变量x;</li>
+<li>从小到大排序；</li>
+<li>计算order(x)，解释order(x)结果中第3项代表的意义。</li>
+<li>计算这些成绩的平均值、标准差、最小值、最大值、中位数。</li>
+<li>生成区间上等间隔的100个格子点存入变量x中。</li>
+</ol>
+<p>解答：</p>
+<pre><code>    &gt; x &lt;- c(77,60,91,73,85,82,83,100,66,75)
+    &gt; sort(x)
+     [1]  60  66  73  75  77  82  83  85  91 100
+    &gt; order(x)
+     [1]  2  9  4 10  1  6  7  5  3  8
+    #第三项为4，指代的是按从小到大排序的话排第三位的是之前排第4位的数字，即75
+    &gt; mean(x)
+    [1] 79.2
+    &gt; sd(x)
+    [1] 11.69805
+    &gt; min(x)
+    [1] 60
+    &gt; max(x)
+    [1] 100
+    &gt; median(x)
+    [1] 79.5
+    #产生100个【0,1】之间的浮点数
+    &gt; x &lt;- seq(0,1,length.out = 100)
+    &gt; x
+      [1] 0.00000000 0.01010101 0.02020202 0.03030303 0.04040404 0.05050505 0.06060606
+      [8] 0.07070707 0.08080808 0.09090909 0.10101010 0.11111111 0.12121212 0.13131313
+     [15] 0.14141414 0.15151515 0.16161616 0.17171717 0.18181818 0.19191919 0.20202020
+     [22] 0.21212121 0.22222222 0.23232323 0.24242424 0.25252525 0.26262626 0.27272727
+     [29] 0.28282828 0.29292929 0.30303030 0.31313131 0.32323232 0.33333333 0.34343434
+     [36] 0.35353535 0.36363636 0.37373737 0.38383838 0.39393939 0.40404040 0.41414141
+     [43] 0.42424242 0.43434343 0.44444444 0.45454545 0.46464646 0.47474747 0.48484848
+     [50] 0.49494949 0.50505051 0.51515152 0.52525253 0.53535354 0.54545455 0.55555556
+     [57] 0.56565657 0.57575758 0.58585859 0.59595960 0.60606061 0.61616162 0.62626263
+     [64] 0.63636364 0.64646465 0.65656566 0.66666667 0.67676768 0.68686869 0.69696970
+     [71] 0.70707071 0.71717172 0.72727273 0.73737374 0.74747475 0.75757576 0.76767677
+     [78] 0.77777778 0.78787879 0.79797980 0.80808081 0.81818182 0.82828283 0.83838384
+     [85] 0.84848485 0.85858586 0.86868687 0.87878788 0.88888889 0.89898990 0.90909091
+     [92] 0.91919192 0.92929293 0.93939394 0.94949495 0.95959596 0.96969697 0.97979798
+     [99] 0.98989899 1.00000000</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" rel="next" title="逻辑型向量及其运算">
+                  逻辑型向量及其运算 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+</body>
+</html>
