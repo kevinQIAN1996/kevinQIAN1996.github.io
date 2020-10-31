@@ -22,16 +22,17 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="数值型向量及其运算数值型向量向量是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。 用c()函数把多个元素或向量组合成一个向量。如 &gt; marks &lt;- c(10, 6, 4, 7, 8) &gt; x &lt;- c(1:3, 10:13) &gt; x1 &lt;- c(1, 2) &gt; x2 &amp;">
+  <meta name="description" content="数值型向量向量是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。 用c()函数把多个元素或向量组合成一个向量。如 &gt; marks &lt;- c(10, 6, 4, 7, 8) &gt; x &lt;- c(1:3, 10:13) &gt; x1 &lt;- c(1, 2) &gt; x2 &lt;- c(3,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【R&lt;-数据】数值型向量及其运算">
 <meta property="og:url" content="http://example.com/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/index.html">
 <meta property="og:site_name" content="WENJU QIAN‘s tech blog">
-<meta property="og:description" content="数值型向量及其运算数值型向量向量是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。 用c()函数把多个元素或向量组合成一个向量。如 &gt; marks &lt;- c(10, 6, 4, 7, 8) &gt; x &lt;- c(1:3, 10:13) &gt; x1 &lt;- c(1, 2) &gt; x2 &amp;">
+<meta property="og:description" content="数值型向量向量是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。 用c()函数把多个元素或向量组合成一个向量。如 &gt; marks &lt;- c(10, 6, 4, 7, 8) &gt; x &lt;- c(1:3, 10:13) &gt; x1 &lt;- c(1, 2) &gt; x2 &lt;- c(3,">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-10-31T03:35:57.000Z">
-<meta property="article:modified_time" content="2020-10-31T07:43:44.334Z">
+<meta property="article:modified_time" content="2020-10-31T09:54:30.398Z">
 <meta property="article:author" content="WENJU QIAN">
+<meta property="article:tag" content="R">
 <meta name="twitter:card" content="summary">
 
 
@@ -224,7 +225,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97"><span class="nav-number">1.</span> <span class="nav-text">数值型向量及其运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F"><span class="nav-number">1.1.</span> <span class="nav-text">数值型向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E8%BF%90%E7%AE%97"><span class="nav-number">1.2.</span> <span class="nav-text">向量运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%90%91%E9%87%8F%E8%BF%90%E7%AE%97"><span class="nav-number">1.2.1.</span> <span class="nav-text">等长向量运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E7%AD%89%E9%95%BF%E5%90%91%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97"><span class="nav-number">1.2.2.</span> <span class="nav-text">不等长向量的运算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">向量函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%8C%96%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.1.</span> <span class="nav-text">向量化的函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">排序函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E5%87%BD%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">统计函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0"><span class="nav-number">1.6.</span> <span class="nav-text">练习</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">数值型向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E8%BF%90%E7%AE%97"><span class="nav-number">2.</span> <span class="nav-text">向量运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%90%91%E9%87%8F%E8%BF%90%E7%AE%97"><span class="nav-number">2.1.</span> <span class="nav-text">等长向量运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E7%AD%89%E9%95%BF%E5%90%91%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97"><span class="nav-number">2.2.</span> <span class="nav-text">不等长向量的运算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">向量函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%8C%96%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">向量化的函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">排序函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">统计函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0"><span class="nav-number">6.</span> <span class="nav-text">练习</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -240,9 +241,13 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">posts</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span>
       </div>
   </nav>
 </div>
@@ -313,7 +318,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2020-10-31 11:35:57 / Modified: 15:43:44" itemprop="dateCreated datePublished" datetime="2020-10-31T11:35:57+08:00">2020-10-31</time>
+      <time title="Created: 2020-10-31 11:35:57 / Modified: 17:54:30" itemprop="dateCreated datePublished" datetime="2020-10-31T11:35:57+08:00">2020-10-31</time>
     </span>
 
   
@@ -333,7 +338,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="数值型向量及其运算"><a href="#数值型向量及其运算" class="headerlink" title="数值型向量及其运算"></a>数值型向量及其运算</h1><h2 id="数值型向量"><a href="#数值型向量" class="headerlink" title="数值型向量"></a>数值型向量</h2><p><strong>向量</strong>是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。</p>
+        <h2 id="数值型向量"><a href="#数值型向量" class="headerlink" title="数值型向量"></a>数值型向量</h2><p><strong>向量</strong>是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。</p>
 <p>用c()函数把多个元素或向量组合成一个向量。如</p>
 <pre><code>&gt; marks &lt;- c(10, 6, 4, 7, 8)
 &gt; x &lt;- c(1:3, 10:13)
@@ -591,6 +596,9 @@ x ^ 2
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/R/" rel="tag"># R</a>
+          </div>
 
         
 
@@ -598,7 +606,7 @@ x ^ 2
             <div class="post-nav-item">
             </div>
             <div class="post-nav-item">
-                <a href="/2020/10/31/R/" rel="next" title="逻辑型向量及其运算">
+                <a href="/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" rel="next" title="逻辑型向量及其运算">
                   逻辑型向量及其运算 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
