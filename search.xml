@@ -256,6 +256,71 @@ x ^ 2
 ]]></content>
   </entry>
   <entry>
+    <title>字符型数据及处理</title>
+    <url>/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<h2 id="字符型向量"><a href="#字符型向量" class="headerlink" title="字符型向量"></a>字符型向量</h2><p>字符型向量是元素为字符串的向量。 如</p>
+<pre><code>s1 &lt;- c(&#39;abc&#39;, &#39;&#39;, &#39;a cat&#39;, NA, &#39;李明&#39;)</code></pre>
+<p>注意空字符串并不能自动认为是缺失值， 字符型的缺失值仍用NA表示。</p>
+<h2 id="paste-函数"><a href="#paste-函数" class="headerlink" title="paste()函数"></a>paste()函数</h2><p>针对字符型数据最常用的R函数是paste()函数。 paste()用来连接两个字符型向量， 元素一一对应连接， 默认用空格连接。 如paste(c(“ab”, “cd”), c(“ef”, “gh”)) 结果相当于c(“ab ef”, “cd gh”)。</p>
+<p>paste()在连接两个字符型向量时采用R的一般向量间运算规则， 而且可以自动把数值型向量转换为字符型向量。 可以作一对多连接， 如paste(“x”, 1:3)结果相当于c(“x 1”, “x 2”, “x 3”)。</p>
+<p>用sep=指定分隔符， 如paste(“x”, 1:3, sep=””)结果相当于c(“x1”, “x2”, “x3”)。</p>
+<p>使用collapse=参数可以把字符型向量的各个元素连接成一个单一的字符串, 如paste(c(“a”, “b”, “c”), collapse=””)结果相当于”abc”。</p>
+<h2 id="转换大小写"><a href="#转换大小写" class="headerlink" title="转换大小写"></a>转换大小写</h2><p>toupper()函数把字符型向量内容转为大写， tolower()函数转为小写。 比如，toupper(‘aB cd’)结果为”AB CD”， tolower(c(‘aB’, ‘cd’))结果相当于c(“ab” “cd”)。 这两个函数可以用于不区分大小写的比较， 比如，不论x的值是’JAN’, ‘Jan’还是’jan’， toupper(x)==’JAN’的结果都为TRUE。</p>
+<h2 id="字符串长度"><a href="#字符串长度" class="headerlink" title="字符串长度"></a>字符串长度</h2><p>用nchar(x, type=’bytes’)计算字符型向量x中每个字符串的以字节为单位的长度，这一点对中英文是有差别的， 中文通常一个汉字占两个字节，英文字母、数字、标点占一个字节。 用nchar(x, type=’chars’)计算字符型向量x中每个字符串的以字符个数为单位的长度，这时一个汉字算一个单位。</p>
+<p>在画图时可以用strwidth()函数计算某个字符串或表达式占用的空间大小。</p>
+<h2 id="取子串"><a href="#取子串" class="headerlink" title="取子串"></a>取子串</h2><p>substr(x, start, stop)从字符串x中取出从第start个到第stop个的子串， 如</p>
+<pre><code>&gt; substr(&#39;JAN07&#39;, 1, 3)
+## [1] &quot;JAN&quot;</code></pre>
+<p>如果x是一个字符型向量，substr将对每个元素取子串。如</p>
+<pre><code>&gt; substr(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 1, 3)
+## [1] &quot;JAN&quot; &quot;MAR&quot;</code></pre>
+<p>用substring(x, start)可以从字符串x中取出从第start个到末尾的子串。如</p>
+<pre><code>&gt; substring(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 4)
+## [1] &quot;07&quot; &quot;66&quot;</code></pre>
+<p>##类型转换##</p>
+<p>用as.numeric()把内容是数字的字符型值转换为数值，如</p>
+<pre><code>&gt; substr(&#39;JAN07&#39;, 4, 5)
+## [1] &quot;07&quot;
+
+&gt; substr(&#39;JAN07&#39;, 4, 5) + 2000
+## Error in substr(&quot;JAN07&quot;, 4, 5) + 2000 : 
+##   non-numeric argument to binary operator
+
+&gt; as.numeric(substr(&#39;JAN07&#39;, 4, 5)) + 2000
+## [1] 2007
+
+&gt; as.numeric(substr(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 4, 5))
+## [1]  7 66</code></pre>
+<p>as.numeric()是向量化的， 可以转换一个向量的每个元素为数值型。</p>
+<p>用as.character()函数把数值型转换为字符型，如</p>
+<pre><code>&gt; as.character((1:5)*5)
+## [1] &quot;5&quot;  &quot;10&quot; &quot;15&quot; &quot;20&quot; &quot;25&quot;</code></pre>
+<p>如果自变量本来已经是字符型则结果不变。</p>
+<p>为了用指定的格式数值型转换成字符型， 可以使用sprintf()函数， 其用法与C语言的sprintf()函数相似， 只不过是向量化的。例如</p>
+<pre><code>&gt; sprintf(&#39;file%03d.txt&#39;, c(1, 99, 100))
+## [1] &quot;file001.txt&quot; &quot;file099.txt&quot; &quot;file100.txt&quot;</code></pre>
+<h2 id="字符串拆分"><a href="#字符串拆分" class="headerlink" title="字符串拆分"></a>字符串拆分</h2><p>用strsplit()函数可以把一个字符串按照某种分隔符拆分开，例如</p>
+<pre><code>&gt; x &lt;- &#39;10,8,7&#39;
+&gt; strsplit(x, &#39;,&#39;, fixed=TRUE)[[1]]
+## [1] &quot;10&quot; &quot;8&quot;  &quot;7&quot;
+
+&gt; sum(as.numeric(strsplit(x, &#39;,&#39;, fixed=TRUE)[[1]]))
+## [1] 25</code></pre>
+<p>因为strsplit()的结果是一个列表， 这个函数延后再详细讲。</p>
+<h2 id="字符串替换功能"><a href="#字符串替换功能" class="headerlink" title="字符串替换功能"></a>字符串替换功能</h2><p>用gsub()可以替换字符串中的子串， 这样的功能经常用在数据清理中。 比如，把数据中的中文标点改为英文标点， 去掉空格，等等。 如</p>
+<pre><code>&gt; x &lt;- &#39;1, 3; 5&#39;
+&gt; gsub(&#39;;&#39;, &#39;,&#39;, x, fixed=TRUE)
+## [1] &quot;1, 3, 5&quot;
+
+&gt; strsplit(gsub(&#39;;&#39;, &#39;,&#39;, x, fixed=TRUE), &#39;,&#39;)[[1]]
+## [1] &quot;1&quot;  &quot; 3&quot; &quot; 5&quot;</code></pre>
+<p>字符串x中分隔符既有逗号又有分号， 上面的程序用gsub()把分号都换成逗号。</p>
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>正则表达式(regular expression)是一种匹配某种字符串模式的方法。 用这样的方法，可以从字符串中查找某种模式的出现位置， 替换某种模式，等等。 这样的技术可以用于文本数据的预处理， 比如用网络爬虫下载的大量网页文本数据。 R中支持perl语言格式的正则表达式， grep()和grepl()函数从字符串中查询某个模式， sub()和gsub()替换某模式。 比如， 下面的程序把多于一个空格替换成一个空格</p>
+<pre><code>&gt; gsub(&#39;[[:space:]]+&#39;, &#39; &#39;, &#39;a   cat  in a box&#39;, perl=TRUE)
+## [1] &quot;a cat in a box&quot;</code></pre>
+]]></content>
+  </entry>
+  <entry>
     <title>逻辑型向量及其运算</title>
     <url>/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/</url>
     <content><![CDATA[<p>逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如</p>
@@ -348,71 +413,6 @@ x ^ 2
 <pre><code>&gt; duplicated(c(1,2,1,3,NA,4,NA))
 ## [1] FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE</code></pre>
 <p>用函数unique()可以返回去掉重复值的结果。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>字符型数据及处理</title>
-    <url>/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/</url>
-    <content><![CDATA[<h2 id="字符型向量"><a href="#字符型向量" class="headerlink" title="字符型向量"></a>字符型向量</h2><p>字符型向量是元素为字符串的向量。 如</p>
-<pre><code>s1 &lt;- c(&#39;abc&#39;, &#39;&#39;, &#39;a cat&#39;, NA, &#39;李明&#39;)</code></pre>
-<p>注意空字符串并不能自动认为是缺失值， 字符型的缺失值仍用NA表示。</p>
-<h2 id="paste-函数"><a href="#paste-函数" class="headerlink" title="paste()函数"></a>paste()函数</h2><p>针对字符型数据最常用的R函数是paste()函数。 paste()用来连接两个字符型向量， 元素一一对应连接， 默认用空格连接。 如paste(c(“ab”, “cd”), c(“ef”, “gh”)) 结果相当于c(“ab ef”, “cd gh”)。</p>
-<p>paste()在连接两个字符型向量时采用R的一般向量间运算规则， 而且可以自动把数值型向量转换为字符型向量。 可以作一对多连接， 如paste(“x”, 1:3)结果相当于c(“x 1”, “x 2”, “x 3”)。</p>
-<p>用sep=指定分隔符， 如paste(“x”, 1:3, sep=””)结果相当于c(“x1”, “x2”, “x3”)。</p>
-<p>使用collapse=参数可以把字符型向量的各个元素连接成一个单一的字符串, 如paste(c(“a”, “b”, “c”), collapse=””)结果相当于”abc”。</p>
-<h2 id="转换大小写"><a href="#转换大小写" class="headerlink" title="转换大小写"></a>转换大小写</h2><p>toupper()函数把字符型向量内容转为大写， tolower()函数转为小写。 比如，toupper(‘aB cd’)结果为”AB CD”， tolower(c(‘aB’, ‘cd’))结果相当于c(“ab” “cd”)。 这两个函数可以用于不区分大小写的比较， 比如，不论x的值是’JAN’, ‘Jan’还是’jan’， toupper(x)==’JAN’的结果都为TRUE。</p>
-<h2 id="字符串长度"><a href="#字符串长度" class="headerlink" title="字符串长度"></a>字符串长度</h2><p>用nchar(x, type=’bytes’)计算字符型向量x中每个字符串的以字节为单位的长度，这一点对中英文是有差别的， 中文通常一个汉字占两个字节，英文字母、数字、标点占一个字节。 用nchar(x, type=’chars’)计算字符型向量x中每个字符串的以字符个数为单位的长度，这时一个汉字算一个单位。</p>
-<p>在画图时可以用strwidth()函数计算某个字符串或表达式占用的空间大小。</p>
-<h2 id="取子串"><a href="#取子串" class="headerlink" title="取子串"></a>取子串</h2><p>substr(x, start, stop)从字符串x中取出从第start个到第stop个的子串， 如</p>
-<pre><code>&gt; substr(&#39;JAN07&#39;, 1, 3)
-## [1] &quot;JAN&quot;</code></pre>
-<p>如果x是一个字符型向量，substr将对每个元素取子串。如</p>
-<pre><code>&gt; substr(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 1, 3)
-## [1] &quot;JAN&quot; &quot;MAR&quot;</code></pre>
-<p>用substring(x, start)可以从字符串x中取出从第start个到末尾的子串。如</p>
-<pre><code>&gt; substring(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 4)
-## [1] &quot;07&quot; &quot;66&quot;</code></pre>
-<p>##类型转换##</p>
-<p>用as.numeric()把内容是数字的字符型值转换为数值，如</p>
-<pre><code>&gt; substr(&#39;JAN07&#39;, 4, 5)
-## [1] &quot;07&quot;
-
-&gt; substr(&#39;JAN07&#39;, 4, 5) + 2000
-## Error in substr(&quot;JAN07&quot;, 4, 5) + 2000 : 
-##   non-numeric argument to binary operator
-
-&gt; as.numeric(substr(&#39;JAN07&#39;, 4, 5)) + 2000
-## [1] 2007
-
-&gt; as.numeric(substr(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 4, 5))
-## [1]  7 66</code></pre>
-<p>as.numeric()是向量化的， 可以转换一个向量的每个元素为数值型。</p>
-<p>用as.character()函数把数值型转换为字符型，如</p>
-<pre><code>&gt; as.character((1:5)*5)
-## [1] &quot;5&quot;  &quot;10&quot; &quot;15&quot; &quot;20&quot; &quot;25&quot;</code></pre>
-<p>如果自变量本来已经是字符型则结果不变。</p>
-<p>为了用指定的格式数值型转换成字符型， 可以使用sprintf()函数， 其用法与C语言的sprintf()函数相似， 只不过是向量化的。例如</p>
-<pre><code>&gt; sprintf(&#39;file%03d.txt&#39;, c(1, 99, 100))
-## [1] &quot;file001.txt&quot; &quot;file099.txt&quot; &quot;file100.txt&quot;</code></pre>
-<h2 id="字符串拆分"><a href="#字符串拆分" class="headerlink" title="字符串拆分"></a>字符串拆分</h2><p>用strsplit()函数可以把一个字符串按照某种分隔符拆分开，例如</p>
-<pre><code>&gt; x &lt;- &#39;10,8,7&#39;
-&gt; strsplit(x, &#39;,&#39;, fixed=TRUE)[[1]]
-## [1] &quot;10&quot; &quot;8&quot;  &quot;7&quot;
-
-&gt; sum(as.numeric(strsplit(x, &#39;,&#39;, fixed=TRUE)[[1]]))
-## [1] 25</code></pre>
-<p>因为strsplit()的结果是一个列表， 这个函数延后再详细讲。</p>
-<h2 id="字符串替换功能"><a href="#字符串替换功能" class="headerlink" title="字符串替换功能"></a>字符串替换功能</h2><p>用gsub()可以替换字符串中的子串， 这样的功能经常用在数据清理中。 比如，把数据中的中文标点改为英文标点， 去掉空格，等等。 如</p>
-<pre><code>&gt; x &lt;- &#39;1, 3; 5&#39;
-&gt; gsub(&#39;;&#39;, &#39;,&#39;, x, fixed=TRUE)
-## [1] &quot;1, 3, 5&quot;
-
-&gt; strsplit(gsub(&#39;;&#39;, &#39;,&#39;, x, fixed=TRUE), &#39;,&#39;)[[1]]
-## [1] &quot;1&quot;  &quot; 3&quot; &quot; 5&quot;</code></pre>
-<p>字符串x中分隔符既有逗号又有分号， 上面的程序用gsub()把分号都换成逗号。</p>
-<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>正则表达式(regular expression)是一种匹配某种字符串模式的方法。 用这样的方法，可以从字符串中查找某种模式的出现位置， 替换某种模式，等等。 这样的技术可以用于文本数据的预处理， 比如用网络爬虫下载的大量网页文本数据。 R中支持perl语言格式的正则表达式， grep()和grepl()函数从字符串中查询某个模式， sub()和gsub()替换某模式。 比如， 下面的程序把多于一个空格替换成一个空格</p>
-<pre><code>&gt; gsub(&#39;[[:space:]]+&#39;, &#39; &#39;, &#39;a   cat  in a box&#39;, perl=TRUE)
-## [1] &quot;a cat in a box&quot;</code></pre>
 ]]></content>
   </entry>
 </search>
