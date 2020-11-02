@@ -415,4 +415,127 @@ x ^ 2
 <p>用函数unique()可以返回去掉重复值的结果。</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>R向量下标和子集</title>
+    <url>/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/</url>
+    <content><![CDATA[<h2 id="正整数下标"><a href="#正整数下标" class="headerlink" title="正整数下标"></a>正整数下标</h2><p>对向量x, 在后面加方括号和下标可以访问向量的元素和子集。</p>
+<p>设x &lt;- c(1, 4, 6.25)。 x[2]取出第二个元素； x[2] &lt;- 99修改第二个元素。 x[c(1,3)]取出第1、3号元素； x[c(1,3)] &lt;- c(11, 13)修改第1、3号元素。 下标可重复。 例如</p>
+<pre><code>&gt; x &lt;- c(1, 4, 6.25)
+&gt; x[2]
+## [1] 4
+
+&gt; x[2] &lt;- 99; x
+## [1]  1.00 99.00  6.25
+
+&gt; x[c(1,3)]
+## [1] 1.00 6.25
+
+&gt; x[c(1,3)] &lt;- c(11, 13); x
+## [1] 11 99 13
+
+&gt; x[c(1,3,1)]
+## [1] 11 13 11</code></pre>
+<h2 id="负整数下标"><a href="#负整数下标" class="headerlink" title="负整数下标"></a>负整数下标</h2><p>负下标表示扣除相应的元素后的子集，如</p>
+<pre><code>&gt; x &lt;- c(1,4,6.25)
+&gt; x[-2]
+## [1] 1.00 6.25
+&gt; x[-c(1,3)]
+## [1] 4</code></pre>
+<p>负整数下标不能与正整数下标同时用来从某一向量中取子集， 比如，x[c(1,-2)]没有意义。</p>
+<h2 id="空下标与零下标"><a href="#空下标与零下标" class="headerlink" title="空下标与零下标"></a>空下标与零下标</h2><p>x[]表示取x的全部元素作为子集。 这与x本身不同，比如</p>
+<pre><code>&gt; x &lt;- c(1,4,6.25)
+&gt; x[] &lt;- 999
+&gt; x
+## [1] 999 999 999
+
+&gt; x &lt;- c(1,4,6.25)
+&gt; x &lt;- 999
+&gt; x
+## [1] 999</code></pre>
+<p>x[0]是一种少见的做法， 结果返回类型相同、长度为零的向量， 如numeric(0)。 相当于空集。</p>
+<p>当与正整数下标一起使用时会被忽略。 当0与负整数下标一起使用时也会被忽略。</p>
+<h2 id="下标超界"><a href="#下标超界" class="headerlink" title="下标超界"></a>下标超界</h2><p>设向量x长度为, 则使用正整数下标时下标应在中取值。 如果使用大于的下标， 读取时返回缺失值，并不出错。 给超出的下标元素赋值， 则向量自动变长， 中间没有赋值的元素为缺失值。 例如</p>
+<pre><code>&gt; x &lt;- c(1,4,6.25)
+&gt; x[5]
+## [1] NA
+
+&gt; x
+## [1] 1.00 4.00 6.25
+
+&gt; x[5] &lt;- 9
+&gt; x
+## [1] 1.00 4.00 6.25   NA 9.00</code></pre>
+<p>虽然R的语法对下标超界不视作错误， 但是这样的做法往往来自不良的程序思路， 而且对程序效率有影响， 所以实际编程中应避免下标超界。</p>
+<h2 id="逻辑下标"><a href="#逻辑下标" class="headerlink" title="逻辑下标"></a>逻辑下标</h2><p>下标可以是与向量等长的逻辑表达式， 一般是关于本向量或者与本向量等长的其它向量的比较结果，如</p>
+<pre><code>x &lt;- c(1,4,6.25)
+x[x &gt; 3]
+## [1] 4.00 6.25</code></pre>
+<p>取出x的大于3的元素组成的子集。</p>
+<p>要注意的是，如果逻辑下标中有缺失值， 对应结果也是缺失值。 所以，在用逻辑下标作子集选择时， 一定要考虑到缺失值问题。正确的做法是加上!is.na前提， 如</p>
+<pre><code>&gt; x &lt;- c(1, 4, 6.25, NA)
+&gt; x[x &gt; 2]
+## [1] 4.00 6.25   NA
+
+&gt; x[!is.na(x) &amp; x &gt; 2]
+## [1] 4.00 6.25</code></pre>
+<h2 id="which-、which-min-、which-max-函数"><a href="#which-、which-min-、which-max-函数" class="headerlink" title="which()、which.min()、which.max()函数"></a>which()、which.min()、which.max()函数</h2><p>函数<strong>which()**可以用来</strong>找到满足条件的下标**， 如</p>
+<pre><code>&gt; x &lt;- c(3, 4, 3, 5, 7, 5, 9)
+&gt; which(x &gt; 5)
+## [1] 5 7
+
+&gt; seq(along=x)[x &gt; 5]
+## [1] 5 7</code></pre>
+<p>这里seq(along=x)会生成由x的下标组成的向量。 用which.min()、which.max求最小值的下标和最大值的下标， 不唯一时只取第一个。如</p>
+<pre><code>&gt; which.min(x)
+## [1] 1
+
+&gt; which.max(x)
+## [1] 7</code></pre>
+<h2 id="元素名"><a href="#元素名" class="headerlink" title="元素名"></a>元素名</h2><p>向量可以为每个元素命名。如</p>
+<pre><code>&gt; ages &lt;- c(&quot;李明&quot;=25,&quot;田晓霞&quot;=21,&quot;孙少平&quot;=22)
+&gt; ages
+## 李明 田晓霞 孙少平 
+    25     21     22</code></pre>
+<p> 或者</p>
+<pre><code>&gt; ages &lt;- c(25,21,22)
+&gt; names(ages)&lt;- c(&quot;李明&quot;,&quot;田晓霞&quot;,&quot;孙少平&quot;)
+&gt; ages
+## 李明 田晓霞 孙少平 
+    25     21     22 </code></pre>
+<p>或者</p>
+<pre><code>&gt; ages &lt;- setNames(c(25,21,22),c(&quot;李明&quot;,&quot;田晓霞&quot;,&quot;孙少平&quot;))
+&gt; ages
+## 李明 田晓霞 孙少平 
+    25     21     22 </code></pre>
+<p>这时可以用元素名或元素名向量作为向量的下标，如</p>
+<pre><code>&gt; ages[&quot;李明&quot;]
+## 李明 
+  25
+
+&gt; ages[&quot;李明&quot;] &lt;- 11
+&gt; ages
+## 李明 田晓霞 孙少平 
+    11     21     22 </code></pre>
+<p>这实际上建立了字符串到数值的映射表。</p>
+<p>用字符串作为下标时， 如果该字符串不在向量的元素名中， 读取时返回缺失值结果， 赋值时该向量会增加一个元素并以该字符串为元素名。</p>
+<p>带有元素名的向量也可以是字符型或其它基本类型，如</p>
+<pre><code>&gt; sex &lt;- c(&quot;孙少平&quot;=&quot;男&quot;,&quot;田晓霞&quot;=&quot;女&quot;)
+&gt; sex
+## 孙少平 田晓霞 
+  &quot;男&quot;   &quot;女&quot; </code></pre>
+<p>除了给向量元素命名外， 在矩阵和数据框中还可以给行、列命名， 这会使得程序的扩展更为容易和安全。</p>
+<p>R允许仅给部分元素命名， 这时其它元素名字为空字符串。 不同元素的元素名一般应该是不同的， 否则在使用元素作为下标时会发生误读， 但是R语法允许存在重名。</p>
+<p>用unname(x)返回去掉了元素名的x的副本， 用names(x) &lt;- NULL可以去掉x的元素</p>
+<pre><code>&gt; unname(ages)
+## [1] 11 21 22
+
+&gt; ages
+## 李明 田晓霞 孙少平 
+    11     21     22 
+
+&gt; names(ages) &lt;- NULL
+&gt; ages
+## [1] 11 21 22</code></pre>
+]]></content>
+  </entry>
 </search>

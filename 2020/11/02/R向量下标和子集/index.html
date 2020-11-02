@@ -22,20 +22,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如 &gt; sele &lt;- (log10(15) &lt; 2) &gt; print(sele)  ## [1] TRUE 向量比较结果为逻辑型向量。如 &gt; c(1, 3, 5) &gt; 2 ## [1] FALSE  TRUE  TRUE  &gt; (1:4) &gt;&#x3D; (4">
+  <meta name="description" content="正整数下标对向量x, 在后面加方括号和下标可以访问向量的元素和子集。 设x &lt;- c(1, 4, 6.25)。 x[2]取出第二个元素； x[2] &lt;- 99修改第二个元素。 x[c(1,3)]取出第1、3号元素； x[c(1,3)] &lt;- c(11, 13)修改第1、3号元素。 下标可重复。 例如 &gt; x &lt;- c(1, 4, 6.25) &gt; x[2] ##">
 <meta property="og:type" content="article">
-<meta property="og:title" content="逻辑型向量及其运算">
-<meta property="og:url" content="http://example.com/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/index.html">
+<meta property="og:title" content="R向量下标和子集">
+<meta property="og:url" content="http://example.com/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/index.html">
 <meta property="og:site_name" content="WENJU QIAN‘s tech blog">
-<meta property="og:description" content="逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如 &gt; sele &lt;- (log10(15) &lt; 2) &gt; print(sele)  ## [1] TRUE 向量比较结果为逻辑型向量。如 &gt; c(1, 3, 5) &gt; 2 ## [1] FALSE  TRUE  TRUE  &gt; (1:4) &gt;&#x3D; (4">
+<meta property="og:description" content="正整数下标对向量x, 在后面加方括号和下标可以访问向量的元素和子集。 设x &lt;- c(1, 4, 6.25)。 x[2]取出第二个元素； x[2] &lt;- 99修改第二个元素。 x[c(1,3)]取出第1、3号元素； x[c(1,3)] &lt;- c(11, 13)修改第1、3号元素。 下标可重复。 例如 &gt; x &lt;- c(1, 4, 6.25) &gt; x[2] ##">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-10-31T10:21:24.000Z">
-<meta property="article:modified_time" content="2020-10-31T11:16:01.710Z">
+<meta property="article:published_time" content="2020-11-02T14:37:06.000Z">
+<meta property="article:modified_time" content="2020-11-02T15:49:50.121Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/">
+<link rel="canonical" href="http://example.com/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/">
 
 
 <script class="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>逻辑型向量及其运算 | WENJU QIAN‘s tech blog</title>
+  <title>R向量下标和子集 | WENJU QIAN‘s tech blog</title>
   
 
 
@@ -224,7 +224,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97"><span class="nav-number">1.</span> <span class="nav-text">逻辑运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">逻辑运算函数</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E6%95%B4%E6%95%B0%E4%B8%8B%E6%A0%87"><span class="nav-number">1.</span> <span class="nav-text">正整数下标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9F%E6%95%B4%E6%95%B0%E4%B8%8B%E6%A0%87"><span class="nav-number">2.</span> <span class="nav-text">负整数下标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E4%B8%8B%E6%A0%87%E4%B8%8E%E9%9B%B6%E4%B8%8B%E6%A0%87"><span class="nav-number">3.</span> <span class="nav-text">空下标与零下标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E6%A0%87%E8%B6%85%E7%95%8C"><span class="nav-number">4.</span> <span class="nav-text">下标超界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E4%B8%8B%E6%A0%87"><span class="nav-number">5.</span> <span class="nav-text">逻辑下标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#which-%E3%80%81which-min-%E3%80%81which-max-%E5%87%BD%E6%95%B0"><span class="nav-number">6.</span> <span class="nav-text">which()、which.min()、which.max()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%B4%A0%E5%90%8D"><span class="nav-number">7.</span> <span class="nav-text">元素名</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -285,7 +285,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -301,7 +301,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          逻辑型向量及其运算
+          R向量下标和子集
         </h1>
 
         <div class="post-meta-container">
@@ -313,7 +313,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2020-10-31 18:21:24 / Modified: 19:16:01" itemprop="dateCreated datePublished" datetime="2020-10-31T18:21:24+08:00">2020-10-31</time>
+      <time title="Created: 2020-11-02 22:37:06 / Modified: 23:49:50" itemprop="dateCreated datePublished" datetime="2020-11-02T22:37:06+08:00">2020-11-02</time>
     </span>
 
   
@@ -326,96 +326,124 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如</p>
-<pre><code>&gt; sele &lt;- (log10(15) &lt; 2)
-&gt; print(sele)
+        <h2 id="正整数下标"><a href="#正整数下标" class="headerlink" title="正整数下标"></a>正整数下标</h2><p>对向量x, 在后面加方括号和下标可以访问向量的元素和子集。</p>
+<p>设x &lt;- c(1, 4, 6.25)。 x[2]取出第二个元素； x[2] &lt;- 99修改第二个元素。 x[c(1,3)]取出第1、3号元素； x[c(1,3)] &lt;- c(11, 13)修改第1、3号元素。 下标可重复。 例如</p>
+<pre><code>&gt; x &lt;- c(1, 4, 6.25)
+&gt; x[2]
+## [1] 4
 
-## [1] TRUE</code></pre>
-<p>向量比较结果为逻辑型向量。如</p>
-<pre><code>&gt; c(1, 3, 5) &gt; 2
-## [1] FALSE  TRUE  TRUE
+&gt; x[2] &lt;- 99; x
+## [1]  1.00 99.00  6.25
 
-&gt; (1:4) &gt;= (4:1)    
-## [1] FALSE FALSE  TRUE  TRUE</code></pre>
-<p>从例子可以看出，向量比较也遵从R的向量间运算的一般规则： 向量与标量的运算是向量每个元素与标量都分别运算一次， 等长向量的运算时对应元素的运算， 不等长但长度为倍数关系的向量运算是把短的从头重复利用。</p>
-<p>与NA比较产生NA，如</p>
-<pre><code>&gt; c(1, NA, 3) &gt; 2
-## [1] FALSE    NA  TRUE
+&gt; x[c(1,3)]
+## [1] 1.00 6.25
 
-&gt; NA == NA
-## [1] NA</code></pre>
-<p>为了判断向量每个元素是否NA， 用is.na()函数，如</p>
-<pre><code>&gt; is.na(c(1, NA, 3) &gt; 2)
-## [1] FALSE  TRUE FALSE</code></pre>
-<p>用**is.finite()**判断向量每个元素是否Inf值。</p>
-<p>比较运算符包括</p>
-<blockquote>
-<p>&lt;   &lt;=  &gt;  &gt;=  ==  !=  %in%<br>分别表示小于、小于等于、大于、大于等于、等于、不等于、属于。 要注意等于比较用了两个等号。</p>
-</blockquote>
-<p>%in%是比较特殊的比较， x %in% y的运算把向量y看成集合， 运算结果是一个逻辑型向量， 第个元素的值为x的第元素是否属于y的逻辑型值。 如</p>
-<pre><code>&gt; c(1,3) %in% c(2,3,4)
-## [1] FALSE  TRUE
+&gt; x[c(1,3)] &lt;- c(11, 13); x
+## [1] 11 99 13
 
-&gt; c(NA,3) %in% c(2,3,4)
-## [1] FALSE  TRUE
+&gt; x[c(1,3,1)]
+## [1] 11 13 11</code></pre>
+<h2 id="负整数下标"><a href="#负整数下标" class="headerlink" title="负整数下标"></a>负整数下标</h2><p>负下标表示扣除相应的元素后的子集，如</p>
+<pre><code>&gt; x &lt;- c(1,4,6.25)
+&gt; x[-2]
+## [1] 1.00 6.25
+&gt; x[-c(1,3)]
+## [1] 4</code></pre>
+<p>负整数下标不能与正整数下标同时用来从某一向量中取子集， 比如，x[c(1,-2)]没有意义。</p>
+<h2 id="空下标与零下标"><a href="#空下标与零下标" class="headerlink" title="空下标与零下标"></a>空下标与零下标</h2><p>x[]表示取x的全部元素作为子集。 这与x本身不同，比如</p>
+<pre><code>&gt; x &lt;- c(1,4,6.25)
+&gt; x[] &lt;- 999
+&gt; x
+## [1] 999 999 999
 
-&gt; c(1,3) %in% c(NA, 3, 4)
-## [1] FALSE  TRUE
-
-&gt; c(NA,3) %in% c(NA, 3, 4)
-## [1] TRUE TRUE</code></pre>
-<p>函数match(x, y)起到和x %in% y运算类似的作用， 但是其返回结果不是找到与否， 而是对x的每个元素， 找到其在y中首次出现的下标，找不到时取缺失值，如</p>
-<pre><code>&gt; match(c(1, 3), c(2,3,4,3))
-## [1] NA  2</code></pre>
-<h2 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h2><p>为了表达如“而且”, “或者”之类的复合比较， 需要使用逻辑运算把两个比较连接起来。 逻辑运算符为&amp;, |和!, 分别表示“同时成立”、“两者至少其一成立”、“条件的反面”。 比如，设age&lt;=3表示婴儿，sex==’女’表示女性，则 age&lt;=3 &amp; sex==’女’表示女婴, age&lt;=3 | sex==’女’表示婴儿或妇女, !(age&lt;=3 | sex==’女’)表示既非婴儿也非妇女。 为了确定运算的先后次序可以用圆括号()指定。</p>
-<p>用xor(x, y)表示x与y的异或运算， 即值不相等时为真值，相等时为假值， 有缺失值参加运算时为缺失值。</p>
-<p>逻辑向量与逻辑标量之间的逻辑运算， 两个逻辑向量之间的逻辑运算规则遵从一般R向量间运算规则。</p>
-<p>在右运算符是缺失值时， 如果左运算符能够确定结果真假， 可以得到非缺失的结果。 例如，TRUE | NA为TRUE, FALSE &amp; NA为FALSE。 不能确定结果时返回NA， 比如， TRUE &amp; NA为NA, FALSE | NA为NA。</p>
-<p>&amp;&amp;和||分别为短路的标量逻辑与和短路的标量逻辑或， 仅对两个标量进行运算，如果有向量也仅使用第一个元素。 一般用在if语句、while语句中， 且只要第一个比较已经决定最终结果就不计算第二个比较。 例如</p>
-<pre><code>&gt; if(TRUE || sqrt(-1)&gt;0) 3+2 
-
-## [1] 5</code></pre>
-<p>其中的sqrt(-1)部分不会执行。</p>
-<p>这里结果为TRUE, 第二部分没有参加计算， 否则第二部分的计算会发生函数自变量范围错误。</p>
-<h2 id="逻辑运算函数"><a href="#逻辑运算函数" class="headerlink" title="逻辑运算函数"></a>逻辑运算函数</h2><p>因为R中比较与逻辑运算都支持向量之间、向量与标量之间的运算， 所以在需要一个标量结果时要特别注意， 后面讲到的if结构、while结构都需要逻辑标量而且不能是缺失值。 这时，应该对缺失值结果单独考虑。</p>
-<p>若cond是逻辑向量， 用all(cond)测试cond的所有元素为真； 用any(cond)测试cond至少一个元素为真。 cond中允许有缺失值，结果可能为缺失值。 如</p>
-<pre><code>&gt; c(1, NA, 3) &gt; 2
-## [1] FALSE    NA  TRUE
-
-&gt; all(c(1, NA, 3) &gt; 2)
-## [1] FALSE
-
-&gt; any(c(1, NA, 3) &gt; 2)
-## [1] TRUE
-
-&gt; all(NA)
+&gt; x &lt;- c(1,4,6.25)
+&gt; x &lt;- 999
+&gt; x
+## [1] 999</code></pre>
+<p>x[0]是一种少见的做法， 结果返回类型相同、长度为零的向量， 如numeric(0)。 相当于空集。</p>
+<p>当与正整数下标一起使用时会被忽略。 当0与负整数下标一起使用时也会被忽略。</p>
+<h2 id="下标超界"><a href="#下标超界" class="headerlink" title="下标超界"></a>下标超界</h2><p>设向量x长度为, 则使用正整数下标时下标应在中取值。 如果使用大于的下标， 读取时返回缺失值，并不出错。 给超出的下标元素赋值， 则向量自动变长， 中间没有赋值的元素为缺失值。 例如</p>
+<pre><code>&gt; x &lt;- c(1,4,6.25)
+&gt; x[5]
 ## [1] NA
 
-&gt; any(NA)
-## [1] NA</code></pre>
-<p>函数which()返回真值对应的所有下标，如</p>
-<pre><code>&gt; which(c(FALSE, TRUE, TRUE, FALSE, NA))
-## [1] 2 3
+&gt; x
+## [1] 1.00 4.00 6.25
 
-&gt; which((11:15) &gt; 12)
-## [1] 3 4 5</code></pre>
-<p>函数identical(x,y)比较两个R对象x与y的内容是否完全相同， 结果只会取标量TRUE与FALSE两种。 如</p>
-<pre><code>&gt; identical(c(1,2,3), c(1,2,NA))
-## [1] FALSE
+&gt; x[5] &lt;- 9
+&gt; x
+## [1] 1.00 4.00 6.25   NA 9.00</code></pre>
+<p>虽然R的语法对下标超界不视作错误， 但是这样的做法往往来自不良的程序思路， 而且对程序效率有影响， 所以实际编程中应避免下标超界。</p>
+<h2 id="逻辑下标"><a href="#逻辑下标" class="headerlink" title="逻辑下标"></a>逻辑下标</h2><p>下标可以是与向量等长的逻辑表达式， 一般是关于本向量或者与本向量等长的其它向量的比较结果，如</p>
+<pre><code>x &lt;- c(1,4,6.25)
+x[x &gt; 3]
+## [1] 4.00 6.25</code></pre>
+<p>取出x的大于3的元素组成的子集。</p>
+<p>要注意的是，如果逻辑下标中有缺失值， 对应结果也是缺失值。 所以，在用逻辑下标作子集选择时， 一定要考虑到缺失值问题。正确的做法是加上!is.na前提， 如</p>
+<pre><code>&gt; x &lt;- c(1, 4, 6.25, NA)
+&gt; x[x &gt; 2]
+## [1] 4.00 6.25   NA
 
-&gt; identical(c(1L,2L,3L), c(1,2,3))
-## [1] FALSE</code></pre>
-<p>其中第二个结果假值是因为前一向量是整数型， 后一向量是实数型。</p>
-<p>函数all.equal()与identical()类似， 但是在比较数值型时不区分整数型与实数型， 而且相同时返回标量TRUE， 但是不同时会返回一个说明有何不同的字符串。如</p>
-<pre><code>&gt; all.equal(c(1,2,3), c(1,2,NA))
-## [1] &quot;&#39;is.NA&#39; value mismatch: 1 in current 0 in target&quot;
+&gt; x[!is.na(x) &amp; x &gt; 2]
+## [1] 4.00 6.25</code></pre>
+<h2 id="which-、which-min-、which-max-函数"><a href="#which-、which-min-、which-max-函数" class="headerlink" title="which()、which.min()、which.max()函数"></a>which()、which.min()、which.max()函数</h2><p>函数<strong>which()**可以用来</strong>找到满足条件的下标**， 如</p>
+<pre><code>&gt; x &lt;- c(3, 4, 3, 5, 7, 5, 9)
+&gt; which(x &gt; 5)
+## [1] 5 7
 
-&gt; all.equal(c(1L,2L,3L), c(1,2,3))
-## [1] TRUE</code></pre>
-<p>函数duplicated()返回每个元素是否为重复值的结果，如：</p>
-<pre><code>&gt; duplicated(c(1,2,1,3,NA,4,NA))
-## [1] FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE</code></pre>
-<p>用函数unique()可以返回去掉重复值的结果。</p>
+&gt; seq(along=x)[x &gt; 5]
+## [1] 5 7</code></pre>
+<p>这里seq(along=x)会生成由x的下标组成的向量。 用which.min()、which.max求最小值的下标和最大值的下标， 不唯一时只取第一个。如</p>
+<pre><code>&gt; which.min(x)
+## [1] 1
+
+&gt; which.max(x)
+## [1] 7</code></pre>
+<h2 id="元素名"><a href="#元素名" class="headerlink" title="元素名"></a>元素名</h2><p>向量可以为每个元素命名。如</p>
+<pre><code>&gt; ages &lt;- c(&quot;李明&quot;=25,&quot;田晓霞&quot;=21,&quot;孙少平&quot;=22)
+&gt; ages
+## 李明 田晓霞 孙少平 
+    25     21     22</code></pre>
+<p> 或者</p>
+<pre><code>&gt; ages &lt;- c(25,21,22)
+&gt; names(ages)&lt;- c(&quot;李明&quot;,&quot;田晓霞&quot;,&quot;孙少平&quot;)
+&gt; ages
+## 李明 田晓霞 孙少平 
+    25     21     22 </code></pre>
+<p>或者</p>
+<pre><code>&gt; ages &lt;- setNames(c(25,21,22),c(&quot;李明&quot;,&quot;田晓霞&quot;,&quot;孙少平&quot;))
+&gt; ages
+## 李明 田晓霞 孙少平 
+    25     21     22 </code></pre>
+<p>这时可以用元素名或元素名向量作为向量的下标，如</p>
+<pre><code>&gt; ages[&quot;李明&quot;]
+## 李明 
+  25
+
+&gt; ages[&quot;李明&quot;] &lt;- 11
+&gt; ages
+## 李明 田晓霞 孙少平 
+    11     21     22 </code></pre>
+<p>这实际上建立了字符串到数值的映射表。</p>
+<p>用字符串作为下标时， 如果该字符串不在向量的元素名中， 读取时返回缺失值结果， 赋值时该向量会增加一个元素并以该字符串为元素名。</p>
+<p>带有元素名的向量也可以是字符型或其它基本类型，如</p>
+<pre><code>&gt; sex &lt;- c(&quot;孙少平&quot;=&quot;男&quot;,&quot;田晓霞&quot;=&quot;女&quot;)
+&gt; sex
+## 孙少平 田晓霞 
+  &quot;男&quot;   &quot;女&quot; </code></pre>
+<p>除了给向量元素命名外， 在矩阵和数据框中还可以给行、列命名， 这会使得程序的扩展更为容易和安全。</p>
+<p>R允许仅给部分元素命名， 这时其它元素名字为空字符串。 不同元素的元素名一般应该是不同的， 否则在使用元素作为下标时会发生误读， 但是R语法允许存在重名。</p>
+<p>用unname(x)返回去掉了元素名的x的副本， 用names(x) &lt;- NULL可以去掉x的元素</p>
+<pre><code>&gt; unname(ages)
+## [1] 11 21 22
+
+&gt; ages
+## 李明 田晓霞 孙少平 
+    11     21     22 
+
+&gt; names(ages) &lt;- NULL
+&gt; ages
+## [1] 11 21 22</code></pre>
 
     </div>
 
@@ -429,11 +457,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/" rel="prev" title="字符型数据及处理">
+                  <i class="fa fa-chevron-left"></i> 字符型数据及处理
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" rel="next" title="数值型向量及其运算">
-                  数值型向量及其运算 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
