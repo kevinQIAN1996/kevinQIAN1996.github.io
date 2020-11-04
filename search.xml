@@ -254,6 +254,9 @@ x ^ 2
      [92] 0.91919192 0.92929293 0.93939394 0.94949495 0.95959596 0.96969697 0.97979798
      [99] 0.98989899 1.00000000</code></pre>
 ]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
   </entry>
   <entry>
     <title>字符型数据及处理</title>
@@ -319,6 +322,9 @@ x ^ 2
 <pre><code>&gt; gsub(&#39;[[:space:]]+&#39;, &#39; &#39;, &#39;a   cat  in a box&#39;, perl=TRUE)
 ## [1] &quot;a cat in a box&quot;</code></pre>
 ]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
   </entry>
   <entry>
     <title>逻辑型向量及其运算</title>
@@ -414,6 +420,9 @@ x ^ 2
 ## [1] FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE</code></pre>
 <p>用函数unique()可以返回去掉重复值的结果。</p>
 ]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
   </entry>
   <entry>
     <title>R向量下标和子集</title>
@@ -636,9 +645,23 @@ x[x &gt; 3]
 <li><p>求age中除Mary与James这两人之外的那些人的年龄值，保存到变量age1中。</p>
 </li>
 </ol>
-<ol>
-<li>假设向量x长度为n, 其元素是的一个{1,2,3,…,n}的重排。 可以把x看成一个i到x[i]的映射(i在{1,2,3,…,n}中取值)。 求向量y, 保存了上述映射的逆映射，即： 如果x[i]=j, 则y[j]=i。</li>
-</ol>
+<pre><code>    &gt; a &lt;- match(c(&quot;Mary&quot;,&quot;James&quot;),name)
+    &gt; b &lt;- (1:length(name))
+
+    &gt; a
+    [1]  6 13
+    &gt; b
+     [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+
+    &gt; age1 &lt;- set[setdiff(b,a)]
+    &gt; age1
+      Alice   Becka    Gail   Karen   Kathy   Sandy  Sharon   Tammy  Alfred    Duke   Guido 
+         13      13      14      12      12      11      15      14      14      14      15 
+    Jeffrey    John  Philip  Robert  Thomas William 
+         13      12      16      12      11      15 </code></pre>
 ]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
   </entry>
 </search>

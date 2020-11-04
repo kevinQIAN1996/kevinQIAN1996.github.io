@@ -30,8 +30,9 @@
 <meta property="og:description" content="正整数下标对向量x, 在后面加方括号和下标可以访问向量的元素和子集。 设x &lt;- c(1, 4, 6.25)。 x[2]取出第二个元素； x[2] &lt;- 99修改第二个元素。 x[c(1,3)]取出第1、3号元素； x[c(1,3)] &lt;- c(11, 13)修改第1、3号元素。 下标可重复。 例如 &gt; x &lt;- c(1, 4, 6.25) &gt; x[2] ##">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-11-02T14:37:06.000Z">
-<meta property="article:modified_time" content="2020-11-03T12:08:21.881Z">
+<meta property="article:modified_time" content="2020-11-04T12:07:28.055Z">
 <meta property="article:author" content="WENJU QIAN">
+<meta property="article:tag" content="R">
 <meta name="twitter:card" content="summary">
 
 
@@ -244,6 +245,12 @@
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
   </nav>
 </div>
   <div class="links-of-author animated">
@@ -319,7 +326,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-11-03 20:08:21" itemprop="dateModified" datetime="2020-11-03T20:08:21+08:00">2020-11-03</time>
+        <time title="Modified: 2020-11-04 20:07:28" itemprop="dateModified" datetime="2020-11-04T20:07:28+08:00">2020-11-04</time>
       </span>
 
   
@@ -550,9 +557,20 @@ x[x &gt; 3]
 <li><p>求age中除Mary与James这两人之外的那些人的年龄值，保存到变量age1中。</p>
 </li>
 </ol>
-<ol>
-<li>假设向量x长度为n, 其元素是的一个{1,2,3,…,n}的重排。 可以把x看成一个i到x[i]的映射(i在{1,2,3,…,n}中取值)。 求向量y, 保存了上述映射的逆映射，即： 如果x[i]=j, 则y[j]=i。</li>
-</ol>
+<pre><code>    &gt; a &lt;- match(c(&quot;Mary&quot;,&quot;James&quot;),name)
+    &gt; b &lt;- (1:length(name))
+
+    &gt; a
+    [1]  6 13
+    &gt; b
+     [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+
+    &gt; age1 &lt;- set[setdiff(b,a)]
+    &gt; age1
+      Alice   Becka    Gail   Karen   Kathy   Sandy  Sharon   Tammy  Alfred    Duke   Guido 
+         13      13      14      12      12      11      15      14      14      14      15 
+    Jeffrey    John  Philip  Robert  Thomas William 
+         13      12      16      12      11      15 </code></pre>
 
     </div>
 
@@ -561,6 +579,9 @@ x[x &gt; 3]
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/R/" rel="tag"># R</a>
+          </div>
 
         
 
