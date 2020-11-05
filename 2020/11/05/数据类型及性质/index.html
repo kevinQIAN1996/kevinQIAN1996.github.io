@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="存储模式与基本类型R的变量可以存储多种不同的数据类型， 可以用typeof()函数来返回一个变量或表达式的类型。比如 &gt; typeof(1:3) ## [1] &quot;integer&quot;  &gt; typeof(c(1,2,3)) ## [1] &quot;double&quot;  &gt; typeof(c(1, 2.1, 3)) ## [1] &quot;double&amp;q">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据类型及性质">
+<meta property="og:url" content="http://example.com/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="存储模式与基本类型R的变量可以存储多种不同的数据类型， 可以用typeof()函数来返回一个变量或表达式的类型。比如 &gt; typeof(1:3) ## [1] &quot;integer&quot;  &gt; typeof(c(1,2,3)) ## [1] &quot;double&quot;  &gt; typeof(c(1, 2.1, 3)) ## [1] &quot;double&amp;q">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-04T16:35:53.000Z">
+<meta property="article:modified_time" content="2020-11-05T14:13:38.064Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta property="article:tag" content="R">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>数据类型及性质 | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">时光匆匆独白，将颠沛磨成卡带</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">存储模式与基本类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%8D%87%E6%A1%A3"><span class="nav-number">2.</span> <span class="nav-text">类型转换与类型升档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#attributes%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">attributes函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#attr%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">attr函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#names%E5%B1%9E%E6%80%A7"><span class="nav-number">3.3.</span> <span class="nav-text">names属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dim%E5%B1%9E%E6%80%A7"><span class="nav-number">3.4.</span> <span class="nav-text">dim属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#str-%E5%87%BD%E6%95%B0"><span class="nav-number">3.5.</span> <span class="nav-text">str()函数</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health, CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据类型及性质
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2020-11-05 00:35:53 / Modified: 22:13:38" itemprop="dateCreated datePublished" datetime="2020-11-05T00:35:53+08:00">2020-11-05</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="存储模式与基本类型"><a href="#存储模式与基本类型" class="headerlink" title="存储模式与基本类型"></a>存储模式与基本类型</h2><p>R的变量可以存储多种不同的数据类型， 可以用typeof()函数来返回一个变量或表达式的类型。比如</p>
+<pre><code>&gt; typeof(1:3)
+## [1] &quot;integer&quot;
+
+&gt; typeof(c(1,2,3))
+## [1] &quot;double&quot;
+
+&gt; typeof(c(1, 2.1, 3))
+## [1] &quot;double&quot;
+
+&gt; typeof(c(TRUE, NA, FALSE))
+## [1] &quot;logical&quot;
+
+&gt; typeof(&#39;Abc&#39;)
+## [1] &quot;character&quot;
+
+&gt; typeof(factor(c(&#39;F&#39;, &#39;M&#39;, &#39;M&#39;, &#39;F&#39;)))
+## [1] &quot;integer&quot;</code></pre>
+<p>*<em>注意**</em>因子的结果是integer而不是因子。*</p>
+<p>R还有两个函数mode()和storage.mode()起到与typeof()类似的作用， 这是为了提供与S语言兼容所遗留的， 应停止使用。</p>
+<p>R中数据的最基本的类型包括logical, integer, double, character, complex, raw, 其它数据类型都是由基本类型组合或转变得到的。 character类型就是字符串类型， raw类型是直接使用其二进制内容的类型。 为了判断某个向量x保存的基本类型， 可以用is.xxx()类函数， 如is.integer(x), is.double(x), is.numeric(x), is.logical(x), is.character(x), is.complex(x), is.raw(x)。 其中<strong>is.numeric(x)对integer和double内容都返回真值。</strong></p>
+<p>在R语言中数值一般看作double, 如果需要明确表明某些数值是整数， 可以在数值后面附加字母L，如</p>
+<pre><code>&gt; is.integer(c(1, -3))
+## [1] FALSE
+
+&gt; is.integer(c(1L, -3L))
+## [1] TRUE</code></pre>
+<p>整数型的缺失值是NA， 而double型的特殊值除了NA外， 还包括Inf, -Inf和NaN， 其中NaN也算是缺失值, Inf和-Inf不算是缺失值。 如:</p>
+<pre><code>c(-1, 0, 1)/0
+## [1] -Inf  NaN  Inf
+is.na(c(-1, 0, 1)/0)
+## [1] FALSE  TRUE FALSE</code></pre>
+<p>对double类型，可以用<strong>is.finite()判断是否有限值</strong>， NA、Inf, -Inf和NaN都不是有限值； 用is.infinite()判断是否Inf或-Inf； is.na()判断是否NA或NaN； is.nan()判断是否NaN。</p>
+<p>严格说来， NA表示逻辑型缺失值， 但是当作其它类型缺失值时一般能自动识别。 NA_integer_是整数型缺失值， NA_real是double型缺失值， NA_character_是字符型缺失值。</p>
+<p>在R的向量类型中， integer类型、double类型、logical类型、character类型、还有complex类型和raw类型称为原子类型(atomic types)， 原子类型的向量中元素都是同一基本类型的。 比如， double型向量的元素都是double或者缺失值。</p>
+<p>除了原子类型的向量， 在R语言的定义中， 向量还包括后面要讲到的列表（list）， 列表的元素不需要属于相同的基本类型， 而且列表的元素可以不是单一基本类型元素。 用typeof()函数可以返回向量的类型， 列表返回结果为”list”:</p>
+<pre><code>&gt; typeof(list(&quot;a&quot;, 1L, 1.5))
+## [1] &quot;list&quot;</code></pre>
+<p>原子类型的各个元素除了基本类型相同， 还不包含任何嵌套结构，如：</p>
+<pre><code>&gt; c(1, c(2,3, c(4,5)))
+## [1] 1 2 3 4 5</code></pre>
+<p>R有一个特殊的NULL类型， 这个类型只有唯一的一个NULL值， 表示不存在。 <strong>NULL长度为0， 不能有任何属性值</strong>。 用is.null()函数判断某个变量是否取NULL。</p>
+<p><strong>NULL值可以用来表示类型未知的零长度向量</strong>， 如c()没有自变量时返回值就是NULL； 也经常用作函数缺省值， 在函数内用is.null()判断其缺省后再用一定的计算逻辑得到真正的缺省情况下的数值。</p>
+<p>要把NULL与NA区分开来， <strong>NA是有类型的（integer、double、logical、character等)</strong>, <strong>NA表示存在但是未知</strong>。 数据库管理系统中的NULL值相当于R中的NA值。</p>
+<h2 id="类型转换与类型升档"><a href="#类型转换与类型升档" class="headerlink" title="类型转换与类型升档"></a>类型转换与类型升档</h2><p>可以用as.xxx()类的函数在不同类型之间进行强制转换。 如</p>
+<pre><code>as.numeric(c(FALSE, TRUE))
+## [1] 0 1
+as.character(sqrt(1:4))
+## [1] &quot;1&quot;                &quot;1.4142135623731&quot;  &quot;1.73205080756888&quot; &quot;2&quot;</code></pre>
+<p>类型转换也可能是隐含的，比如， <strong>四则运算中数值会被统一转换为double类型</strong>， 逻辑运算中运算元素会被统一转换为logical类型。 逻辑值转换成数值时，TRUE转换成1， FALSE转换成0。</p>
+<p>在用c()函数合并若干元素时， <strong>如果元素基本类型不同， 将统一转换成最复杂的一个</strong>，复杂程度从简单到复杂依次为： <strong>logical&lt;integer&lt;double&lt;character</strong>。 这种做法称为类型升档，如</p>
+<pre><code>c(FALSE, 1L, 2.5, &quot;3.6&quot;)
+## [1] &quot;FALSE&quot; &quot;1&quot;     &quot;2.5&quot;   &quot;3.6&quot;</code></pre>
+<p>不同类型参与要求类型相同的运算时， 也会统一转换为最复杂的类型， 也称为类型升档， 如：</p>
+<pre><code>&gt; TRUE + 10
+## [1] 11
+
+&gt; paste(&quot;abc&quot;, 1)
+## [1] &quot;abc 1&quot;</code></pre>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>除了NULL以外， R的变量都可以看成是对象， 都可以有属性。 在R语言中， 属性是把变量看成对象后， 除了其存储内容（如元素）之外的其它附加信息， 如维数、类属等。 R对象一般都有length和mode两个属性。</p>
+<p>常用属性有<strong>names, dim，class</strong>等。</p>
+<h3 id="attributes函数"><a href="#attributes函数" class="headerlink" title="attributes函数"></a>attributes函数</h3><p>对象x的所有属性可以用attributes()读取， 如</p>
+<pre><code>&gt; x &lt;- table(c(1,2,1,3,2,1)); print(x)
+## 
+## 1 2 3 
+## 3 2 1
+
+&gt; attributes(x)
+## $dim
+## [1] 3
+## 
+## $dimnames
+## $dimnames[[1]]
+## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot;
+## 
+## 
+## $class
+## [1] &quot;table&quot;</code></pre>
+<p><em>table()</em> 函数用了输出其自变量中每个不同值的出现次数，称为<strong>频数</strong>。 从上例可以看出， table()函数的结果有三个属性，前两个是dim和dimnames, 这是数组(array)具有的属性； 另一个是class属性，值为”table”。 因为x是数组，可以访问如</p>
+<pre><code>&gt; x[1]
+## 1 
+## 3
+
+&gt; x[&quot;3&quot;]
+## 3 
+## 1</code></pre>
+<p>也可以用attributes()函数修改属性， 如</p>
+<pre><code>&gt; attributes(x) &lt;- NULL
+&gt; x
+## [1] 3 2 1</code></pre>
+<p>如上修改后x不再是数组，也不是table。</p>
+<h3 id="attr函数"><a href="#attr函数" class="headerlink" title="attr函数"></a>attr函数</h3><p>可以用attr(x, “属性名”)的格式读取或定义x的属性。 如：</p>
+<pre><code>&gt; x &lt;- c(1,3,5)
+&gt; attr(x, &quot;theta&quot;) &lt;- c(0, 1)
+&gt; print(x)
+
+## [1] 1 3 5
+## attr(,&quot;theta&quot;)
+## [1] 0 1</code></pre>
+<p>可以让向量x额外地保存一个theta属性， 这样的属性常常成为“元数据”(meta data)， 比如， 用来保存数据的说明、模拟数据的真实模型参数，等等。</p>
+<h3 id="names属性"><a href="#names属性" class="headerlink" title="names属性"></a>names属性</h3><p>有元素名的向量、列表、数据框等都有names属性， 许多R函数的输出本质上也是列表， 所以也有names属性。 用names(x)的格式读取或设定。 如：</p>
+<pre><code>&gt; x &lt;- 1:5
+&gt; y &lt;- x^2
+&gt; lmr &lt;- lm(y ~ x)
+&gt; print(names(lmr))
+
+##  [1] &quot;coefficients&quot;  &quot;residuals&quot;     &quot;effects&quot;       &quot;rank&quot;         
+##  [5] &quot;fitted.values&quot; &quot;assign&quot;        &quot;qr&quot;            &quot;df.residual&quot;  
+##  [9] &quot;xlevels&quot;       &quot;call&quot;          &quot;terms&quot;         &quot;model&quot;</code></pre>
+<p>对于没有元素名的向量x，names(x)的返回值是NULL。</p>
+<h3 id="dim属性"><a href="#dim属性" class="headerlink" title="dim属性"></a>dim属性</h3><p>dim属性的存在表明对象是矩阵或一维、多维数组。 如：</p>
+<pre><code>&gt; x &lt;- matrix(1:12, nrow=3, ncol=4)
+&gt; attr(x, &quot;dim&quot;) # 等同于dim(x)
+## [1] 3 4</code></pre>
+<p>修改dim属性就将向量转换成矩阵（数组）， 或修改了矩阵的性质， 元素按列次序重排填入新的矩阵。如：</p>
+<pre><code>&gt; x &lt;- 1:10
+&gt; dim(x) &lt;- c(2,5)
+&gt; x
+
+##   [,1] [,2] [,3] [,4] [,5]
+[1,]    1    3    5    7    9
+[2,]    2    4    6    8   10</code></pre>
+<p>R允许dim仅有一个元素， 这对应于一维向量， 与普通的没有dim属性的向量有区别。 另外要注意， <strong>取矩阵子集时如果结果仅有一列或一行， 除非用了drop=FALSE选项， 结果不再有dim属性， 退化成了普通向量</strong>。</p>
+<h3 id="str-函数"><a href="#str-函数" class="headerlink" title="str()函数"></a>str()函数</h3><p>用print()函数可以显示对象内容。 如果内容很多， 显示行数可能也很多。 用str()函数可以显示对象的类型和主要结构及典型内容。例如</p>
+<pre><code>&gt; s &lt;- 101:200
+&gt; attr(s,&#39;author&#39;) &lt;- &#39;李小明&#39;
+&gt; attr(s,&#39;date&#39;) &lt;- &#39;2016-09-12&#39;
+
+&gt; str(s)
+## int [1:100] 101 102 103 104 105 106 107 108 109 110 ...
+ - attr(*, &quot;author&quot;)= chr &quot;李小明&quot;
+ - attr(*, &quot;date&quot;)= chr &quot;2016-09-12&quot;
+
+&gt; print(s)
+## [1] 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120
+ [21] 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140
+ [41] 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160
+ [61] 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+ [81] 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200
+attr(,&quot;author&quot;)
+[1] &quot;李小明&quot;
+attr(,&quot;date&quot;)
+[1] &quot;2016-09-12&quot;</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/R/" rel="tag"># R</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/" rel="prev" title="R向量下标和子集">
+                  <i class="fa fa-chevron-left"></i> R向量下标和子集
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/",
+    }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+
+<!-- <script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script> -->
+
+
+</body>
+</html>
