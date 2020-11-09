@@ -17,6 +17,9 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
+<link rel="stylesheet" href="/js/prism/prism.css">
+
+
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
@@ -30,7 +33,7 @@
 <meta property="og:description" content="存储模式与基本类型R的变量可以存储多种不同的数据类型， 可以用typeof()函数来返回一个变量或表达式的类型。比如 &gt; typeof(1:3) ## [1] &quot;integer&quot;  &gt; typeof(c(1,2,3)) ## [1] &quot;double&quot;  &gt; typeof(c(1, 2.1, 3)) ## [1] &quot;double&amp;q">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-11-04T16:35:53.000Z">
-<meta property="article:modified_time" content="2020-11-05T14:13:38.064Z">
+<meta property="article:modified_time" content="2020-11-05T14:24:31.250Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta property="article:tag" content="R">
 <meta name="twitter:card" content="summary">
@@ -241,7 +244,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -320,7 +323,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2020-11-05 00:35:53 / Modified: 22:13:38" itemprop="dateCreated datePublished" datetime="2020-11-05T00:35:53+08:00">2020-11-05</time>
+      <time title="Created: 2020-11-05 00:35:53 / Modified: 22:24:31" itemprop="dateCreated datePublished" datetime="2020-11-05T00:35:53+08:00">2020-11-05</time>
     </span>
 
   
@@ -375,9 +378,10 @@
 &gt; is.integer(c(1L, -3L))
 ## [1] TRUE</code></pre>
 <p>整数型的缺失值是NA， 而double型的特殊值除了NA外， 还包括Inf, -Inf和NaN， 其中NaN也算是缺失值, Inf和-Inf不算是缺失值。 如:</p>
-<pre><code>c(-1, 0, 1)/0
+<pre><code>&gt; c(-1, 0, 1)/0
 ## [1] -Inf  NaN  Inf
-is.na(c(-1, 0, 1)/0)
+
+&gt; is.na(c(-1, 0, 1)/0)
 ## [1] FALSE  TRUE FALSE</code></pre>
 <p>对double类型，可以用<strong>is.finite()判断是否有限值</strong>， NA、Inf, -Inf和NaN都不是有限值； 用is.infinite()判断是否Inf或-Inf； is.na()判断是否NA或NaN； is.nan()判断是否NaN。</p>
 <p>严格说来， NA表示逻辑型缺失值， 但是当作其它类型缺失值时一般能自动识别。 NA_integer_是整数型缺失值， NA_real是double型缺失值， NA_character_是字符型缺失值。</p>
@@ -392,13 +396,14 @@ is.na(c(-1, 0, 1)/0)
 <p><strong>NULL值可以用来表示类型未知的零长度向量</strong>， 如c()没有自变量时返回值就是NULL； 也经常用作函数缺省值， 在函数内用is.null()判断其缺省后再用一定的计算逻辑得到真正的缺省情况下的数值。</p>
 <p>要把NULL与NA区分开来， <strong>NA是有类型的（integer、double、logical、character等)</strong>, <strong>NA表示存在但是未知</strong>。 数据库管理系统中的NULL值相当于R中的NA值。</p>
 <h2 id="类型转换与类型升档"><a href="#类型转换与类型升档" class="headerlink" title="类型转换与类型升档"></a>类型转换与类型升档</h2><p>可以用as.xxx()类的函数在不同类型之间进行强制转换。 如</p>
-<pre><code>as.numeric(c(FALSE, TRUE))
+<pre><code>&gt; as.numeric(c(FALSE, TRUE))
 ## [1] 0 1
-as.character(sqrt(1:4))
+
+&gt; as.character(sqrt(1:4))
 ## [1] &quot;1&quot;                &quot;1.4142135623731&quot;  &quot;1.73205080756888&quot; &quot;2&quot;</code></pre>
 <p>类型转换也可能是隐含的，比如， <strong>四则运算中数值会被统一转换为double类型</strong>， 逻辑运算中运算元素会被统一转换为logical类型。 逻辑值转换成数值时，TRUE转换成1， FALSE转换成0。</p>
 <p>在用c()函数合并若干元素时， <strong>如果元素基本类型不同， 将统一转换成最复杂的一个</strong>，复杂程度从简单到复杂依次为： <strong>logical&lt;integer&lt;double&lt;character</strong>。 这种做法称为类型升档，如</p>
-<pre><code>c(FALSE, 1L, 2.5, &quot;3.6&quot;)
+<pre><code>&gt; c(FALSE, 1L, 2.5, &quot;3.6&quot;)
 ## [1] &quot;FALSE&quot; &quot;1&quot;     &quot;2.5&quot;   &quot;3.6&quot;</code></pre>
 <p>不同类型参与要求类型相同的运算时， 也会统一转换为最复杂的类型， 也称为类型升档， 如：</p>
 <pre><code>&gt; TRUE + 10
@@ -460,6 +465,7 @@ as.character(sqrt(1:4))
 <h3 id="dim属性"><a href="#dim属性" class="headerlink" title="dim属性"></a>dim属性</h3><p>dim属性的存在表明对象是矩阵或一维、多维数组。 如：</p>
 <pre><code>&gt; x &lt;- matrix(1:12, nrow=3, ncol=4)
 &gt; attr(x, &quot;dim&quot;) # 等同于dim(x)
+
 ## [1] 3 4</code></pre>
 <p>修改dim属性就将向量转换成矩阵（数组）， 或修改了矩阵的性质， 元素按列次序重排填入新的矩阵。如：</p>
 <pre><code>&gt; x &lt;- 1:10
@@ -476,11 +482,13 @@ as.character(sqrt(1:4))
 &gt; attr(s,&#39;date&#39;) &lt;- &#39;2016-09-12&#39;
 
 &gt; str(s)
+
 ## int [1:100] 101 102 103 104 105 106 107 108 109 110 ...
  - attr(*, &quot;author&quot;)= chr &quot;李小明&quot;
  - attr(*, &quot;date&quot;)= chr &quot;2016-09-12&quot;
 
 &gt; print(s)
+
 ## [1] 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120
  [21] 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140
  [41] 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160
@@ -511,6 +519,9 @@ attr(,&quot;date&quot;)
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/" rel="next" title="R因子类型">
+                  R因子类型 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -584,6 +595,8 @@ attr(,&quot;date&quot;)
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
+
+<script src="/js/prism/prism.js" async></script>
 
     </div>
   </footer>

@@ -695,9 +695,10 @@ x[x &gt; 3]
 &gt; is.integer(c(1L, -3L))
 ## [1] TRUE</code></pre>
 <p>整数型的缺失值是NA， 而double型的特殊值除了NA外， 还包括Inf, -Inf和NaN， 其中NaN也算是缺失值, Inf和-Inf不算是缺失值。 如:</p>
-<pre><code>c(-1, 0, 1)/0
+<pre><code>&gt; c(-1, 0, 1)/0
 ## [1] -Inf  NaN  Inf
-is.na(c(-1, 0, 1)/0)
+
+&gt; is.na(c(-1, 0, 1)/0)
 ## [1] FALSE  TRUE FALSE</code></pre>
 <p>对double类型，可以用<strong>is.finite()判断是否有限值</strong>， NA、Inf, -Inf和NaN都不是有限值； 用is.infinite()判断是否Inf或-Inf； is.na()判断是否NA或NaN； is.nan()判断是否NaN。</p>
 <p>严格说来， NA表示逻辑型缺失值， 但是当作其它类型缺失值时一般能自动识别。 NA_integer_是整数型缺失值， NA_real是double型缺失值， NA_character_是字符型缺失值。</p>
@@ -712,13 +713,14 @@ is.na(c(-1, 0, 1)/0)
 <p><strong>NULL值可以用来表示类型未知的零长度向量</strong>， 如c()没有自变量时返回值就是NULL； 也经常用作函数缺省值， 在函数内用is.null()判断其缺省后再用一定的计算逻辑得到真正的缺省情况下的数值。</p>
 <p>要把NULL与NA区分开来， <strong>NA是有类型的（integer、double、logical、character等)</strong>, <strong>NA表示存在但是未知</strong>。 数据库管理系统中的NULL值相当于R中的NA值。</p>
 <h2 id="类型转换与类型升档"><a href="#类型转换与类型升档" class="headerlink" title="类型转换与类型升档"></a>类型转换与类型升档</h2><p>可以用as.xxx()类的函数在不同类型之间进行强制转换。 如</p>
-<pre><code>as.numeric(c(FALSE, TRUE))
+<pre><code>&gt; as.numeric(c(FALSE, TRUE))
 ## [1] 0 1
-as.character(sqrt(1:4))
+
+&gt; as.character(sqrt(1:4))
 ## [1] &quot;1&quot;                &quot;1.4142135623731&quot;  &quot;1.73205080756888&quot; &quot;2&quot;</code></pre>
 <p>类型转换也可能是隐含的，比如， <strong>四则运算中数值会被统一转换为double类型</strong>， 逻辑运算中运算元素会被统一转换为logical类型。 逻辑值转换成数值时，TRUE转换成1， FALSE转换成0。</p>
 <p>在用c()函数合并若干元素时， <strong>如果元素基本类型不同， 将统一转换成最复杂的一个</strong>，复杂程度从简单到复杂依次为： <strong>logical&lt;integer&lt;double&lt;character</strong>。 这种做法称为类型升档，如</p>
-<pre><code>c(FALSE, 1L, 2.5, &quot;3.6&quot;)
+<pre><code>&gt; c(FALSE, 1L, 2.5, &quot;3.6&quot;)
 ## [1] &quot;FALSE&quot; &quot;1&quot;     &quot;2.5&quot;   &quot;3.6&quot;</code></pre>
 <p>不同类型参与要求类型相同的运算时， 也会统一转换为最复杂的类型， 也称为类型升档， 如：</p>
 <pre><code>&gt; TRUE + 10
@@ -780,6 +782,7 @@ as.character(sqrt(1:4))
 <h3 id="dim属性"><a href="#dim属性" class="headerlink" title="dim属性"></a>dim属性</h3><p>dim属性的存在表明对象是矩阵或一维、多维数组。 如：</p>
 <pre><code>&gt; x &lt;- matrix(1:12, nrow=3, ncol=4)
 &gt; attr(x, &quot;dim&quot;) # 等同于dim(x)
+
 ## [1] 3 4</code></pre>
 <p>修改dim属性就将向量转换成矩阵（数组）， 或修改了矩阵的性质， 元素按列次序重排填入新的矩阵。如：</p>
 <pre><code>&gt; x &lt;- 1:10
@@ -796,11 +799,13 @@ as.character(sqrt(1:4))
 &gt; attr(s,&#39;date&#39;) &lt;- &#39;2016-09-12&#39;
 
 &gt; str(s)
+
 ## int [1:100] 101 102 103 104 105 106 107 108 109 110 ...
  - attr(*, &quot;author&quot;)= chr &quot;李小明&quot;
  - attr(*, &quot;date&quot;)= chr &quot;2016-09-12&quot;
 
 &gt; print(s)
+
 ## [1] 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120
  [21] 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140
  [41] 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160
@@ -810,6 +815,58 @@ attr(,&quot;author&quot;)
 [1] &quot;李小明&quot;
 attr(,&quot;date&quot;)
 [1] &quot;2016-09-12&quot;</code></pre>
+]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>R因子类型</title>
+    <url>/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<h2 id="R因子类型"><a href="#R因子类型" class="headerlink" title="R因子类型"></a>R因子类型</h2><h3 id="因子"><a href="#因子" class="headerlink" title="因子"></a>因子</h3><p>R中用<strong>因子代表数据中分类变量</strong>, 如性别、省份、职业。 有序因子代表有序量度，如打分结果，疾病严重程度等。</p>
+<p>用factor()函数把字符型向量转换成因子，如</p>
+<pre><code>&gt; x &lt;- c(&quot;男&quot;,&quot;女&quot;,&quot;女&quot;,&quot;男&quot;)
+&gt; sex &lt;- factor(x)
+&gt; sex
+[1] 男 女 女 男
+Levels: 男 女</code></pre>
+<p>因子有class属性，取值为”factor”</p>
+<pre><code>&gt; attributes(sex)
+$levels
+[1] &quot;男&quot; &quot;女&quot;
+
+$class
+[1] &quot;factor&quot;</code></pre>
+<p>还有一个levels(水平值)属性， 此属性可以用levels()函数访问，如</p>
+<pre><code>&gt; levels(sex)
+[1] &quot;男&quot; &quot;女&quot;</code></pre>
+<p>因子的levels属性可以看成是一个映射， 把整数值1,2,映射成这些水平值， 因子在保存时会保存成整数值1,2,等与水平值对应的编号。 这样可以节省存储空间， 在建模计算的程序中也比较有利于进行数学运算。</p>
+<p>事实上， <strong>read.csv()**函数的默认操作会把输入文件的字符型列</strong>自动转换成因子**,这对于性别、职业、地名这样的列是合适的， 但是对于姓名、日期、详细地址这样的列则不合适。</p>
+<p>所以，在read.csv()调用中经常加选项<strong>stringsAsFactors=FALSE</strong>选项禁止这样的自动转换，还可以用colClasses选项逐个指定每列的类型。</p>
+<p>用**as.numeric()**可以把因子转换为纯粹的整数值，如</p>
+<pre><code>&gt; as.numeric(sex)
+[1] 1 2 2 1</code></pre>
+<p>因为因子实际保存为整数值， 所以对因子进行一些字符型操作可能导致错误。 用as.character()可以把因子转换成原来的字符型，如</p>
+<pre><code>&gt; as.character(sex)
+[1] &quot;男&quot; &quot;女&quot; &quot;女&quot; &quot;男&quot;</code></pre>
+<p>为了对因子执行字符型操作（如取子串）， 保险的做法是先用as.character()函数强制转换为字符型。</p>
+<ul>
+<li>factor()函数的一般形式为</li>
+</ul>
+<pre><code>    factor(x, levels = sort(unique(x), na.last = TRUE), 
+           labels, exclude = NA, ordered = FALSE)</code></pre>
+<p>可以用选项labels指定各水平的标签, 不指定时用各水平值的对应字符串。ordered取真值时表示因子水平是有次序的(按编码次序)。</p>
+<p>在使用factor()函数定义因子时，如果知道自变量元素的所有可能取值，应尽可能使用levels=参数指定这些不同可能取值，这样，即使某个取值没有出现，此变量代表的含义和频数信息也是完整的。 自己指定levels=的另一好处是可以按正确的次序显示因子的分类统计值。</p>
+<p>因为一个因子的levels属性是该因子独有的， 所以合并两个因子有可能造成错误。如</p>
+<pre><code>&gt; li1 &lt;- factor(c(&#39;男&#39;, &#39;女&#39;))
+&gt; li2 &lt;- factor(c(&#39;男&#39;, &#39;男&#39;))
+&gt; c(li1, li2)
+[1] 1 2 1 1</code></pre>
+<p>结果不再是因子。 正确的做法是</p>
+<pre><code>&gt; factor(c(as.character(li1), as.character(li2)))
+[1] 男 女 男 男
+Levels: 男 女</code></pre>
+<p>即恢复成字符型后合并， 然后再转换为因子。 在合并两个数据框时也存在这样的问题。 当然，如果在定义li1和li2 时都用了levels=c(‘男’, ‘女’)选项， c(li1, li2)也能给出正确结果。</p>
 ]]></content>
       <tags>
         <tag>R</tag>
