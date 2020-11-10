@@ -867,6 +867,50 @@ $class
 [1] 男 女 男 男
 Levels: 男 女</code></pre>
 <p>即恢复成字符型后合并， 然后再转换为因子。 在合并两个数据框时也存在这样的问题。 当然，如果在定义li1和li2 时都用了levels=c(‘男’, ‘女’)选项， c(li1, li2)也能给出正确结果。</p>
+<h2 id="tapply-函数"><a href="#tapply-函数" class="headerlink" title="tapply()函数"></a>tapply()函数</h2><p>可以按照因子分组然后每组计算另一变量的概括统计。 如</p>
+<pre><code>&gt; h &lt;- c(165, 170, 168, 172)
+&gt; tapply(h,sex,mean)
+   男    女 
+168.5 169.0 </code></pre>
+<p>这里第一自变量h与与第二自变量sex是等长的， 对应元素分别为同一人的身高和性别， tapply()函数分男女两组计算了身高平均值。</p>
+<h2 id="forcats包的因子函数"><a href="#forcats包的因子函数" class="headerlink" title="forcats包的因子函数"></a>forcats包的因子函数</h2><pre><code>&gt; library(forcats)</code></pre>
+<p>在分类变量类数较多时，往往需要对因子水平另外排序、合并等， forcats包提供了一些针对因子的方便函数。</p>
+<p>forcats::fct_reorder()可以根据不同因子水平分成的组中另一数值型变量的统计量值排序。 如：</p>
+<pre><code>&gt; library(forcats)
+&gt; set.seed(1)
+&gt; fac &lt;- sample(c(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;),size = 30,replace = T)
+&gt; fac
+ [1] &quot;red&quot;   &quot;green&quot; &quot;blue&quot;  &quot;green&quot; &quot;blue&quot;  &quot;blue&quot; 
+ [7] &quot;green&quot; &quot;blue&quot;  &quot;red&quot;   &quot;green&quot; &quot;red&quot;   &quot;red&quot;  
+[13] &quot;red&quot;   &quot;red&quot;   &quot;red&quot;   &quot;red&quot;   &quot;green&quot; &quot;green&quot;
+[19] &quot;red&quot;   &quot;green&quot; &quot;blue&quot;  &quot;green&quot; &quot;blue&quot;  &quot;green&quot;
+[25] &quot;blue&quot;  &quot;red&quot;   &quot;blue&quot;  &quot;blue&quot;  &quot;green&quot; &quot;blue&quot; </code></pre>
+<p>用 attribute() 函数查看此时fac的属性</p>
+<pre><code>&gt; attributes(fac)
+NULL</code></pre>
+<p>显示，此时fac 并不是一个factor,利用factor函数对fac进行转化为factor</p>
+<pre><code>&gt; fac &lt;- factor(x = fac,labels = c(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;))
+&gt; attributes(fac)
+$levels
+[1] &quot;red&quot;   &quot;green&quot; &quot;blue&quot; 
+
+$class
+[1] &quot;factor&quot;</code></pre>
+<p>转化完成之后，用rt()函数生成服从T分布生成伪随机数，并赋值给x</p>
+<pre><code>&gt; x &lt;- round(100*(10+rt(30,2)))
+&gt; res1 &lt;- tapply(x, fac, sd)
+&gt; res1
+##       red     green      blue 
+##  370.9222  138.3185 1129.2587
+
+&gt; barplot(res1)</code></pre>
+<p><a href="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact22-1.png">https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact22-1.png</a></p>
+<p>如果希望按照统计量次序对因子排序， 可以用forcats::fct_reorder()函数， 如</p>
+<pre><code>&gt; fac2 &lt;- fct_reorder(fac,x,sd)
+&gt; res2 &lt;- tapply(X = x,INDEX = fac2,FUN = sd)
+&gt; barplot(res2)</code></pre>
+<p><a href="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact23-1.png">https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact23-1.png</a></p>
+<p>新的因子fac2的因子水平次序已经按照变量x的标准差从小到大排列。</p>
 ]]></content>
       <tags>
         <tag>R</tag>
