@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact22-1.png">
 <meta property="og:image" content="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact23-1.png">
 <meta property="article:published_time" content="2020-11-09T14:23:25.000Z">
-<meta property="article:modified_time" content="2020-11-10T06:15:19.812Z">
+<meta property="article:modified_time" content="2020-11-10T10:57:23.670Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta property="article:tag" content="R">
 <meta name="twitter:card" content="summary">
@@ -231,7 +231,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">R因子类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%A0%E5%AD%90"><span class="nav-number">1.1.</span> <span class="nav-text">因子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tapply-%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">tapply()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forcats%E5%8C%85%E7%9A%84%E5%9B%A0%E5%AD%90%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">forcats包的因子函数</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">R因子类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%A0%E5%AD%90"><span class="nav-number">1.1.</span> <span class="nav-text">因子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tapply-%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">tapply()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forcats%E5%8C%85%E7%9A%84%E5%9B%A0%E5%AD%90%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">forcats包的因子函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0"><span class="nav-number">4.</span> <span class="nav-text">练习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%EF%BC%9A"><span class="nav-number">4.1.</span> <span class="nav-text">解答：</span></a></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -332,7 +332,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-11-10 14:15:19" itemprop="dateModified" datetime="2020-11-10T14:15:19+08:00">2020-11-10</time>
+        <time title="Modified: 2020-11-10 18:57:23" itemprop="dateModified" datetime="2020-11-10T18:57:23+08:00">2020-11-10</time>
       </span>
 
   
@@ -447,7 +447,79 @@ $class
 &gt; barplot(res2)</code></pre>
 <p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact23-1.png"></p>
 <p>新的因子fac2的因子水平次序已经按照变量x的标准差从小到大排列。</p>
+<p>有时在因子水平数较多时仅想将特定的一个或几个水平次序放到因子水平最前面， 可以用forcats::fct_relevel()函数， 如：</p>
+<pre><code>&gt; fac3 &lt;- fct_relevel(fac,&quot;blue&quot;)
 
+&gt; levels(fac3)
+[1] &quot;blue&quot;  &quot;red&quot;   &quot;green&quot;</code></pre>
+<p>fct_relevel()第一个参数是要修改次序的因子， 后续可以有多个字符型参数表示要提前的水平。</p>
+<p>forcats::fct_recode()可以修改每个水平的名称， 如：</p>
+<pre><code>&gt; fac4 &lt;- fct_recode(fac,&quot;红&quot;=&quot;red&quot;,&quot;蓝&quot;=&quot;blue&quot;,&quot;绿&quot;=&quot;green&quot;)
+&gt; attributes(fac4)
+$levels
+[1] &quot;红&quot; &quot;绿&quot; &quot;蓝&quot;
+
+$class
+[1] &quot;factor&quot;</code></pre>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>设文件<a target="_blank" rel="noopener" href="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/class.csv">class.csv</a>中包含如下内容:</p>
+<pre><code>name,sex,age,height,weight
+Alice,F,13,56.5,84
+Becka,F,13,65.3,98
+Gail,F,14,64.3,90
+Karen,F,12,56.3,77
+Kathy,F,12,59.8,84.5
+Mary,F,15,66.5,112
+Sandy,F,11,51.3,50.5
+Sharon,F,15,62.5,112.5
+Tammy,F,14,62.8,102.5
+Alfred,M,14,69,112.5
+Duke,M,14,63.5,102.5
+Guido,M,15,67,133
+James,M,12,57.3,83
+Jeffrey,M,13,62.5,84
+John,M,12,59,99.5
+Philip,M,16,72,150
+Robert,M,12,64.8,128
+Thomas,M,11,57.5,85
+William,M,15,66.5,112</code></pre>
+<p>用如下程序把该文件读入为R数据框d.class, 其中的sex列已经自动转换为因子。 取出其中的sex和age列到变量sex和age中</p>
+<pre><code>&gt; d.class &lt;- read.csv(&#39;class.csv&#39;, header=TRUE)
+&gt; sex &lt;- d.class[,&#39;sex&#39;]
+&gt; age &lt;- d.class[,&#39;age&#39;]</code></pre>
+<ol>
+<li><p>统计并显示列出sex的不同值频数；</p>
+</li>
+<li><p>分男女两组分别求年龄最大值；</p>
+</li>
+<li><p>把sex变量转换为一个新的因子，F显示成“Female”，M显示成“Male”。</p>
+</li>
+</ol>
+<h3 id="解答："><a href="#解答：" class="headerlink" title="解答："></a>解答：</h3><p>1.</p>
+<pre><code>&gt; table(sex)
+sex
+ F  M 
+ 9 10 </code></pre>
+<p>2.</p>
+<pre><code>&gt; tapply(age, sex, max)
+ F  M 
+15 16 </code></pre>
+<p>3.</p>
+<pre><code>&gt; sex
+ [1] F F F F F F F F F M M M M M M M M M M
+Levels: F M
+&gt; sex2 &lt;- fct_recode(sex,&quot;Female&quot;=&quot;F&quot;,&quot;Male&quot;=&quot;M&quot;)
+&gt; sex2
+ [1] Female Female Female Female Female Female Female
+ [8] Female Female Male   Male   Male   Male   Male  
+[15] Male   Male   Male   Male   Male  
+Levels: Female Male</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">
+&lt;details&gt;
+
+&lt;summary&gt;&lt;mark&gt;&lt;font color&#x3D;darkred&gt;点击查看详细内容&lt;&#x2F;font&gt;&lt;&#x2F;mark&gt;&lt;&#x2F;summary&gt;
+
+
+&lt;&#x2F;details&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
     </div>
 
     
