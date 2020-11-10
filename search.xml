@@ -904,12 +904,12 @@ $class
 ##  370.9222  138.3185 1129.2587
 
 &gt; barplot(res1)</code></pre>
-<p><a href="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact22-1.png">https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact22-1.png</a></p>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact22-1.png"></p>
 <p>如果希望按照统计量次序对因子排序， 可以用forcats::fct_reorder()函数， 如</p>
 <pre><code>&gt; fac2 &lt;- fct_reorder(fac,x,sd)
 &gt; res2 &lt;- tapply(X = x,INDEX = fac2,FUN = sd)
 &gt; barplot(res2)</code></pre>
-<p><a href="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact23-1.png">https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact23-1.png</a></p>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact23-1.png"></p>
 <p>新的因子fac2的因子水平次序已经按照变量x的标准差从小到大排列。</p>
 ]]></content>
       <tags>
