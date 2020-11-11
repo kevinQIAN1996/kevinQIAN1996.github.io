@@ -982,4 +982,156 @@ Levels: Female Male</code></pre>
         <tag>R</tag>
       </tags>
   </entry>
+  <entry>
+    <title>列表</title>
+    <url>/2020/11/11/%E5%88%97%E8%A1%A8/</url>
+    <content><![CDATA[<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>R中列表(list)类型来保存<strong>不同类型</strong>的数据。 一个主要目的是提供R分析结果输出包装： 输出一个变量， 这个变量包括回归系数、预测值、残差、检验结果等等一系列不能放到规则形状数据结构中的内容。 实际上，数据框也是列表的一种， 但是<u>数据框要求各列等长， 而列表不要求</u>。</p>
+<p>列表可以有多个元素， 但是与向量不同的是， 列表的不同元素的类型可以不同， 比如， 一个元素是数值型向量， 一个元素是字符串， 一个元素是标量， 一个元素是另一个列表。</p>
+<p>定义列表用函数list(), 如</p>
+<pre><code>&gt; rec &lt;- list(name=&quot;李明&quot;, age=30,
++            scores=c(85, 76, 90))
+&gt; rec
+$name
+[1] &quot;李明&quot;
+
+$age
+[1] 30
+
+$scores
+[1] 85 76 90</code></pre>
+<p>用typeof()函数判断一个列表， 返回结果为list。 可以用is.list()函数判断某个对象是否列表类型。</p>
+<pre><code>&gt; typeof(rec)
+[1] &quot;list&quot;</code></pre>
+<h2 id="列表元素访问"><a href="#列表元素访问" class="headerlink" title="列表元素访问"></a>列表元素访问</h2><p>列表的一个元素也可以称为列表的一个“变量”， 单个列表元素必须用两重方括号格式访问，如</p>
+<pre><code>&gt; rec[[3]][2]
+[1] 76
+
+&gt; rec[[&quot;age&quot;]]
+[1] 30
+&gt; rec[[&quot;scores&quot;]]
+[1] 85 76 90</code></pre>
+<p>列表的单个元素也可以用$格式访问，如</p>
+<pre><code>&gt; rec$age
+[1] 30</code></pre>
+<p>如果使用单重方括号对列表取子集， 结果还是列表而不是列表元素，如</p>
+<pre><code>&gt; rec[3]
+$scores
+[1] 85 76 90
+
+&gt; typeof(rec[3])
+[1] &quot;list&quot;</code></pre>
+<p>列表一般都应该有元素名， 元素名可以看成是变量名， 列表中的每个元素看成一个变量。 用names()函数查看和修改元素名。 如</p>
+<pre><code>&gt; names(rec)
+[1] &quot;name&quot;   &quot;age&quot;    &quot;scores&quot;
+
+&gt; typeof(names(rec))
+[1] &quot;character&quot;
+
+&gt; names(rec)[names(rec)==&quot;scores&quot;] &lt;- &quot;三科分数&quot;
+&gt; names(rec)
+[1] &quot;name&quot;     &quot;age&quot;      &quot;三科分数&quot;
+
+&gt; rec[[&quot;三科分数&quot;]]
+[1] 85 76 90</code></pre>
+<p>可以修改列表元素内容。 如</p>
+<pre><code>&gt; rec$三科分数[2] &lt;- 0
+&gt; rec
+$name
+[1] &quot;李明&quot;
+
+$age
+[1] 30
+
+$三科分数
+[1] 85  0 90</code></pre>
+<p>直接给列表<strong>不存在的元素名定义元素值就添加了新元素</strong>， 而且不同于使用向量，对于列表而言这是很正常的做法，比如</p>
+<pre><code>&gt; rec[&quot;身高&quot;] &lt;- 183
+&gt; rec
+$name
+[1] &quot;李明&quot;
+
+$age
+[1] 30
+
+$三科分数
+[1] 85  0 90
+
+$身高
+[1] 183</code></pre>
+<p>把某个列表元素赋值为NULL就删掉这个元素。 如</p>
+<pre><code>&gt; rec$三科分数 &lt;- NULL
+&gt; rec
+$name
+[1] &quot;李明&quot;
+
+$age
+[1] 30
+
+$身高
+[1] 183</code></pre>
+<p>在list()函数中允许定义元素为NULL，这样的元素是存在的，如：</p>
+<pre><code>&gt; li &lt;- list(a=120, b=&quot;F&quot;, c=NULL)
+&gt; li
+$a
+[1] 120
+
+$b
+[1] &quot;F&quot;
+
+$c
+NULL</code></pre>
+<p>但是，要把已经存在的元素修改为NULL值而不是删除此元素， 或者给列表增加一个取值为NULL的元素， 这时需要用单重的方括号取子集， 这样的子集会保持其列表类型， 给这样的子列表赋值为list(NULL)，如：</p>
+<pre><code>&gt; li[&quot;b&quot;] &lt;- list(NULL)
+&gt; li
+$a
+[1] 120
+
+$b
+NULL
+
+$c
+NULL</code></pre>
+<h2 id="列表类型转换"><a href="#列表类型转换" class="headerlink" title="列表类型转换"></a>列表类型转换</h2><p>用as.list()把一个其它类型的对象转换成列表； 如</p>
+<pre><code>&gt; li1 &lt;- as.list(li1)
+
+&gt; li1
+[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+
+[[3]]
+[1] 3</code></pre>
+<p>用unlist()函数把列表转换成基本向量</p>
+<pre><code>&gt; li2 &lt;- list(x=1, y=c(2,3))
+&gt; li2
+$x
+[1] 1
+
+$y
+[1] 2 3
+
+&gt; unlist(li2)
+ x y1 y2 
+ 1  2  3 </code></pre>
+<h2 id="返回列表的函数示例–-strsplit"><a href="#返回列表的函数示例–-strsplit" class="headerlink" title="返回列表的函数示例– strsplit()"></a>返回列表的函数示例– strsplit()</h2><p>strsplit()输入一个字符型向量并指定一个分隔符， 返回一个项数与字符型向量元素个数相同的列表， 列表每项对应于字符型向量中一个元素的拆分结果。 如</p>
+<pre><code>&gt; x &lt;- c(&quot;10, 8, 7&quot;, &quot;5, 2, 2&quot;, &quot;3, 7, 8&quot;, &quot;8, 8, 9&quot;)
+&gt; res &lt;- strsplit(x, &quot;,&quot;); res
+[[1]]
+[1] &quot;10&quot; &quot; 8&quot; &quot; 7&quot;
+
+[[2]]
+[1] &quot;5&quot;  &quot; 2&quot; &quot; 2&quot;
+
+[[3]]
+[1] &quot;3&quot;  &quot; 7&quot; &quot; 8&quot;
+
+[[4]]
+[1] &quot;8&quot;  &quot; 8&quot; &quot; 9&quot;</code></pre>
+]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
+  </entry>
 </search>
