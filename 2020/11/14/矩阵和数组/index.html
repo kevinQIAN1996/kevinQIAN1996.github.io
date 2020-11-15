@@ -23,21 +23,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如 &gt; sele &lt;- (log10(15) &lt; 2) &gt; print(sele)  ## [1] TRUE 向量比较结果为逻辑型向量。如 &gt; c(1, 3, 5) &gt; 2 ## [1] FALSE  TRUE  TRUE  &gt; (1:4) &gt;&#x3D; (4">
+  <meta name="description" content="R矩阵矩阵用matrix函数定义，实际存储成一个向量，根据保存的行数和列数对应到矩阵的元素， 存储次序为按列存储。 定义如 &gt; A &lt;- matrix(11:16, nrow&#x3D;3, ncol&#x3D;2) &gt; print(A)      [,1] [,2] [1,]   11   14 [2,]   12   15 [3,]   13   16  &gt; B &lt;- matrix(">
 <meta property="og:type" content="article">
-<meta property="og:title" content="逻辑型向量及其运算">
-<meta property="og:url" content="http://example.com/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/index.html">
+<meta property="og:title" content="矩阵和数组">
+<meta property="og:url" content="http://example.com/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/index.html">
 <meta property="og:site_name" content="WENJU QIAN‘s tech blog">
-<meta property="og:description" content="逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如 &gt; sele &lt;- (log10(15) &lt; 2) &gt; print(sele)  ## [1] TRUE 向量比较结果为逻辑型向量。如 &gt; c(1, 3, 5) &gt; 2 ## [1] FALSE  TRUE  TRUE  &gt; (1:4) &gt;&#x3D; (4">
+<meta property="og:description" content="R矩阵矩阵用matrix函数定义，实际存储成一个向量，根据保存的行数和列数对应到矩阵的元素， 存储次序为按列存储。 定义如 &gt; A &lt;- matrix(11:16, nrow&#x3D;3, ncol&#x3D;2) &gt; print(A)      [,1] [,2] [1,]   11   14 [2,]   12   15 [3,]   13   16  &gt; B &lt;- matrix(">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-10-31T10:21:24.000Z">
-<meta property="article:modified_time" content="2020-11-04T12:07:26.176Z">
+<meta property="article:published_time" content="2020-11-14T15:07:40.000Z">
+<meta property="article:modified_time" content="2020-11-15T08:49:19.420Z">
 <meta property="article:author" content="WENJU QIAN">
-<meta property="article:tag" content="R">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/">
+<link rel="canonical" href="http://example.com/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/">
 
 
 <script class="page-configurations">
@@ -50,7 +49,7 @@
   };
 </script>
 
-  <title>逻辑型向量及其运算 | WENJU QIAN‘s tech blog</title>
+  <title>矩阵和数组 | WENJU QIAN‘s tech blog</title>
   
 
 
@@ -226,7 +225,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97"><span class="nav-number">1.</span> <span class="nav-text">逻辑运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">逻辑运算函数</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#R%E7%9F%A9%E9%98%B5"><span class="nav-number">1.</span> <span class="nav-text">R矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E5%AD%90%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">矩阵子集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cbind-%E5%92%8Crbind-%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">cbind()和rbind()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E5%88%99%E8%BF%90%E7%AE%97"><span class="nav-number">4.</span> <span class="nav-text">四则运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">矩阵乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E4%B8%8E%E7%9F%A9%E9%98%B5%E7%9B%B8%E4%B9%98"><span class="nav-number">6.</span> <span class="nav-text">向量与矩阵相乘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="nav-number">7.</span> <span class="nav-text">多维数组</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -293,7 +292,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -309,7 +308,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          逻辑型向量及其运算
+          矩阵和数组
         </h1>
 
         <div class="post-meta-container">
@@ -320,14 +319,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2020-10-31 18:21:24" itemprop="dateCreated datePublished" datetime="2020-10-31T18:21:24+08:00">2020-10-31</time>
+      <time title="Created: 2020-11-14 23:07:40" itemprop="dateCreated datePublished" datetime="2020-11-14T23:07:40+08:00">2020-11-14</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-11-04 20:07:26" itemprop="dateModified" datetime="2020-11-04T20:07:26+08:00">2020-11-04</time>
+        <time title="Modified: 2020-11-15 16:49:19" itemprop="dateModified" datetime="2020-11-15T16:49:19+08:00">2020-11-15</time>
       </span>
 
   
@@ -339,8 +338,8 @@
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -354,96 +353,232 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如</p>
-<pre><code>&gt; sele &lt;- (log10(15) &lt; 2)
-&gt; print(sele)
+        <h2 id="R矩阵"><a href="#R矩阵" class="headerlink" title="R矩阵"></a>R矩阵</h2><p>矩阵用matrix函数定义，实际存储成一个向量，根据保存的行数和列数对应到矩阵的元素， 存储次序为按列存储。 定义如</p>
+<pre><code>&gt; A &lt;- matrix(11:16, nrow=3, ncol=2)
+&gt; print(A)
+     [,1] [,2]
+[1,]   11   14
+[2,]   12   15
+[3,]   13   16
 
-## [1] TRUE</code></pre>
-<p>向量比较结果为逻辑型向量。如</p>
-<pre><code>&gt; c(1, 3, 5) &gt; 2
-## [1] FALSE  TRUE  TRUE
+&gt; B &lt;- matrix(c(1,-1, 1,1), nrow=2, ncol=2, byrow=TRUE)
+&gt; B
+     [,1] [,2]
+[1,]    1   -1
+[2,]    1    1</code></pre>
+<p><strong>matrix()**函数把矩阵元素以一个</strong>向量的形式输入**， 用nrow和ncol规定行数和列数，向量元素填入矩阵的缺省次序是按列填入， 用byrow=TRUE选项可以转换成按行填入。</p>
+<pre><code>&gt; nrow(A)
+[1] 3
+&gt; ncol(A)
+[1] 2</code></pre>
+<p>矩阵有一个dim属性，内容是两个元素的向量， 两个元素分别为矩阵的行数和列数。dim属性可以用dim()函数访问。如</p>
+<pre><code>&gt; attributes(A)
+$dim
+[1] 3 2
 
-&gt; (1:4) &gt;= (4:1)    
-## [1] FALSE FALSE  TRUE  TRUE</code></pre>
-<p>从例子可以看出，向量比较也遵从R的向量间运算的一般规则： 向量与标量的运算是向量每个元素与标量都分别运算一次， 等长向量的运算时对应元素的运算， 不等长但长度为倍数关系的向量运算是把短的从头重复利用。</p>
-<p>与NA比较产生NA，如</p>
-<pre><code>&gt; c(1, NA, 3) &gt; 2
-## [1] FALSE    NA  TRUE
+&gt; dim(A)
+[1] 3 2</code></pre>
+<p>函数<strong>t(A)**返回</strong>A的转置**。</p>
+<pre><code>&gt; t(A)
+     [,1] [,2] [,3]
+[1,]   11   12   13
+[2,]   14   15   16</code></pre>
+<h2 id="矩阵子集"><a href="#矩阵子集" class="headerlink" title="矩阵子集"></a>矩阵子集</h2><p>用A[1,]取出A的第一行，变成一个普通向量。 用A[,1]取出A的第一列，变成一个普通向量。 用A[c(1,3),1:2]取出指定行、列对应的子矩阵。 如</p>
+<pre><code>&gt; A[1,1:2]
+[1] 11 14
 
-&gt; NA == NA
-## [1] NA</code></pre>
-<p>为了判断向量每个元素是否NA， 用is.na()函数，如</p>
-<pre><code>&gt; is.na(c(1, NA, 3) &gt; 2)
-## [1] FALSE  TRUE FALSE</code></pre>
-<p>用**is.finite()**判断向量每个元素是否Inf值。</p>
-<p>比较运算符包括</p>
+&gt; A[c(1,3),1:2]
+     [,1] [,2]
+[1,]   11   14
+[2,]   13   16</code></pre>
+<p>用colnames()函数可以给矩阵每列命名， 也可以访问矩阵列名， 用rownames()函数可以给矩阵每行命名， 也可以访问矩阵行名。如</p>
+<pre><code>&gt; colnames(A) &lt;- c(&quot;A&quot;,&quot;C&quot;)
+&gt; rownames(A)&lt;- c(&quot;B&quot;,&quot;D&quot;,&quot;F&quot;)
+&gt; A
+   A  C
+B 11 14
+D 12 15
+F 13 16</code></pre>
+<p>有了列名、行名后，矩阵下标可以用字符型向量， 如</p>
+<pre><code>&gt; A[,&quot;A&quot;]
+ B  D  F 
+11 12 13 
+
+&gt; A[&quot;B&quot;,]
+ A  C 
+11 14
+
+&gt; A[c(&quot;B&quot;,&quot;D&quot;),&quot;A&quot;]
+ B  D 
+11 12 </code></pre>
+<p>注意在对矩阵取子集时， 如果<strong>取出的子集仅有一行或仅有一列， 结果就不再是矩阵而是变成了R向量</strong>， R向量既不是行向量也不是列向量。 如果想避免这样的规则起作用，需要在方括号下标中加选项<strong>drop=FALSE</strong>， 如</p>
+<pre><code>&gt; A[A[,1]&gt;=12,&#39;C&#39;]
+ D  F 
+15 16 </code></pre>
+<p>矩阵本质上是一个向量添加了dim属性， 实际保存还是保存成一个向量， 其中元素的保存次序是<strong>按列填入</strong>，所以也可以向对一个向量取子集那样， 仅用一个正整数向量的矩阵取子集。如</p>
+<pre><code>&gt; A[c(1,3,5)]
+[1] 11 13 15</code></pre>
+<p>用c(A)或A[]返回矩阵A的所有元素。 如果要修改矩阵A的所有元素， 可以对A[]赋值。</p>
+<pre><code>#c(A)返回所有元素的方式是以列表的形式
+&gt; c(A)
+[1] 11 12 13 14 15 16
+
+# A[]的返回所有元素的方式是以矩阵的形式
+&gt; A[]
+   A  C
+B 11 14
+D 12 15
+F 13 16</code></pre>
+<p>对矩阵A，diag(A)访问A的主对角线元素组成的向量。 另外，若x为正整数值标量，diag(x)返回x阶单位阵； 若x为长度大于1的向量， diag(x)返回以x的元素为主对角线元素的对角矩阵。</p>
+<pre><code>&gt; diag(A)
+[1] 11 15</code></pre>
+<h2 id="cbind-和rbind-函数"><a href="#cbind-和rbind-函数" class="headerlink" title="cbind()和rbind()函数"></a>cbind()和rbind()函数</h2><p>若x是向量，<strong>cbind(x)把x变成列向量</strong>， 即列数为1的矩阵， <strong>rbind(x)把x变成行向量</strong>。</p>
+<p>若x1, x2, x3是等长的向量， cbind(x1, x2, x3)把它们看成列向量并在一起组成一个矩阵。 cbind()的自变量可以同时包含向量与矩阵，向量的长度必须与矩阵行数相等。 如</p>
+<pre><code>&gt; cbind(c(1,2), c(3,4), c(5,6))
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+
+
+&gt; cbind(A, c(1,-1,10))
+   A  C   
+B 11 14  1
+D 12 15 -1
+F 13 16 10</code></pre>
+<p>**cbind()**的自变量中也允许有标量， 这时此标量被重复使用。 如</p>
+<pre><code>&gt; cbind(1,c(1,-1,10))
+     [,1] [,2]
+[1,]    1    1
+[2,]    1   -1
+[3,]    1   10</code></pre>
+<p>**rbind()**用法类似， 可以等长的向量看成行向量上下摞在一起， 可以是矩阵与长度等于矩阵列数的向量上下摞在一起， 向量长度为1也可以。</p>
+<pre><code>&gt; rbind(c(1,2), c(3,4), c(5,6))
+     [,1] [,2]
+[1,]    1    2
+[2,]    3    4
+[3,]    5    6</code></pre>
+<h2 id="四则运算"><a href="#四则运算" class="headerlink" title="四则运算"></a>四则运算</h2><p>矩阵可以与标量作四则运算，结果<strong>为每个元素进行相应运算</strong>，如</p>
+<pre><code>&gt; c1 &lt;- A-1
+&gt; c1
+   A  C
+B 10 13
+D 11 14
+F 12 15
+
+&gt; c2 &lt;- A / 2
+&gt; c2
+    A   C
+B 5.5 7.0
+D 6.0 7.5
+F 6.5 8.0</code></pre>
+<p>两个同形状的矩阵进行加、减运算， 即对应元素相加、相减， 用A + B，A - B表示，如</p>
+<pre><code>&gt; c1+c2
+     A    C
+B 15.5 20.0
+D 17.0 21.5
+F 18.5 23.0</code></pre>
+<p>这就是线性代数中矩阵的加、减运算。</p>
+<p>对两个同形状的矩阵， 用*表示两个矩阵对应元素相乘(注意这不是线性代数中的矩阵乘法)， 用/表示两个矩阵对应元素相除。 如</p>
+<pre><code>&gt; c1 * c2
+   A   C
+B 55  91
+D 66 105
+F 78 120</code></pre>
+<h2 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h2><p>用<code>%*%</code>表示矩阵乘法而不是用<code>*</code>表示， 注意矩阵乘法要求左边的矩阵的列数等于右边的矩阵的行数。 如</p>
+<pre><code>&gt; B &lt;- cbind(c(1,1),c(-1,1))
+&gt; A%*%B
+  [,1] [,2]
+B   25    3
+D   27    3
+F   29    3</code></pre>
+<h2 id="向量与矩阵相乘"><a href="#向量与矩阵相乘" class="headerlink" title="向量与矩阵相乘"></a>向量与矩阵相乘</h2><p>矩阵与向量进行乘法运算时， 向量按需要解释成列向量或行向量。 当向量左乘矩阵时，看成行向量； 当向量右乘矩阵时，看成列向量。 如</p>
+<pre><code>&gt; B
+     [,1] [,2]
+[1,]    1   -1
+[2,]    1    1
+
+&gt; c(1,1) %*% B
+     [,1] [,2]
+[1,]    2    0
+
+&gt; B %*% c(1,1)
+     [,1]
+[1,]    0
+[2,]    2</code></pre>
+<p><strong>apply()函数</strong></p>
+<p>apply(A, 2, FUN)把矩阵A的每一列分别输入到函数FUN中， 得到对应于每一列的结果，如</p>
+<pre><code>&gt; D &lt;- matrix(c(6,2,3,5,4,1), nrow=3, ncol=2)
+&gt; D
+     [,1] [,2]
+[1,]    6    5
+[2,]    2    4
+[3,]    3    1
+
+&gt; apply(D, 2, sum)
+[1] 11 10</code></pre>
+<p>apply(A, 1, FUN)把矩阵A的每一行分别输入到函数FUN中， 得到与每一行对应的结果，如</p>
+<pre><code>&gt; apply(D, 1, mean)
+[1] 5.5 3.0 2.0</code></pre>
+<p>如果函数FUN返回多个结果， 则apply(A, 2, FUN)结果为矩阵， 矩阵的每一列是输入矩阵相应列输入到FUN的结果， 结果列数等于A的列数。如</p>
+<pre><code>&gt; apply(D, 2, range)
+     [,1] [,2]
+[1,]    2    1
+[2,]    6    5</code></pre>
+<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><p>多维数组的一般定义语法为</p>
 <blockquote>
-<p>&lt;   &lt;=  &gt;  &gt;=  ==  !=  %in%<br>分别表示小于、小于等于、大于、大于等于、等于、不等于、属于。 要注意等于比较用了两个等号。</p>
+<p>数组名 &lt;- array(数组元素,<br>  dim=c(第一下标个数, 第二下标个数, …, 第s下标个数))</p>
 </blockquote>
-<p>%in%是比较特殊的比较， x %in% y的运算把向量y看成集合， 运算结果是一个逻辑型向量， 第个元素的值为x的第元素是否属于y的逻辑型值。 如</p>
-<pre><code>&gt; c(1,3) %in% c(2,3,4)
-## [1] FALSE  TRUE
+<p>其中数组元素的填入次序是第一下标变化最快， 第二下标次之， 最后一个下标是变化最慢的。 这种次序称为FORTRAN次序。</p>
+<p>下面是一个三维数组定义例子。</p>
+<pre><code>&gt; ara &lt;- array(1:24, dim=c(2,3,4))
+&gt; ara
+, , 1
 
-&gt; c(NA,3) %in% c(2,3,4)
-## [1] FALSE  TRUE
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
 
-&gt; c(1,3) %in% c(NA, 3, 4)
-## [1] FALSE  TRUE
+, , 2
 
-&gt; c(NA,3) %in% c(NA, 3, 4)
-## [1] TRUE TRUE</code></pre>
-<p>函数match(x, y)起到和x %in% y运算类似的作用， 但是其返回结果不是找到与否， 而是对x的每个元素， 找到其在y中首次出现的下标，找不到时取缺失值，如</p>
-<pre><code>&gt; match(c(1, 3), c(2,3,4,3))
-## [1] NA  2</code></pre>
-<h2 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h2><p>为了表达如“而且”, “或者”之类的复合比较， 需要使用逻辑运算把两个比较连接起来。 逻辑运算符为&amp;, |和!, 分别表示“同时成立”、“两者至少其一成立”、“条件的反面”。 比如，设age&lt;=3表示婴儿，sex==’女’表示女性，则 age&lt;=3 &amp; sex==’女’表示女婴, age&lt;=3 | sex==’女’表示婴儿或妇女, !(age&lt;=3 | sex==’女’)表示既非婴儿也非妇女。 为了确定运算的先后次序可以用圆括号()指定。</p>
-<p>用xor(x, y)表示x与y的异或运算， 即值不相等时为真值，相等时为假值， 有缺失值参加运算时为缺失值。</p>
-<p>逻辑向量与逻辑标量之间的逻辑运算， 两个逻辑向量之间的逻辑运算规则遵从一般R向量间运算规则。</p>
-<p>在右运算符是缺失值时， 如果左运算符能够确定结果真假， 可以得到非缺失的结果。 例如，TRUE | NA为TRUE, FALSE &amp; NA为FALSE。 不能确定结果时返回NA， 比如， TRUE &amp; NA为NA, FALSE | NA为NA。</p>
-<p>&amp;&amp;和||分别为短路的标量逻辑与和短路的标量逻辑或， 仅对两个标量进行运算，如果有向量也仅使用第一个元素。 一般用在if语句、while语句中， 且只要第一个比较已经决定最终结果就不计算第二个比较。 例如</p>
-<pre><code>&gt; if(TRUE || sqrt(-1)&gt;0) 3+2 
+     [,1] [,2] [,3]
+[1,]    7    9   11
+[2,]    8   10   12
 
-## [1] 5</code></pre>
-<p>其中的sqrt(-1)部分不会执行。</p>
-<p>这里结果为TRUE, 第二部分没有参加计算， 否则第二部分的计算会发生函数自变量范围错误。</p>
-<h2 id="逻辑运算函数"><a href="#逻辑运算函数" class="headerlink" title="逻辑运算函数"></a>逻辑运算函数</h2><p>因为R中比较与逻辑运算都支持向量之间、向量与标量之间的运算， 所以在需要一个标量结果时要特别注意， 后面讲到的if结构、while结构都需要逻辑标量而且不能是缺失值。 这时，应该对缺失值结果单独考虑。</p>
-<p>若cond是逻辑向量， 用all(cond)测试cond的所有元素为真； 用any(cond)测试cond至少一个元素为真。 cond中允许有缺失值，结果可能为缺失值。 如</p>
-<pre><code>&gt; c(1, NA, 3) &gt; 2
-## [1] FALSE    NA  TRUE
+, , 3
 
-&gt; all(c(1, NA, 3) &gt; 2)
-## [1] FALSE
+     [,1] [,2] [,3]
+[1,]   13   15   17
+[2,]   14   16   18
 
-&gt; any(c(1, NA, 3) &gt; 2)
-## [1] TRUE
+, , 4
 
-&gt; all(NA)
-## [1] NA
+     [,1] [,2] [,3]
+[1,]   19   21   23
+[2,]   20   22   24</code></pre>
+<p>三维数组ara可以看成是4个2x3矩阵。 取出其中一个如ara[,,2]<br>(取出第二个矩阵)</p>
+<pre><code>&gt; ara[,,2]
+     [,1] [,2] [,3]
+[1,]    7    9   11
+[2,]    8   10   12</code></pre>
+<p>多维数组可以利用下标进行一般的子集操作</p>
+<pre><code>&gt; ara[,2,2:3]
+     [,1] [,2]
+[1,]    9   15
+[2,]   10   16</code></pre>
+<p>多维数组在取子集时如果某一维下标是标量， 则结果维数会减少， 可以在方括号内用drop=FALSE选项避免这样的规则发生作用。</p>
+<pre><code>&gt; ara[,2,2:3,drop=FALSE]
+, , 1
 
-&gt; any(NA)
-## [1] NA</code></pre>
-<p>函数which()返回真值对应的所有下标，如</p>
-<pre><code>&gt; which(c(FALSE, TRUE, TRUE, FALSE, NA))
-## [1] 2 3
+     [,1]
+[1,]    9
+[2,]   10
 
-&gt; which((11:15) &gt; 12)
-## [1] 3 4 5</code></pre>
-<p>函数identical(x,y)比较两个R对象x与y的内容是否完全相同， 结果只会取标量TRUE与FALSE两种。 如</p>
-<pre><code>&gt; identical(c(1,2,3), c(1,2,NA))
-## [1] FALSE
+, , 2
 
-&gt; identical(c(1L,2L,3L), c(1,2,3))
-## [1] FALSE</code></pre>
-<p>其中第二个结果假值是因为前一向量是整数型， 后一向量是实数型。</p>
-<p>函数all.equal()与identical()类似， 但是在比较数值型时不区分整数型与实数型， 而且相同时返回标量TRUE， 但是不同时会返回一个说明有何不同的字符串。如</p>
-<pre><code>&gt; all.equal(c(1,2,3), c(1,2,NA))
-## [1] &quot;&#39;is.NA&#39; value mismatch: 1 in current 0 in target&quot;
-
-&gt; all.equal(c(1L,2L,3L), c(1,2,3))
-## [1] TRUE</code></pre>
-<p>函数duplicated()返回每个元素是否为重复值的结果，如：</p>
-<pre><code>&gt; duplicated(c(1,2,1,3,NA,4,NA))
-## [1] FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE</code></pre>
-<p>用函数unique()可以返回去掉重复值的结果。</p>
+     [,1]
+[1,]   15
+[2,]   16</code></pre>
+<p>类似于矩阵， 多维数组可以用一个矩阵作为下标， 如果是三维数组，矩阵就需要有3列， 四维数组需要用4列矩阵。 下标矩阵的每行对应于一个数组元素。</p>
 
     </div>
 
@@ -452,19 +587,16 @@
     
 
     <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/R/" rel="tag"># R</a>
-          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2020/11/11/%E5%88%97%E8%A1%A8/" rel="prev" title="列表">
+                  <i class="fa fa-chevron-left"></i> 列表
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" rel="next" title="数值型向量及其运算">
-                  数值型向量及其运算 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -582,7 +714,7 @@ NexT.utils.loadComments('#valine-comments', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
     new Valine(Object.assign({
       el  : '#valine-comments',
-      path: "/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
+      path: "/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/",
     }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
     ));
   }, window.Valine);

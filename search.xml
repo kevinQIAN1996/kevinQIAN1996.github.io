@@ -989,9 +989,10 @@ Levels: Female Male</code></pre>
 <p>列表可以有多个元素， 但是与向量不同的是， 列表的不同元素的类型可以不同， 比如， 一个元素是数值型向量， 一个元素是字符串， 一个元素是标量， 一个元素是另一个列表。</p>
 <p>定义列表用函数list(), 如</p>
 <pre><code>&gt; rec &lt;- list(name=&quot;李明&quot;, age=30,
-+            scores=c(85, 76, 90))
-&gt; rec
-$name
++scores=c(85, 76, 90))
+&gt; rec</code></pre>
+<p><br>执行结果：</p>
+<pre><code>$name
 [1] &quot;李明&quot;
 
 $age
@@ -1001,6 +1002,8 @@ $scores
 [1] 85 76 90</code></pre>
 <p>用typeof()函数判断一个列表， 返回结果为list。 可以用is.list()函数判断某个对象是否列表类型。</p>
 <pre><code>&gt; typeof(rec)
+
+
 [1] &quot;list&quot;</code></pre>
 <h2 id="列表元素访问"><a href="#列表元素访问" class="headerlink" title="列表元素访问"></a>列表元素访问</h2><p>列表的一个元素也可以称为列表的一个“变量”， 单个列表元素必须用两重方括号格式访问，如</p>
 <pre><code>&gt; rec[[3]][2]
@@ -1094,8 +1097,10 @@ NULL</code></pre>
 <h2 id="列表类型转换"><a href="#列表类型转换" class="headerlink" title="列表类型转换"></a>列表类型转换</h2><p>用as.list()把一个其它类型的对象转换成列表； 如</p>
 <pre><code>&gt; li1 &lt;- as.list(li1)
 
-&gt; li1
-[[1]]
+&gt; li1    </code></pre>
+<br>
+
+<pre><code>[[1]]
 [1] 1
 
 [[2]]
@@ -1133,5 +1138,236 @@ $y
       <tags>
         <tag>R</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>矩阵和数组</title>
+    <url>/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/</url>
+    <content><![CDATA[<h2 id="R矩阵"><a href="#R矩阵" class="headerlink" title="R矩阵"></a>R矩阵</h2><p>矩阵用matrix函数定义，实际存储成一个向量，根据保存的行数和列数对应到矩阵的元素， 存储次序为按列存储。 定义如</p>
+<pre><code>&gt; A &lt;- matrix(11:16, nrow=3, ncol=2)
+&gt; print(A)
+     [,1] [,2]
+[1,]   11   14
+[2,]   12   15
+[3,]   13   16
+
+&gt; B &lt;- matrix(c(1,-1, 1,1), nrow=2, ncol=2, byrow=TRUE)
+&gt; B
+     [,1] [,2]
+[1,]    1   -1
+[2,]    1    1</code></pre>
+<p><strong>matrix()**函数把矩阵元素以一个</strong>向量的形式输入**， 用nrow和ncol规定行数和列数，向量元素填入矩阵的缺省次序是按列填入， 用byrow=TRUE选项可以转换成按行填入。</p>
+<pre><code>&gt; nrow(A)
+[1] 3
+&gt; ncol(A)
+[1] 2</code></pre>
+<p>矩阵有一个dim属性，内容是两个元素的向量， 两个元素分别为矩阵的行数和列数。dim属性可以用dim()函数访问。如</p>
+<pre><code>&gt; attributes(A)
+$dim
+[1] 3 2
+
+&gt; dim(A)
+[1] 3 2</code></pre>
+<p>函数<strong>t(A)**返回</strong>A的转置**。</p>
+<pre><code>&gt; t(A)
+     [,1] [,2] [,3]
+[1,]   11   12   13
+[2,]   14   15   16</code></pre>
+<h2 id="矩阵子集"><a href="#矩阵子集" class="headerlink" title="矩阵子集"></a>矩阵子集</h2><p>用A[1,]取出A的第一行，变成一个普通向量。 用A[,1]取出A的第一列，变成一个普通向量。 用A[c(1,3),1:2]取出指定行、列对应的子矩阵。 如</p>
+<pre><code>&gt; A[1,1:2]
+[1] 11 14
+
+&gt; A[c(1,3),1:2]
+     [,1] [,2]
+[1,]   11   14
+[2,]   13   16</code></pre>
+<p>用colnames()函数可以给矩阵每列命名， 也可以访问矩阵列名， 用rownames()函数可以给矩阵每行命名， 也可以访问矩阵行名。如</p>
+<pre><code>&gt; colnames(A) &lt;- c(&quot;A&quot;,&quot;C&quot;)
+&gt; rownames(A)&lt;- c(&quot;B&quot;,&quot;D&quot;,&quot;F&quot;)
+&gt; A
+   A  C
+B 11 14
+D 12 15
+F 13 16</code></pre>
+<p>有了列名、行名后，矩阵下标可以用字符型向量， 如</p>
+<pre><code>&gt; A[,&quot;A&quot;]
+ B  D  F 
+11 12 13 
+
+&gt; A[&quot;B&quot;,]
+ A  C 
+11 14
+
+&gt; A[c(&quot;B&quot;,&quot;D&quot;),&quot;A&quot;]
+ B  D 
+11 12 </code></pre>
+<p>注意在对矩阵取子集时， 如果<strong>取出的子集仅有一行或仅有一列， 结果就不再是矩阵而是变成了R向量</strong>， R向量既不是行向量也不是列向量。 如果想避免这样的规则起作用，需要在方括号下标中加选项<strong>drop=FALSE</strong>， 如</p>
+<pre><code>&gt; A[A[,1]&gt;=12,&#39;C&#39;]
+ D  F 
+15 16 </code></pre>
+<p>矩阵本质上是一个向量添加了dim属性， 实际保存还是保存成一个向量， 其中元素的保存次序是<strong>按列填入</strong>，所以也可以向对一个向量取子集那样， 仅用一个正整数向量的矩阵取子集。如</p>
+<pre><code>&gt; A[c(1,3,5)]
+[1] 11 13 15</code></pre>
+<p>用c(A)或A[]返回矩阵A的所有元素。 如果要修改矩阵A的所有元素， 可以对A[]赋值。</p>
+<pre><code>#c(A)返回所有元素的方式是以列表的形式
+&gt; c(A)
+[1] 11 12 13 14 15 16
+
+# A[]的返回所有元素的方式是以矩阵的形式
+&gt; A[]
+   A  C
+B 11 14
+D 12 15
+F 13 16</code></pre>
+<p>对矩阵A，diag(A)访问A的主对角线元素组成的向量。 另外，若x为正整数值标量，diag(x)返回x阶单位阵； 若x为长度大于1的向量， diag(x)返回以x的元素为主对角线元素的对角矩阵。</p>
+<pre><code>&gt; diag(A)
+[1] 11 15</code></pre>
+<h2 id="cbind-和rbind-函数"><a href="#cbind-和rbind-函数" class="headerlink" title="cbind()和rbind()函数"></a>cbind()和rbind()函数</h2><p>若x是向量，<strong>cbind(x)把x变成列向量</strong>， 即列数为1的矩阵， <strong>rbind(x)把x变成行向量</strong>。</p>
+<p>若x1, x2, x3是等长的向量， cbind(x1, x2, x3)把它们看成列向量并在一起组成一个矩阵。 cbind()的自变量可以同时包含向量与矩阵，向量的长度必须与矩阵行数相等。 如</p>
+<pre><code>&gt; cbind(c(1,2), c(3,4), c(5,6))
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+
+
+&gt; cbind(A, c(1,-1,10))
+   A  C   
+B 11 14  1
+D 12 15 -1
+F 13 16 10</code></pre>
+<p>**cbind()**的自变量中也允许有标量， 这时此标量被重复使用。 如</p>
+<pre><code>&gt; cbind(1,c(1,-1,10))
+     [,1] [,2]
+[1,]    1    1
+[2,]    1   -1
+[3,]    1   10</code></pre>
+<p>**rbind()**用法类似， 可以等长的向量看成行向量上下摞在一起， 可以是矩阵与长度等于矩阵列数的向量上下摞在一起， 向量长度为1也可以。</p>
+<pre><code>&gt; rbind(c(1,2), c(3,4), c(5,6))
+     [,1] [,2]
+[1,]    1    2
+[2,]    3    4
+[3,]    5    6</code></pre>
+<h2 id="四则运算"><a href="#四则运算" class="headerlink" title="四则运算"></a>四则运算</h2><p>矩阵可以与标量作四则运算，结果<strong>为每个元素进行相应运算</strong>，如</p>
+<pre><code>&gt; c1 &lt;- A-1
+&gt; c1
+   A  C
+B 10 13
+D 11 14
+F 12 15
+
+&gt; c2 &lt;- A / 2
+&gt; c2
+    A   C
+B 5.5 7.0
+D 6.0 7.5
+F 6.5 8.0</code></pre>
+<p>两个同形状的矩阵进行加、减运算， 即对应元素相加、相减， 用A + B，A - B表示，如</p>
+<pre><code>&gt; c1+c2
+     A    C
+B 15.5 20.0
+D 17.0 21.5
+F 18.5 23.0</code></pre>
+<p>这就是线性代数中矩阵的加、减运算。</p>
+<p>对两个同形状的矩阵， 用*表示两个矩阵对应元素相乘(注意这不是线性代数中的矩阵乘法)， 用/表示两个矩阵对应元素相除。 如</p>
+<pre><code>&gt; c1 * c2
+   A   C
+B 55  91
+D 66 105
+F 78 120</code></pre>
+<h2 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h2><p>用<code>%*%</code>表示矩阵乘法而不是用<code>*</code>表示， 注意矩阵乘法要求左边的矩阵的列数等于右边的矩阵的行数。 如</p>
+<pre><code>&gt; B &lt;- cbind(c(1,1),c(-1,1))
+&gt; A%*%B
+  [,1] [,2]
+B   25    3
+D   27    3
+F   29    3</code></pre>
+<h2 id="向量与矩阵相乘"><a href="#向量与矩阵相乘" class="headerlink" title="向量与矩阵相乘"></a>向量与矩阵相乘</h2><p>矩阵与向量进行乘法运算时， 向量按需要解释成列向量或行向量。 当向量左乘矩阵时，看成行向量； 当向量右乘矩阵时，看成列向量。 如</p>
+<pre><code>&gt; B
+     [,1] [,2]
+[1,]    1   -1
+[2,]    1    1
+
+&gt; c(1,1) %*% B
+     [,1] [,2]
+[1,]    2    0
+
+&gt; B %*% c(1,1)
+     [,1]
+[1,]    0
+[2,]    2</code></pre>
+<p><strong>apply()函数</strong></p>
+<p>apply(A, 2, FUN)把矩阵A的每一列分别输入到函数FUN中， 得到对应于每一列的结果，如</p>
+<pre><code>&gt; D &lt;- matrix(c(6,2,3,5,4,1), nrow=3, ncol=2)
+&gt; D
+     [,1] [,2]
+[1,]    6    5
+[2,]    2    4
+[3,]    3    1
+
+&gt; apply(D, 2, sum)
+[1] 11 10</code></pre>
+<p>apply(A, 1, FUN)把矩阵A的每一行分别输入到函数FUN中， 得到与每一行对应的结果，如</p>
+<pre><code>&gt; apply(D, 1, mean)
+[1] 5.5 3.0 2.0</code></pre>
+<p>如果函数FUN返回多个结果， 则apply(A, 2, FUN)结果为矩阵， 矩阵的每一列是输入矩阵相应列输入到FUN的结果， 结果列数等于A的列数。如</p>
+<pre><code>&gt; apply(D, 2, range)
+     [,1] [,2]
+[1,]    2    1
+[2,]    6    5</code></pre>
+<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><p>多维数组的一般定义语法为</p>
+<blockquote>
+<p>数组名 &lt;- array(数组元素,<br>  dim=c(第一下标个数, 第二下标个数, …, 第s下标个数))</p>
+</blockquote>
+<p>其中数组元素的填入次序是第一下标变化最快， 第二下标次之， 最后一个下标是变化最慢的。 这种次序称为FORTRAN次序。</p>
+<p>下面是一个三维数组定义例子。</p>
+<pre><code>&gt; ara &lt;- array(1:24, dim=c(2,3,4))
+&gt; ara
+, , 1
+
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+
+, , 2
+
+     [,1] [,2] [,3]
+[1,]    7    9   11
+[2,]    8   10   12
+
+, , 3
+
+     [,1] [,2] [,3]
+[1,]   13   15   17
+[2,]   14   16   18
+
+, , 4
+
+     [,1] [,2] [,3]
+[1,]   19   21   23
+[2,]   20   22   24</code></pre>
+<p>三维数组ara可以看成是4个2x3矩阵。 取出其中一个如ara[,,2]<br>(取出第二个矩阵)</p>
+<pre><code>&gt; ara[,,2]
+     [,1] [,2] [,3]
+[1,]    7    9   11
+[2,]    8   10   12</code></pre>
+<p>多维数组可以利用下标进行一般的子集操作</p>
+<pre><code>&gt; ara[,2,2:3]
+     [,1] [,2]
+[1,]    9   15
+[2,]   10   16</code></pre>
+<p>多维数组在取子集时如果某一维下标是标量， 则结果维数会减少， 可以在方括号内用drop=FALSE选项避免这样的规则发生作用。</p>
+<pre><code>&gt; ara[,2,2:3,drop=FALSE]
+, , 1
+
+     [,1]
+[1,]    9
+[2,]   10
+
+, , 2
+
+     [,1]
+[1,]   15
+[2,]   16</code></pre>
+<p>类似于矩阵， 多维数组可以用一个矩阵作为下标， 如果是三维数组，矩阵就需要有3列， 四维数组需要用4列矩阵。 下标矩阵的每行对应于一个数组元素。</p>
+]]></content>
   </entry>
 </search>
