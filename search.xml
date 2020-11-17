@@ -1155,7 +1155,7 @@ $y
      [,1] [,2]
 [1,]    1   -1
 [2,]    1    1</code></pre>
-<p><strong>matrix()**函数把矩阵元素以一个</strong>向量的形式输入**， 用nrow和ncol规定行数和列数，向量元素填入矩阵的缺省次序是按列填入， 用byrow=TRUE选项可以转换成按行填入。</p>
+<p>matrix()函数把矩阵元素以一个<strong>向量的形式输入</strong>， 用nrow和ncol规定行数和列数，向量元素填入矩阵的缺省次序是按列填入， 用byrow=TRUE选项可以转换成按行填入。</p>
 <pre><code>&gt; nrow(A)
 [1] 3
 &gt; ncol(A)
@@ -1369,5 +1369,305 @@ F   29    3</code></pre>
 [2,]   16</code></pre>
 <p>类似于矩阵， 多维数组可以用一个矩阵作为下标， 如果是三维数组，矩阵就需要有3列， 四维数组需要用4列矩阵。 下标矩阵的每行对应于一个数组元素。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>数据框</title>
+    <url>/2020/11/15/%E6%95%B0%E6%8D%AE%E6%A1%86/</url>
+    <content><![CDATA[<h2 id="数据框"><a href="#数据框" class="headerlink" title="数据框"></a>数据框</h2><p>统计分析中最常见的原始数据形式是类似于数据库表或Excel数据表的形式。 这样形式的数据在R中叫做数据框(data.frame)。 数据框类似于一个矩阵，有n行、p列， 但各列允许有不同类型：数值型向量、因子、字符型向量、日期时间向量。 同一列的数据类型相同。 在R中数据框是一个特殊的列表， 其每个列表元素都是一个长度相同的向量。 事实上，数据框还允许一个元素是一个矩阵， 但这样会使得某些读入数据框的函数发生错误。</p>
+<p>函数data.frame()可以生成数据框，如</p>
+<pre><code>&gt; d &lt;- data.frame(
++     name=c(&quot;李明&quot;, &quot;张聪&quot;, &quot;王建&quot;), 
++     age=c(30, 35, 28), 
++     height=c(180, 162, 175),
++     stringsAsFactors=FALSE)
+
+&gt; d
+  name age height
+1 李明  30    180
+2 张聪  35    162
+3 王建  28    175</code></pre>
+<p>data.frame()函数会将字符型列转换成因子， 加选项<strong>stringsAsFactors=FALSE</strong>可以避免这样的转换.</p>
+<pre><code>&gt; nrow(d)
+[1] 3
+
+&gt; names(d)
+[1] &quot;name&quot;   &quot;age&quot;    &quot;height&quot;</code></pre>
+<p>用as.data.frame(x)可以把x转换成数据框。 如果x是一个向量， 转换结果是以x为唯一一列的数据框。 如果x是一个列表并且列表元素都是长度相同的向量， 转换结果中每个列表变成数据框的一列。 如果x是一个矩阵，转换结果把矩阵的每列变成数据框的一列。</p>
+<h2 id="数据框内容访问"><a href="#数据框内容访问" class="headerlink" title="数据框内容访问"></a>数据框内容访问</h2><p>数据框可以用矩阵格式访问，如</p>
+<pre><code>&gt; d[2,3]
+[1] 162</code></pre>
+<p>访问单个元素。</p>
+<pre><code>&gt; d[[2]]
+[1] 30 35 28</code></pre>
+<p>访问第二列，结果为向量。</p>
+<pre><code>&gt; class(d[,2])
+[1] &quot;numeric&quot;
+
+&gt; d[[&quot;age&quot;]]
+[1] 30 35 28
+
+&gt; d[,&quot;age&quot;]
+[1] 30 35 28
+
+&gt; d$age
+[1] 30 35 28</code></pre>
+<p>因为数据框的一行不一定是相同数据类型， 所以数据框的一行作为子集， 结果还是数据框，而不是向量。如</p>
+<pre><code>&gt; d[2,]
+  name age height
+2 张聪  35    162
+
+&gt; class(d[2,])
+[1] &quot;data.frame&quot;</code></pre>
+<p>可以同时取行子集和列子集，如</p>
+<pre><code>&gt; d[1:2, &quot;age&quot;]
+[1] 30 35
+
+&gt; d[1:2, c(&quot;age&quot;, &quot;height&quot;)]
+  age height
+1  30    180
+2  35    162
+
+&gt; d[d[&quot;height&quot;]&gt;=170,]
+  name age height
+1 李明  30    180
+3 王建  28    175</code></pre>
+<p>与矩阵类似地是， 用如d[,”age”], d[,2]这样的方法取出的数据框的单个列是向量而不再是数据框。 但是，如果取出两列或者两列以上， 结果则是数据框。 如果取列子集时不能预先知道取出的列个数， 则子集结果有可能是向量也有可能是数据框， 容易造成后续程序错误。 对一般的数据框， 可以在取子集的方括号内加上drop=FALSE选项， 确保取列子集的结果总是数据框。 数据框的改进类型tibble在取出列子集时保持为tibble格式。</p>
+<p>对数据框变量名按照字符串与集合进行操作可以实现复杂的列子集筛选。</p>
+<h2 id="数据框的行名"><a href="#数据框的行名" class="headerlink" title="数据框的行名"></a>数据框的行名</h2><p>数据框每一行可以有行名， 这在原始的S语言和传统的R语言中是重要的技术， 但是在改进类型tibble中则取消了行名， 需要用列名实现功能一般改用left_join()函数实现。</p>
+<p>比如，每一行定义行名为身份证号，则可以唯一识别各行。 下面的例子以姓名作为行名:</p>
+<pre><code>&gt; rownames(d) &lt;- d$name
+&gt; d$name &lt;- NULL
+&gt; d
+     age height
+李明  30    180
+张聪  35    162
+王建  28    17</code></pre>
+<p>用数据框的行名可以建立一个值到多个值的对应表。 比如，有如下的数据框：</p>
+<pre><code>&gt; dm &lt;- data.frame(
++     &quot;年级&quot;=1:6,
++     &quot;出游&quot;=c(0, 2, 2, 2, 2, 1),
++     &quot;疫苗&quot;=c(T, F, F, F, T, F)
++ )
+
+&gt; dm
+  年级 出游  疫苗
+1    1    0  TRUE
+2    2    2 FALSE
+3    3    2 FALSE
+4    4    2 FALSE
+5    5    2  TRUE
+6    6    1 FALSE</code></pre>
+<p>其中“出游”是每个年级安排的出游次数， “疫苗”是该年级有全体无计划免疫注射。 把年级变成行名，可以建立年级到出游次数与疫苗注射的对应表：</p>
+<pre><code>&gt; dm[[&quot;年级&quot;]] &lt;- NULL
+&gt; dm
+  出游  疫苗
+1    0  TRUE
+2    2 FALSE
+3    2 FALSE
+4    2 FALSE
+5    2  TRUE
+6    1 FALSE</code></pre>
+<p>这样，假设某个社区的小学中抽取的4个班的年级为 c(2,1,3)， 其对应的出游和疫苗注射信息可查询如下：</p>
+<pre><code>&gt; ind &lt;- c(2,1,3)
+&gt; dm[as.character(ind),]
+  出游  疫苗
+2    2 FALSE
+1    0  TRUE
+3    2 FALSE</code></pre>
+<p>实际上，这个例子可以不用行名而是用match()函数实现。 match(x, table)对x的每个元素返回其在table中出现的位置序号。 找不到的元素返回NA。 如：</p>
+<pre><code>&gt; match(c(12, 15), 11:14)
+[1]  2 NA</code></pre>
+<p>对于上面的学校年级信息查询的例子， 可以首先查找每个班对应的年级在数据框中的行序号， 然后再返回这些行组成的数据框：</p>
+<pre><code>&gt; dm &lt;- data.frame(
++   &quot;年级&quot;=1:6,
++   &quot;出游&quot;=c(0, 2, 2, 2, 2, 1),
++   &quot;疫苗&quot;=c(T, F, F, F, T, F)
++ )
+
+&gt; ind &lt;- match(c(2,1,3),dm[[&quot;年级&quot;]])
+&gt; ind
+[1] 2 1 3
+
+&gt; dm[ind,]
+  年级 出游  疫苗
+2    2    2 FALSE
+1    1    0  TRUE
+3    3    2 FALSE</code></pre>
+<p>实际上，这个例子可以不用行名而是用match()函数实现。 match(x, table)对x的每个元素返回其在table中出现的位置序号。 找不到的元素返回NA。 如：</p>
+<pre><code>&gt; match(c(12, 15), 11:14)
+[1]  2 NA</code></pre>
+<p>对于上面的学校年级信息查询的例子， 可以首先查找每个班对应的年级在数据框中的行序号， 然后再返回这些行组成的数据框：</p>
+<pre><code>&gt; dm &lt;- data.frame(
++   &quot;年级&quot;=1:6,
++   &quot;出游&quot;=c(0, 2, 2, 2, 2, 1),
++   &quot;疫苗&quot;=c(T, F, F, F, T, F)
++ )
+
+&gt; ind &lt;- match(c(2,1,3),dm[[&quot;年级&quot;]])
+&gt; ind
+[1] 2 1 3
+
+&gt; dm[ind,]
+  年级 出游  疫苗
+2    2    2 FALSE
+1    1    0  TRUE
+3    3    2 FALSE</code></pre>
+<p>对于代替数据框的tibble类型， 如果要实现行名的功能， 可以将行名作为单独的一列， 然后用dplyr包的inner_join()、left_join()、full_join()等函数横向合并数据集。</p>
+<h2 id="数据框与矩阵的区别"><a href="#数据框与矩阵的区别" class="headerlink" title="数据框与矩阵的区别"></a>数据框与矩阵的区别</h2><p>数据框不能作为矩阵参加矩阵运算。 需要时，可以用as.matrix()函数转换数据框或数据框的子集为矩阵。 如</p>
+<pre><code>&gt; d2 &lt;- as.matrix(d[,c(&quot;height&quot;,&quot;age&quot;)])
+&gt; d2
+     height age
+[1,]    180  30
+[2,]    162  35
+[3,]    175  28
+
+&gt; d4 &lt;- tidyr::expand_grid(
++     group=1:3,
++     subgroup=1:2,
++     obs=1:2)</code></pre>
+<p>结果的数据框d有三个变量: group是大组，共分3个大组，每组4个观测； subgroup是子组，在每个大组内分为2个子组，每个子组2个观测。 共有个观测3x2x2=12（行）。</p>
+<pre><code>&gt; print(d4)
+# A tibble: 12 x 3
+   group subgroup   obs
+   &lt;int&gt;    &lt;int&gt; &lt;int&gt;
+ 1     1        1     1
+ 2     1        1     2
+ 3     1        2     1
+ 4     1        2     2
+ 5     2        1     1
+ 6     2        1     2
+ 7     2        2     1
+ 8     2        2     2
+ 9     3        1     1
+10     3        1     2
+11     3        2     1
+12     3        2     2</code></pre>
+<h2 id="tibble类型"><a href="#tibble类型" class="headerlink" title="tibble类型"></a>tibble类型</h2><p>tibble类型是一种改进的数据框。 readr包的read_csv()函数是read.csv()函数的一个改进版本， 它将CSV文件读入为tibble类型，如文件<a href="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/class.csv">class.csv</a>的读入:</p>
+<pre><code>&gt; library(tibble)
+
+载入程辑包：&#39;tibble&#39;
+
+The following object is masked from &#39;package:ShortRead&#39;:
+
+    view
+
+&gt; library(readr)
+&gt; t.class &lt;- read_csv(&quot;class.csv&quot;)
+
+-- Column specification --------------------------------
+cols(
+  name = col_character(),
+  sex = col_character(),
+  age = col_double(),
+  height = col_double(),
+  weight = col_double()
+)
+
+&gt; t.class
+# A tibble: 19 x 5
+   name    sex     age height weight
+   &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+ 1 Alice   F        13   56.5   84  
+ 2 Becka   F        13   65.3   98  
+ 3 Gail    F        14   64.3   90  
+ 4 Karen   F        12   56.3   77  
+ 5 Kathy   F        12   59.8   84.5
+ 6 Mary    F        15   66.5  112  
+ 7 Sandy   F        11   51.3   50.5
+ 8 Sharon  F        15   62.5  112. 
+ 9 Tammy   F        14   62.8  102. 
+10 Alfred  M        14   69    112. 
+11 Duke    M        14   63.5  102. 
+12 Guido   M        15   67    133  
+13 James   M        12   57.3   83  
+14 Jeffrey M        13   62.5   84  
+15 John    M        12   59     99.5
+16 Philip  M        16   72    150  
+17 Robert  M        12   64.8  128  
+18 Thomas  M        11   57.5   85  
+19 William M        15   66.5  112 </code></pre>
+<p>tibble类型的类属依次为tbl_df, tbl, data.frame：</p>
+<pre><code>&gt; class(t.class)
+[1] &quot;spec_tbl_df&quot; &quot;tbl_df&quot;      &quot;tbl&quot;        
+[4] &quot;data.frame&quot; </code></pre>
+<p>实际上，旧式数据框支持行名，有如下的缺点：</p>
+<ol>
+<li><p>行名本身往往也是有效的数据，如身份证号， 将有效数据以数据框中的列和行名两种不同形式保存， 增加了复杂度；</p>
+</li>
+<li><p>为了使用某些变量辨识不同的行（观测）， 行名也具有局限性： 行名必须是相互不同的， 必须是字符型， 而用来区分各个观测的变量有可能有多个， 也可能不是字符型。</p>
+</li>
+<li><p>行名要求互不相同是有局限性的， 如果用来辨识各行的变量有重复值， 就可以构成对各行的一种自然的分组。</p>
+</li>
+</ol>
+<p>tibble类型允许其中的列是列表类型， 这样， 该列的每个元素就可以是复杂类型， 比如建模结果（列表）， 元素之间可以保存不等长的值。 如：</p>
+<pre><code>&gt; tibble(x = 1:3,
++        y = list(1, 1:2, 1:3))
+# A tibble: 3 x 2
+      x y        
+  &lt;int&gt; &lt;list&gt;   
+1     1 &lt;dbl [1]&gt;
+2     2 &lt;int [2]&gt;
+3     3 &lt;int [3]&gt;</code></pre>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>假设<a href="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/class.csv">class.csv</a>已经读入为R数据框d.class, 其中的sex列已经自动转换为因子。</p>
+<ol>
+<li><p>显示d.class中年龄至少为15的行子集；</p>
+</li>
+<li><p>显示女生且年龄至少为15的学生姓名和年龄；</p>
+</li>
+<li><p>取出数据框中的age变量赋给变量x。</p>
+</li>
+</ol>
+<h2 id="解答："><a href="#解答：" class="headerlink" title="解答："></a>解答：</h2><p>###1.</p>
+<pre><code>&gt; d.class[d.class[[&quot;age&quot;]]&gt;=15,]
+      name sex age height weight
+6     Mary   F  15   66.5  112.0
+8   Sharon   F  15   62.5  112.5
+12   Guido   M  15   67.0  133.0
+16  Philip   M  16   72.0  150.0
+19 William   M  15   66.5  112.0</code></pre>
+<p>###2.</p>
+<p>我采取的办法有些笨，相当于一步一步来解决这个问题。首先因为第二题是在第一题的基础上来解决的。所以我先将上一题筛选的子集独立保存为一个data frame,命名为fliter_d.class,接着依旧安装上一题的思路，再增加一个筛选项。</p>
+<pre><code>&gt; fliter_d.class &lt;- d.class[d.class[[&quot;age&quot;]]&gt;=15,]
+&gt; fliter_d.class
+      name sex age height weight
+6     Mary   F  15   66.5  112.0
+8   Sharon   F  15   62.5  112.5
+12   Guido   M  15   67.0  133.0
+16  Philip   M  16   72.0  150.0
+19 William   M  15   66.5  112.0
+
+&gt; fliter_d.class[fliter_d.class[[&quot;sex&quot;]]==&quot;F&quot;,]
+    name sex age height weight
+6   Mary   F  15   66.5  112.0
+8 Sharon   F  15   62.5  112.5</code></pre>
+<p>最后因为要看只姓名和年龄</p>
+<pre><code>&gt; fliter_d.class[fliter_d.class[[&quot;sex&quot;]]==&quot;F&quot;,][,c(1,3)]
+    name age
+6   Mary  15
+8 Sharon  15</code></pre>
+<p>当然也可以直接使用dplyr包下的fliter()函数</p>
+<pre><code>&gt; d.class %&gt;%
++     filter(sex==&quot;F&quot;, age&gt;=15) %&gt;%
++     knitr::kable()
+
+
+|name   |sex | age| height| weight|
+|:------|:---|---:|------:|------:|
+|Mary   |F   |  15|   66.5|  112.0|
+|Sharon |F   |  15|   62.5|  112.5|</code></pre>
+<p>或者更加直接一点</p>
+<pre><code>&gt; filter(d.class,sex == &quot;F&quot;, age &gt;= 15)
+    name sex age height weight
+1   Mary   F  15   66.5  112.0
+2 Sharon   F  15   62.5  112.5</code></pre>
+<p>###3.</p>
+<pre><code>&gt; x &lt;- d.class[[&quot;age&quot;]]
+&gt; x
+ [1] 13 13 14 12 12 15 11 15 14 14 14 15 12 13 12 16 12
+[18] 11 15</code></pre>
+]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
   </entry>
 </search>
