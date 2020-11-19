@@ -259,6 +259,246 @@ x ^ 2
       </tags>
   </entry>
   <entry>
+    <title>R向量下标和子集</title>
+    <url>/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/</url>
+    <content><![CDATA[<h2 id="正整数下标"><a href="#正整数下标" class="headerlink" title="正整数下标"></a>正整数下标</h2><p>对向量x, 在后面加方括号和下标可以访问向量的元素和子集。</p>
+<p>设x &lt;- c(1, 4, 6.25)。 x[2]取出第二个元素； x[2] &lt;- 99修改第二个元素。 x[c(1,3)]取出第1、3号元素； x[c(1,3)] &lt;- c(11, 13)修改第1、3号元素。 下标可重复。 例如</p>
+<pre><code>&gt; x &lt;- c(1, 4, 6.25)
+&gt; x[2]
+## [1] 4
+
+&gt; x[2] &lt;- 99; x
+## [1]  1.00 99.00  6.25
+
+&gt; x[c(1,3)]
+## [1] 1.00 6.25
+
+&gt; x[c(1,3)] &lt;- c(11, 13); x
+## [1] 11 99 13
+
+&gt; x[c(1,3,1)]
+## [1] 11 13 11</code></pre>
+<h2 id="负整数下标"><a href="#负整数下标" class="headerlink" title="负整数下标"></a>负整数下标</h2><p>负下标表示扣除相应的元素后的子集，如</p>
+<pre><code>&gt; x &lt;- c(1,4,6.25)
+&gt; x[-2]
+## [1] 1.00 6.25
+&gt; x[-c(1,3)]
+## [1] 4</code></pre>
+<p>负整数下标不能与正整数下标同时用来从某一向量中取子集， 比如，x[c(1,-2)]没有意义。</p>
+<h2 id="空下标与零下标"><a href="#空下标与零下标" class="headerlink" title="空下标与零下标"></a>空下标与零下标</h2><p>x[]表示取x的全部元素作为子集。 这与x本身不同，比如</p>
+<pre><code>&gt; x &lt;- c(1,4,6.25)
+&gt; x[] &lt;- 999
+&gt; x
+## [1] 999 999 999
+
+&gt; x &lt;- c(1,4,6.25)
+&gt; x &lt;- 999
+&gt; x
+## [1] 999</code></pre>
+<p>x[0]是一种少见的做法， 结果返回类型相同、长度为零的向量， 如numeric(0)。 相当于空集。</p>
+<p>当与正整数下标一起使用时会被忽略。 当0与负整数下标一起使用时也会被忽略。</p>
+<h2 id="下标超界"><a href="#下标超界" class="headerlink" title="下标超界"></a>下标超界</h2><p>设向量x长度为, 则使用正整数下标时下标应在中取值。 如果使用大于的下标， 读取时返回缺失值，并不出错。 给超出的下标元素赋值， 则向量自动变长， 中间没有赋值的元素为缺失值。 例如</p>
+<pre><code>&gt; x &lt;- c(1,4,6.25)
+&gt; x[5]
+## [1] NA
+
+&gt; x
+## [1] 1.00 4.00 6.25
+
+&gt; x[5] &lt;- 9
+&gt; x
+## [1] 1.00 4.00 6.25   NA 9.00</code></pre>
+<p>虽然R的语法对下标超界不视作错误， 但是这样的做法往往来自不良的程序思路， 而且对程序效率有影响， 所以实际编程中应避免下标超界。</p>
+<h2 id="逻辑下标"><a href="#逻辑下标" class="headerlink" title="逻辑下标"></a>逻辑下标</h2><p>下标可以是与向量等长的逻辑表达式， 一般是关于本向量或者与本向量等长的其它向量的比较结果，如</p>
+<pre><code>x &lt;- c(1,4,6.25)
+x[x &gt; 3]
+## [1] 4.00 6.25</code></pre>
+<p>取出x的大于3的元素组成的子集。</p>
+<p>要注意的是，如果逻辑下标中有缺失值， 对应结果也是缺失值。 所以，在用逻辑下标作子集选择时， 一定要考虑到缺失值问题。正确的做法是加上!is.na前提， 如</p>
+<pre><code>&gt; x &lt;- c(1, 4, 6.25, NA)
+&gt; x[x &gt; 2]
+## [1] 4.00 6.25   NA
+
+&gt; x[!is.na(x) &amp; x &gt; 2]
+## [1] 4.00 6.25</code></pre>
+<h2 id="which-、which-min-、which-max-函数"><a href="#which-、which-min-、which-max-函数" class="headerlink" title="which()、which.min()、which.max()函数"></a>which()、which.min()、which.max()函数</h2><p>函数<strong>which()**可以用来</strong>找到满足条件的下标**， 如</p>
+<pre><code>&gt; x &lt;- c(3, 4, 3, 5, 7, 5, 9)
+&gt; which(x &gt; 5)
+## [1] 5 7
+
+&gt; seq(along=x)[x &gt; 5]
+## [1] 5 7</code></pre>
+<p>这里seq(along=x)会生成由x的下标组成的向量。 用which.min()、which.max求最小值的下标和最大值的下标， 不唯一时只取第一个。如</p>
+<pre><code>&gt; which.min(x)
+## [1] 1
+
+&gt; which.max(x)
+## [1] 7</code></pre>
+<h2 id="元素名"><a href="#元素名" class="headerlink" title="元素名"></a>元素名</h2><p>向量可以为每个元素命名。如</p>
+<pre><code>&gt; ages &lt;- c(&quot;李明&quot;=25,&quot;田晓霞&quot;=21,&quot;孙少平&quot;=22)
+&gt; ages
+## 李明 田晓霞 孙少平 
+    25     21     22</code></pre>
+<p> 或者</p>
+<pre><code>&gt; ages &lt;- c(25,21,22)
+&gt; names(ages)&lt;- c(&quot;李明&quot;,&quot;田晓霞&quot;,&quot;孙少平&quot;)
+&gt; ages
+## 李明 田晓霞 孙少平 
+    25     21     22 </code></pre>
+<p>或者</p>
+<pre><code>&gt; ages &lt;- setNames(c(25,21,22),c(&quot;李明&quot;,&quot;田晓霞&quot;,&quot;孙少平&quot;))
+&gt; ages
+## 李明 田晓霞 孙少平 
+    25     21     22 </code></pre>
+<p>这时可以用元素名或元素名向量作为向量的下标，如</p>
+<pre><code>&gt; ages[&quot;李明&quot;]
+## 李明 
+  25
+
+&gt; ages[&quot;李明&quot;] &lt;- 11
+&gt; ages
+## 李明 田晓霞 孙少平 
+    11     21     22 </code></pre>
+<p>这实际上建立了字符串到数值的映射表。</p>
+<p>用字符串作为下标时， 如果该字符串不在向量的元素名中， 读取时返回缺失值结果， 赋值时该向量会增加一个元素并以该字符串为元素名。</p>
+<p>带有元素名的向量也可以是字符型或其它基本类型，如</p>
+<pre><code>&gt; sex &lt;- c(&quot;孙少平&quot;=&quot;男&quot;,&quot;田晓霞&quot;=&quot;女&quot;)
+&gt; sex
+## 孙少平 田晓霞 
+  &quot;男&quot;   &quot;女&quot; </code></pre>
+<p>除了给向量元素命名外， 在矩阵和数据框中还可以给行、列命名， 这会使得程序的扩展更为容易和安全。</p>
+<p>R允许仅给部分元素命名， 这时其它元素名字为空字符串。 不同元素的元素名一般应该是不同的， 否则在使用元素作为下标时会发生误读， 但是R语法允许存在重名。</p>
+<p>用unname(x)返回去掉了元素名的x的副本， 用names(x) &lt;- NULL可以去掉x的元素</p>
+<pre><code>&gt; unname(ages)
+## [1] 11 21 22
+
+&gt; ages
+## 李明 田晓霞 孙少平 
+    11     21     22 
+
+&gt; names(ages) &lt;- NULL
+&gt; ages
+## [1] 11 21 22</code></pre>
+<h2 id="用R向量下标作映射"><a href="#用R向量下标作映射" class="headerlink" title="用R向量下标作映射"></a>用R向量下标作映射</h2><p>R在使用整数作为向量下标时，允许使用重复下标， 这样可以把数组x看成一个的整数到 x[1], x[2], , x[n]的一个映射表, 其中是x的长度。 比如，某商店有三种礼品，编号为1,2,3， 价格分别为68, 88和168。令</p>
+<pre><code>&gt; price.map &lt;- c(68, 88, 168)</code></pre>
+<p>设某个收银员在一天内分别售出礼品编号为3,2,1,1,2,2,3， 可以用如下的映射方式获得售出的这些礼品对应的价格：</p>
+<pre><code>&gt; items &lt;- c(3,2,1,1,2,2,3)
+&gt; y &lt;- price.map[items]; print(y)
+## [1] 168  88  68  68  88  88 168</code></pre>
+<p>R向量可以用字符型向量作下标， 字符型下标也允许重复， 所以可以把带有元素名的R向量看成是元素名到元素值的映射表。 比如，设sex为10个学生的性别（男、女）</p>
+<pre><code>&gt; sex &lt;- c(&quot;男&quot;, &quot;男&quot;, &quot;女&quot;, &quot;女&quot;, &quot;男&quot;, &quot;女&quot;, &quot;女&quot;, &quot;女&quot;, &quot;女&quot;, &quot;男&quot;)</code></pre>
+<p>希望把每个学生按照性别分别对应到蓝色和红色。 首先建立一个R向量当作映射</p>
+<pre><code>&gt; sex.color &lt;- c(&quot;男&quot;=&quot;blue&quot;, &quot;女&quot;=&quot;red&quot;)</code></pre>
+<p>用R向量sex.color当作映射，可以获得每个学生对应的颜色</p>
+<pre><code>&gt; cols &lt;- sex.color[sex]; print(cols)
+##     男     男     女     女     男     女     女     女     女     男 
+## &quot;blue&quot; &quot;blue&quot;  &quot;red&quot;  &quot;red&quot; &quot;blue&quot;  &quot;red&quot;  &quot;red&quot;  &quot;red&quot;  &quot;red&quot; &quot;blue&quot;</code></pre>
+<p>这样的映射结果中带有不必要的元素名， 用unname()函数可以去掉元素名，如</p>
+<pre><code>&gt; unname(cols)
+##  [1] &quot;blue&quot; &quot;blue&quot; &quot;red&quot;  &quot;red&quot;  &quot;blue&quot; &quot;red&quot;  &quot;red&quot;  &quot;red&quot;  &quot;red&quot;  &quot;blue&quot;</code></pre>
+<h2 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a>集合运算</h2><p>可以把向量x看成一个集合，但是其中的元素允许有重复。 用unique(x)可以获得x的所有不同值。如</p>
+<pre><code>&gt; unique(c(1, 5, 2, 5))
+## [1] 1 5 2</code></pre>
+<p>用a %in% x判断a的每个元素是否属于向量x，如</p>
+<pre><code>&gt; 5 %in% c(1,5,2)
+## [1] TRUE
+
+&gt; c(5,6) %in% c(1,5,2)
+## [1]  TRUE FALSE</code></pre>
+<p>与%in运算符类似， 函数match(x, table)对向量x的每个元素， 从向量table中查找其首次出现位置并返回这些位置。 没有匹配到的元素位置返回NA_integer_(整数型缺失值)。 如</p>
+<pre><code>&gt; match(5, c(1,5,2))
+## [1] 2
+
+&gt; match(5, c(1,5,2,5))
+## [1] 2
+
+&gt; match(c(2,5), c(1,5,2,5))
+## [1] 3 2
+
+&gt; match(c(2,5,0), c(1,5,2,5))
+## [1]  3  2 NA</code></pre>
+<p>用intersect(x,y)求交集，结果中不含重复元素，如</p>
+<pre><code>&gt; intersect(c(5, 7), c(1, 5, 2, 5))
+## [1] 5</code></pre>
+<p>用union(x,y)求并集，结果中不含重复元素，如</p>
+<pre><code>&gt; union(c(5, 7), c(1, 5, 2, 5))
+## [1] 5 7 1 2</code></pre>
+<p>用setdiff(x,y)求差集，即x的元素中不属于y的元素组成的集合， 结果中不含重复元素，如</p>
+<pre><code>&gt; setdiff(c(5, 7), c(1, 5, 2, 5))
+## [1] 7</code></pre>
+<p>用setequal(x,y)判断两个集合是否相等， 不受次序与重复元素的影响，如</p>
+<pre><code>&gt; setequal(c(1,5,2), c(2,5,1))
+## [1] TRUE
+
+&gt; setequal(c(1,5,2), c(2,5,1,5))
+## [1] TRUE</code></pre>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>设文件class.csv内容如下:</p>
+<p>name,sex,age,height,weight<br>Alice,F,13,56.5,84<br>Becka,F,13,65.3,98<br>Gail,F,14,64.3,90<br>Karen,F,12,56.3,77<br>Kathy,F,12,59.8,84.5<br>Mary,F,15,66.5,112<br>Sandy,F,11,51.3,50.5<br>Sharon,F,15,62.5,112.5<br>Tammy,F,14,62.8,102.5<br>Alfred,M,14,69,112.5<br>Duke,M,14,63.5,102.5<br>Guido,M,15,67,133<br>James,M,12,57.3,83<br>Jeffrey,M,13,62.5,84<br>John,M,12,59,99.5<br>Philip,M,16,72,150<br>Robert,M,12,64.8,128<br>Thomas,M,11,57.5,85<br>William,M,15,66.5,112</p>
+<p>用如下程序可以把上述文件读入为R数据框d.class, 并取出其中的name和age列到变量name和age中：</p>
+<pre><code>&gt; d.class &lt;- read.csv(&quot;class.csv&quot;, header=TRUE, stringsAsFactors=FALSE)
+&gt; name &lt;- d.class[,&quot;name&quot;]
+&gt; age &lt;- d.class[,&quot;age&quot;]
+&gt; age
+ [1] 13 13 14 12 12 15 11 15 14 14 14 15 12 13 12 16 12 11 15
+&gt; d.class
+      name sex age height weight
+1    Alice   F  13   56.5   84.0
+2    Becka   F  13   65.3   98.0
+3     Gail   F  14   64.3   90.0
+4    Karen   F  12   56.3   77.0
+5    Kathy   F  12   59.8   84.5
+6     Mary   F  15   66.5  112.0
+7    Sandy   F  11   51.3   50.5
+8   Sharon   F  15   62.5  112.5
+9    Tammy   F  14   62.8  102.5
+10  Alfred   M  14   69.0  112.5
+11    Duke   M  14   63.5  102.5
+12   Guido   M  15   67.0  133.0
+13   James   M  12   57.3   83.0
+14 Jeffrey   M  13   62.5   84.0
+15    John   M  12   59.0   99.5
+16  Philip   M  16   72.0  150.0
+17  Robert   M  12   64.8  128.0
+18  Thomas   M  11   57.5   85.0
+19 William   M  15   66.5  112.0</code></pre>
+<ol>
+<li><p>求出age中第3, 5, 7号的值；</p>
+<pre><code> &gt; age[c(3,5,7)]
+ ## [1] 14 12 11</code></pre>
+</li>
+<li><p>用变量age, 求出达到15岁及以上的那些值；</p>
+<pre><code> &gt; age[age&gt;=15]
+ ## [1] 15 15 15 16 15 </code></pre>
+</li>
+<li><p>用变量name和age, 求出Mary与James的年龄。</p>
+<pre><code> &gt; set &lt;- setNames(age,name)
+ &gt; set[match(c(&quot;Mary&quot;,&quot;James&quot;),name)]
+  Mary James 
+    15    12 </code></pre>
+</li>
+<li><p>求age中除Mary与James这两人之外的那些人的年龄值，保存到变量age1中。</p>
+</li>
+</ol>
+<pre><code>    &gt; a &lt;- match(c(&quot;Mary&quot;,&quot;James&quot;),name)
+    &gt; b &lt;- (1:length(name))
+
+    &gt; a
+    [1]  6 13
+    &gt; b
+     [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+
+    &gt; age1 &lt;- set[setdiff(b,a)]
+    &gt; age1
+      Alice   Becka    Gail   Karen   Kathy   Sandy  Sharon   Tammy  Alfred    Duke   Guido 
+         13      13      14      12      12      11      15      14      14      14      15 
+    Jeffrey    John  Philip  Robert  Thomas William 
+         13      12      16      12      11      15 </code></pre>
+]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>R因子类型</title>
     <url>/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<h2 id="R因子类型"><a href="#R因子类型" class="headerlink" title="R因子类型"></a>R因子类型</h2><h3 id="因子"><a href="#因子" class="headerlink" title="因子"></a>因子</h3><p>R中用<strong>因子代表数据中分类变量</strong>, 如性别、省份、职业。 有序因子代表有序量度，如打分结果，疾病严重程度等。</p>
@@ -553,246 +793,6 @@ unz(description, filename, open = &quot;&quot;,
 <li>a+或a+b—末尾添加并允许读。</li>
 </ul>
 ]]></content>
-  </entry>
-  <entry>
-    <title>R向量下标和子集</title>
-    <url>/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/</url>
-    <content><![CDATA[<h2 id="正整数下标"><a href="#正整数下标" class="headerlink" title="正整数下标"></a>正整数下标</h2><p>对向量x, 在后面加方括号和下标可以访问向量的元素和子集。</p>
-<p>设x &lt;- c(1, 4, 6.25)。 x[2]取出第二个元素； x[2] &lt;- 99修改第二个元素。 x[c(1,3)]取出第1、3号元素； x[c(1,3)] &lt;- c(11, 13)修改第1、3号元素。 下标可重复。 例如</p>
-<pre><code>&gt; x &lt;- c(1, 4, 6.25)
-&gt; x[2]
-## [1] 4
-
-&gt; x[2] &lt;- 99; x
-## [1]  1.00 99.00  6.25
-
-&gt; x[c(1,3)]
-## [1] 1.00 6.25
-
-&gt; x[c(1,3)] &lt;- c(11, 13); x
-## [1] 11 99 13
-
-&gt; x[c(1,3,1)]
-## [1] 11 13 11</code></pre>
-<h2 id="负整数下标"><a href="#负整数下标" class="headerlink" title="负整数下标"></a>负整数下标</h2><p>负下标表示扣除相应的元素后的子集，如</p>
-<pre><code>&gt; x &lt;- c(1,4,6.25)
-&gt; x[-2]
-## [1] 1.00 6.25
-&gt; x[-c(1,3)]
-## [1] 4</code></pre>
-<p>负整数下标不能与正整数下标同时用来从某一向量中取子集， 比如，x[c(1,-2)]没有意义。</p>
-<h2 id="空下标与零下标"><a href="#空下标与零下标" class="headerlink" title="空下标与零下标"></a>空下标与零下标</h2><p>x[]表示取x的全部元素作为子集。 这与x本身不同，比如</p>
-<pre><code>&gt; x &lt;- c(1,4,6.25)
-&gt; x[] &lt;- 999
-&gt; x
-## [1] 999 999 999
-
-&gt; x &lt;- c(1,4,6.25)
-&gt; x &lt;- 999
-&gt; x
-## [1] 999</code></pre>
-<p>x[0]是一种少见的做法， 结果返回类型相同、长度为零的向量， 如numeric(0)。 相当于空集。</p>
-<p>当与正整数下标一起使用时会被忽略。 当0与负整数下标一起使用时也会被忽略。</p>
-<h2 id="下标超界"><a href="#下标超界" class="headerlink" title="下标超界"></a>下标超界</h2><p>设向量x长度为, 则使用正整数下标时下标应在中取值。 如果使用大于的下标， 读取时返回缺失值，并不出错。 给超出的下标元素赋值， 则向量自动变长， 中间没有赋值的元素为缺失值。 例如</p>
-<pre><code>&gt; x &lt;- c(1,4,6.25)
-&gt; x[5]
-## [1] NA
-
-&gt; x
-## [1] 1.00 4.00 6.25
-
-&gt; x[5] &lt;- 9
-&gt; x
-## [1] 1.00 4.00 6.25   NA 9.00</code></pre>
-<p>虽然R的语法对下标超界不视作错误， 但是这样的做法往往来自不良的程序思路， 而且对程序效率有影响， 所以实际编程中应避免下标超界。</p>
-<h2 id="逻辑下标"><a href="#逻辑下标" class="headerlink" title="逻辑下标"></a>逻辑下标</h2><p>下标可以是与向量等长的逻辑表达式， 一般是关于本向量或者与本向量等长的其它向量的比较结果，如</p>
-<pre><code>x &lt;- c(1,4,6.25)
-x[x &gt; 3]
-## [1] 4.00 6.25</code></pre>
-<p>取出x的大于3的元素组成的子集。</p>
-<p>要注意的是，如果逻辑下标中有缺失值， 对应结果也是缺失值。 所以，在用逻辑下标作子集选择时， 一定要考虑到缺失值问题。正确的做法是加上!is.na前提， 如</p>
-<pre><code>&gt; x &lt;- c(1, 4, 6.25, NA)
-&gt; x[x &gt; 2]
-## [1] 4.00 6.25   NA
-
-&gt; x[!is.na(x) &amp; x &gt; 2]
-## [1] 4.00 6.25</code></pre>
-<h2 id="which-、which-min-、which-max-函数"><a href="#which-、which-min-、which-max-函数" class="headerlink" title="which()、which.min()、which.max()函数"></a>which()、which.min()、which.max()函数</h2><p>函数<strong>which()**可以用来</strong>找到满足条件的下标**， 如</p>
-<pre><code>&gt; x &lt;- c(3, 4, 3, 5, 7, 5, 9)
-&gt; which(x &gt; 5)
-## [1] 5 7
-
-&gt; seq(along=x)[x &gt; 5]
-## [1] 5 7</code></pre>
-<p>这里seq(along=x)会生成由x的下标组成的向量。 用which.min()、which.max求最小值的下标和最大值的下标， 不唯一时只取第一个。如</p>
-<pre><code>&gt; which.min(x)
-## [1] 1
-
-&gt; which.max(x)
-## [1] 7</code></pre>
-<h2 id="元素名"><a href="#元素名" class="headerlink" title="元素名"></a>元素名</h2><p>向量可以为每个元素命名。如</p>
-<pre><code>&gt; ages &lt;- c(&quot;李明&quot;=25,&quot;田晓霞&quot;=21,&quot;孙少平&quot;=22)
-&gt; ages
-## 李明 田晓霞 孙少平 
-    25     21     22</code></pre>
-<p> 或者</p>
-<pre><code>&gt; ages &lt;- c(25,21,22)
-&gt; names(ages)&lt;- c(&quot;李明&quot;,&quot;田晓霞&quot;,&quot;孙少平&quot;)
-&gt; ages
-## 李明 田晓霞 孙少平 
-    25     21     22 </code></pre>
-<p>或者</p>
-<pre><code>&gt; ages &lt;- setNames(c(25,21,22),c(&quot;李明&quot;,&quot;田晓霞&quot;,&quot;孙少平&quot;))
-&gt; ages
-## 李明 田晓霞 孙少平 
-    25     21     22 </code></pre>
-<p>这时可以用元素名或元素名向量作为向量的下标，如</p>
-<pre><code>&gt; ages[&quot;李明&quot;]
-## 李明 
-  25
-
-&gt; ages[&quot;李明&quot;] &lt;- 11
-&gt; ages
-## 李明 田晓霞 孙少平 
-    11     21     22 </code></pre>
-<p>这实际上建立了字符串到数值的映射表。</p>
-<p>用字符串作为下标时， 如果该字符串不在向量的元素名中， 读取时返回缺失值结果， 赋值时该向量会增加一个元素并以该字符串为元素名。</p>
-<p>带有元素名的向量也可以是字符型或其它基本类型，如</p>
-<pre><code>&gt; sex &lt;- c(&quot;孙少平&quot;=&quot;男&quot;,&quot;田晓霞&quot;=&quot;女&quot;)
-&gt; sex
-## 孙少平 田晓霞 
-  &quot;男&quot;   &quot;女&quot; </code></pre>
-<p>除了给向量元素命名外， 在矩阵和数据框中还可以给行、列命名， 这会使得程序的扩展更为容易和安全。</p>
-<p>R允许仅给部分元素命名， 这时其它元素名字为空字符串。 不同元素的元素名一般应该是不同的， 否则在使用元素作为下标时会发生误读， 但是R语法允许存在重名。</p>
-<p>用unname(x)返回去掉了元素名的x的副本， 用names(x) &lt;- NULL可以去掉x的元素</p>
-<pre><code>&gt; unname(ages)
-## [1] 11 21 22
-
-&gt; ages
-## 李明 田晓霞 孙少平 
-    11     21     22 
-
-&gt; names(ages) &lt;- NULL
-&gt; ages
-## [1] 11 21 22</code></pre>
-<h2 id="用R向量下标作映射"><a href="#用R向量下标作映射" class="headerlink" title="用R向量下标作映射"></a>用R向量下标作映射</h2><p>R在使用整数作为向量下标时，允许使用重复下标， 这样可以把数组x看成一个的整数到 x[1], x[2], , x[n]的一个映射表, 其中是x的长度。 比如，某商店有三种礼品，编号为1,2,3， 价格分别为68, 88和168。令</p>
-<pre><code>&gt; price.map &lt;- c(68, 88, 168)</code></pre>
-<p>设某个收银员在一天内分别售出礼品编号为3,2,1,1,2,2,3， 可以用如下的映射方式获得售出的这些礼品对应的价格：</p>
-<pre><code>&gt; items &lt;- c(3,2,1,1,2,2,3)
-&gt; y &lt;- price.map[items]; print(y)
-## [1] 168  88  68  68  88  88 168</code></pre>
-<p>R向量可以用字符型向量作下标， 字符型下标也允许重复， 所以可以把带有元素名的R向量看成是元素名到元素值的映射表。 比如，设sex为10个学生的性别（男、女）</p>
-<pre><code>&gt; sex &lt;- c(&quot;男&quot;, &quot;男&quot;, &quot;女&quot;, &quot;女&quot;, &quot;男&quot;, &quot;女&quot;, &quot;女&quot;, &quot;女&quot;, &quot;女&quot;, &quot;男&quot;)</code></pre>
-<p>希望把每个学生按照性别分别对应到蓝色和红色。 首先建立一个R向量当作映射</p>
-<pre><code>&gt; sex.color &lt;- c(&quot;男&quot;=&quot;blue&quot;, &quot;女&quot;=&quot;red&quot;)</code></pre>
-<p>用R向量sex.color当作映射，可以获得每个学生对应的颜色</p>
-<pre><code>&gt; cols &lt;- sex.color[sex]; print(cols)
-##     男     男     女     女     男     女     女     女     女     男 
-## &quot;blue&quot; &quot;blue&quot;  &quot;red&quot;  &quot;red&quot; &quot;blue&quot;  &quot;red&quot;  &quot;red&quot;  &quot;red&quot;  &quot;red&quot; &quot;blue&quot;</code></pre>
-<p>这样的映射结果中带有不必要的元素名， 用unname()函数可以去掉元素名，如</p>
-<pre><code>&gt; unname(cols)
-##  [1] &quot;blue&quot; &quot;blue&quot; &quot;red&quot;  &quot;red&quot;  &quot;blue&quot; &quot;red&quot;  &quot;red&quot;  &quot;red&quot;  &quot;red&quot;  &quot;blue&quot;</code></pre>
-<h2 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a>集合运算</h2><p>可以把向量x看成一个集合，但是其中的元素允许有重复。 用unique(x)可以获得x的所有不同值。如</p>
-<pre><code>&gt; unique(c(1, 5, 2, 5))
-## [1] 1 5 2</code></pre>
-<p>用a %in% x判断a的每个元素是否属于向量x，如</p>
-<pre><code>&gt; 5 %in% c(1,5,2)
-## [1] TRUE
-
-&gt; c(5,6) %in% c(1,5,2)
-## [1]  TRUE FALSE</code></pre>
-<p>与%in运算符类似， 函数match(x, table)对向量x的每个元素， 从向量table中查找其首次出现位置并返回这些位置。 没有匹配到的元素位置返回NA_integer_(整数型缺失值)。 如</p>
-<pre><code>&gt; match(5, c(1,5,2))
-## [1] 2
-
-&gt; match(5, c(1,5,2,5))
-## [1] 2
-
-&gt; match(c(2,5), c(1,5,2,5))
-## [1] 3 2
-
-&gt; match(c(2,5,0), c(1,5,2,5))
-## [1]  3  2 NA</code></pre>
-<p>用intersect(x,y)求交集，结果中不含重复元素，如</p>
-<pre><code>&gt; intersect(c(5, 7), c(1, 5, 2, 5))
-## [1] 5</code></pre>
-<p>用union(x,y)求并集，结果中不含重复元素，如</p>
-<pre><code>&gt; union(c(5, 7), c(1, 5, 2, 5))
-## [1] 5 7 1 2</code></pre>
-<p>用setdiff(x,y)求差集，即x的元素中不属于y的元素组成的集合， 结果中不含重复元素，如</p>
-<pre><code>&gt; setdiff(c(5, 7), c(1, 5, 2, 5))
-## [1] 7</code></pre>
-<p>用setequal(x,y)判断两个集合是否相等， 不受次序与重复元素的影响，如</p>
-<pre><code>&gt; setequal(c(1,5,2), c(2,5,1))
-## [1] TRUE
-
-&gt; setequal(c(1,5,2), c(2,5,1,5))
-## [1] TRUE</code></pre>
-<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>设文件class.csv内容如下:</p>
-<p>name,sex,age,height,weight<br>Alice,F,13,56.5,84<br>Becka,F,13,65.3,98<br>Gail,F,14,64.3,90<br>Karen,F,12,56.3,77<br>Kathy,F,12,59.8,84.5<br>Mary,F,15,66.5,112<br>Sandy,F,11,51.3,50.5<br>Sharon,F,15,62.5,112.5<br>Tammy,F,14,62.8,102.5<br>Alfred,M,14,69,112.5<br>Duke,M,14,63.5,102.5<br>Guido,M,15,67,133<br>James,M,12,57.3,83<br>Jeffrey,M,13,62.5,84<br>John,M,12,59,99.5<br>Philip,M,16,72,150<br>Robert,M,12,64.8,128<br>Thomas,M,11,57.5,85<br>William,M,15,66.5,112</p>
-<p>用如下程序可以把上述文件读入为R数据框d.class, 并取出其中的name和age列到变量name和age中：</p>
-<pre><code>&gt; d.class &lt;- read.csv(&quot;class.csv&quot;, header=TRUE, stringsAsFactors=FALSE)
-&gt; name &lt;- d.class[,&quot;name&quot;]
-&gt; age &lt;- d.class[,&quot;age&quot;]
-&gt; age
- [1] 13 13 14 12 12 15 11 15 14 14 14 15 12 13 12 16 12 11 15
-&gt; d.class
-      name sex age height weight
-1    Alice   F  13   56.5   84.0
-2    Becka   F  13   65.3   98.0
-3     Gail   F  14   64.3   90.0
-4    Karen   F  12   56.3   77.0
-5    Kathy   F  12   59.8   84.5
-6     Mary   F  15   66.5  112.0
-7    Sandy   F  11   51.3   50.5
-8   Sharon   F  15   62.5  112.5
-9    Tammy   F  14   62.8  102.5
-10  Alfred   M  14   69.0  112.5
-11    Duke   M  14   63.5  102.5
-12   Guido   M  15   67.0  133.0
-13   James   M  12   57.3   83.0
-14 Jeffrey   M  13   62.5   84.0
-15    John   M  12   59.0   99.5
-16  Philip   M  16   72.0  150.0
-17  Robert   M  12   64.8  128.0
-18  Thomas   M  11   57.5   85.0
-19 William   M  15   66.5  112.0</code></pre>
-<ol>
-<li><p>求出age中第3, 5, 7号的值；</p>
-<pre><code> &gt; age[c(3,5,7)]
- ## [1] 14 12 11</code></pre>
-</li>
-<li><p>用变量age, 求出达到15岁及以上的那些值；</p>
-<pre><code> &gt; age[age&gt;=15]
- ## [1] 15 15 15 16 15 </code></pre>
-</li>
-<li><p>用变量name和age, 求出Mary与James的年龄。</p>
-<pre><code> &gt; set &lt;- setNames(age,name)
- &gt; set[match(c(&quot;Mary&quot;,&quot;James&quot;),name)]
-  Mary James 
-    15    12 </code></pre>
-</li>
-<li><p>求age中除Mary与James这两人之外的那些人的年龄值，保存到变量age1中。</p>
-</li>
-</ol>
-<pre><code>    &gt; a &lt;- match(c(&quot;Mary&quot;,&quot;James&quot;),name)
-    &gt; b &lt;- (1:length(name))
-
-    &gt; a
-    [1]  6 13
-    &gt; b
-     [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
-
-    &gt; age1 &lt;- set[setdiff(b,a)]
-    &gt; age1
-      Alice   Becka    Gail   Karen   Kathy   Sandy  Sharon   Tammy  Alfred    Duke   Guido 
-         13      13      14      12      12      11      15      14      14      14      15 
-    Jeffrey    John  Philip  Robert  Thomas William 
-         13      12      16      12      11      15 </code></pre>
-]]></content>
-      <tags>
-        <tag>R</tag>
-      </tags>
   </entry>
   <entry>
     <title>列表</title>
