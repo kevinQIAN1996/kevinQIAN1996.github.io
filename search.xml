@@ -259,170 +259,300 @@ x ^ 2
       </tags>
   </entry>
   <entry>
-    <title>字符型数据及处理</title>
-    <url>/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/</url>
-    <content><![CDATA[<h2 id="字符型向量"><a href="#字符型向量" class="headerlink" title="字符型向量"></a>字符型向量</h2><p>字符型向量是元素为字符串的向量。 如</p>
-<pre><code>&gt; s1 &lt;- c(&#39;abc&#39;, &#39;&#39;, &#39;a cat&#39;, NA, &#39;李明&#39;)</code></pre>
-<p>注意空字符串并不能自动认为是缺失值， 字符型的缺失值仍用NA表示。</p>
-<h2 id="paste-函数"><a href="#paste-函数" class="headerlink" title="paste()函数"></a>paste()函数</h2><p>针对字符型数据最常用的R函数是paste()函数。 paste()用来连接两个字符型向量， 元素一一对应连接， 默认用空格连接。 如paste(c(“ab”, “cd”), c(“ef”, “gh”)) 结果相当于c(“ab ef”, “cd gh”)。</p>
-<p>paste()在连接两个字符型向量时采用R的一般向量间运算规则， 而且可以自动把数值型向量转换为字符型向量。 可以作一对多连接， 如paste(“x”, 1:3)结果相当于c(“x 1”, “x 2”, “x 3”)。</p>
-<p>用sep=指定分隔符， 如paste(“x”, 1:3, sep=””)结果相当于c(“x1”, “x2”, “x3”)。</p>
-<p>使用collapse=参数可以把字符型向量的各个元素连接成一个单一的字符串, 如paste(c(“a”, “b”, “c”), collapse=””)结果相当于”abc”。</p>
-<h2 id="转换大小写"><a href="#转换大小写" class="headerlink" title="转换大小写"></a>转换大小写</h2><p>toupper()函数把字符型向量内容转为大写， tolower()函数转为小写。 比如，toupper(‘aB cd’)结果为”AB CD”， tolower(c(‘aB’, ‘cd’))结果相当于c(“ab” “cd”)。 这两个函数可以用于不区分大小写的比较， 比如，不论x的值是’JAN’, ‘Jan’还是’jan’， toupper(x)==’JAN’的结果都为TRUE。</p>
-<h2 id="字符串长度"><a href="#字符串长度" class="headerlink" title="字符串长度"></a>字符串长度</h2><p>用nchar(x, type=’bytes’)计算字符型向量x中每个字符串的以字节为单位的长度，这一点对中英文是有差别的， 中文通常一个汉字占两个字节，英文字母、数字、标点占一个字节。 用nchar(x, type=’chars’)计算字符型向量x中每个字符串的以字符个数为单位的长度，这时一个汉字算一个单位。</p>
-<p>在画图时可以用strwidth()函数计算某个字符串或表达式占用的空间大小。</p>
-<h2 id="取子串"><a href="#取子串" class="headerlink" title="取子串"></a>取子串</h2><p>substr(x, start, stop)从字符串x中取出从第start个到第stop个的子串， 如</p>
-<pre><code>&gt; substr(&#39;JAN07&#39;, 1, 3)
-## [1] &quot;JAN&quot;</code></pre>
-<p>如果x是一个字符型向量，substr将对每个元素取子串。如</p>
-<pre><code>&gt; substr(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 1, 3)
-## [1] &quot;JAN&quot; &quot;MAR&quot;</code></pre>
-<p>用substring(x, start)可以从字符串x中取出从第start个到末尾的子串。如</p>
-<pre><code>&gt; substring(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 4)
-## [1] &quot;07&quot; &quot;66&quot;</code></pre>
-<p>##类型转换##</p>
-<p>用as.numeric()把内容是数字的字符型值转换为数值，如</p>
-<pre><code>&gt; substr(&#39;JAN07&#39;, 4, 5)
-## [1] &quot;07&quot;
+    <title>R因子类型</title>
+    <url>/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<h2 id="R因子类型"><a href="#R因子类型" class="headerlink" title="R因子类型"></a>R因子类型</h2><h3 id="因子"><a href="#因子" class="headerlink" title="因子"></a>因子</h3><p>R中用<strong>因子代表数据中分类变量</strong>, 如性别、省份、职业。 有序因子代表有序量度，如打分结果，疾病严重程度等。</p>
+<p>用factor()函数把字符型向量转换成因子，如</p>
+<pre><code>&gt; x &lt;- c(&quot;男&quot;,&quot;女&quot;,&quot;女&quot;,&quot;男&quot;)
+&gt; sex &lt;- factor(x)
+&gt; sex
+[1] 男 女 女 男
+Levels: 男 女</code></pre>
+<p>因子有class属性，取值为”factor”</p>
+<pre><code>&gt; attributes(sex)
+$levels
+[1] &quot;男&quot; &quot;女&quot;
 
-&gt; substr(&#39;JAN07&#39;, 4, 5) + 2000
-## Error in substr(&quot;JAN07&quot;, 4, 5) + 2000 : 
-##   non-numeric argument to binary operator
+$class
+[1] &quot;factor&quot;</code></pre>
+<p>还有一个levels(水平值)属性， 此属性可以用levels()函数访问，如</p>
+<pre><code>&gt; levels(sex)
+[1] &quot;男&quot; &quot;女&quot;</code></pre>
+<p>因子的levels属性可以看成是一个映射， 把整数值1,2,映射成这些水平值， 因子在保存时会保存成整数值1,2,等与水平值对应的编号。 这样可以节省存储空间， 在建模计算的程序中也比较有利于进行数学运算。</p>
+<p>事实上， <strong>read.csv()**函数的默认操作会把输入文件的字符型列</strong>自动转换成因子**,这对于性别、职业、地名这样的列是合适的， 但是对于姓名、日期、详细地址这样的列则不合适。</p>
+<p>所以，在read.csv()调用中经常加选项<strong>stringsAsFactors=FALSE</strong>选项禁止这样的自动转换，还可以用colClasses选项逐个指定每列的类型。</p>
+<p>用**as.numeric()**可以把因子转换为纯粹的整数值，如</p>
+<pre><code>&gt; as.numeric(sex)
+[1] 1 2 2 1</code></pre>
+<p>因为因子实际保存为整数值， 所以对因子进行一些字符型操作可能导致错误。 用as.character()可以把因子转换成原来的字符型，如</p>
+<pre><code>&gt; as.character(sex)
+[1] &quot;男&quot; &quot;女&quot; &quot;女&quot; &quot;男&quot;</code></pre>
+<p>为了对因子执行字符型操作（如取子串）， 保险的做法是先用as.character()函数强制转换为字符型。</p>
+<ul>
+<li>factor()函数的一般形式为</li>
+</ul>
+<pre><code>    factor(x, levels = sort(unique(x), na.last = TRUE), 
+           labels, exclude = NA, ordered = FALSE)</code></pre>
+<p>可以用选项labels指定各水平的标签, 不指定时用各水平值的对应字符串。ordered取真值时表示因子水平是有次序的(按编码次序)。</p>
+<p>在使用factor()函数定义因子时，如果知道自变量元素的所有可能取值，应尽可能使用levels=参数指定这些不同可能取值，这样，即使某个取值没有出现，此变量代表的含义和频数信息也是完整的。 自己指定levels=的另一好处是可以按正确的次序显示因子的分类统计值。</p>
+<p>因为一个因子的levels属性是该因子独有的， 所以合并两个因子有可能造成错误。如</p>
+<pre><code>&gt; li1 &lt;- factor(c(&#39;男&#39;, &#39;女&#39;))
+&gt; li2 &lt;- factor(c(&#39;男&#39;, &#39;男&#39;))
+&gt; c(li1, li2)
+[1] 1 2 1 1</code></pre>
+<p>结果不再是因子。 正确的做法是</p>
+<pre><code>&gt; factor(c(as.character(li1), as.character(li2)))
+[1] 男 女 男 男
+Levels: 男 女</code></pre>
+<p>即恢复成字符型后合并， 然后再转换为因子。 在合并两个数据框时也存在这样的问题。 当然，如果在定义li1和li2 时都用了levels=c(‘男’, ‘女’)选项， c(li1, li2)也能给出正确结果。</p>
+<h2 id="tapply-函数"><a href="#tapply-函数" class="headerlink" title="tapply()函数"></a>tapply()函数</h2><p>可以按照因子分组然后每组计算另一变量的概括统计。 如</p>
+<pre><code>&gt; h &lt;- c(165, 170, 168, 172)
+&gt; tapply(h,sex,mean)
+   男    女 
+168.5 169.0 </code></pre>
+<p>这里第一自变量h与与第二自变量sex是等长的， 对应元素分别为同一人的身高和性别， tapply()函数分男女两组计算了身高平均值。</p>
+<h2 id="forcats包的因子函数"><a href="#forcats包的因子函数" class="headerlink" title="forcats包的因子函数"></a>forcats包的因子函数</h2><pre><code>&gt; library(forcats)</code></pre>
+<p>在分类变量类数较多时，往往需要对因子水平另外排序、合并等， forcats包提供了一些针对因子的方便函数。</p>
+<p>forcats::fct_reorder()可以根据不同因子水平分成的组中另一数值型变量的统计量值排序。 如：</p>
+<pre><code>&gt; library(forcats)
+&gt; set.seed(1)
+&gt; fac &lt;- sample(c(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;),size = 30,replace = T)
+&gt; fac
+ [1] &quot;red&quot;   &quot;green&quot; &quot;blue&quot;  &quot;green&quot; &quot;blue&quot;  &quot;blue&quot; 
+ [7] &quot;green&quot; &quot;blue&quot;  &quot;red&quot;   &quot;green&quot; &quot;red&quot;   &quot;red&quot;  
+[13] &quot;red&quot;   &quot;red&quot;   &quot;red&quot;   &quot;red&quot;   &quot;green&quot; &quot;green&quot;
+[19] &quot;red&quot;   &quot;green&quot; &quot;blue&quot;  &quot;green&quot; &quot;blue&quot;  &quot;green&quot;
+[25] &quot;blue&quot;  &quot;red&quot;   &quot;blue&quot;  &quot;blue&quot;  &quot;green&quot; &quot;blue&quot; </code></pre>
+<p>用 attribute() 函数查看此时fac的属性</p>
+<pre><code>&gt; attributes(fac)
+NULL</code></pre>
+<p>显示，此时fac 并不是一个factor,利用factor函数对fac进行转化为factor</p>
+<pre><code>&gt; fac &lt;- factor(x = fac,labels = c(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;))
+&gt; attributes(fac)
+$levels
+[1] &quot;red&quot;   &quot;green&quot; &quot;blue&quot; 
 
-&gt; as.numeric(substr(&#39;JAN07&#39;, 4, 5)) + 2000
-## [1] 2007
+$class
+[1] &quot;factor&quot;</code></pre>
+<p>转化完成之后，用rt()函数生成服从T分布生成伪随机数，并赋值给x</p>
+<pre><code>&gt; x &lt;- round(100*(10+rt(30,2)))
+&gt; res1 &lt;- tapply(x, fac, sd)
+&gt; res1
+##       red     green      blue 
+##  370.9222  138.3185 1129.2587
 
-&gt; as.numeric(substr(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 4, 5))
-## [1]  7 66</code></pre>
-<p>as.numeric()是向量化的， 可以转换一个向量的每个元素为数值型。</p>
-<p>用as.character()函数把数值型转换为字符型，如</p>
-<pre><code>&gt; as.character((1:5)*5)
-## [1] &quot;5&quot;  &quot;10&quot; &quot;15&quot; &quot;20&quot; &quot;25&quot;</code></pre>
-<p>如果自变量本来已经是字符型则结果不变。</p>
-<p>为了用指定的格式数值型转换成字符型， 可以使用sprintf()函数， 其用法与C语言的sprintf()函数相似， 只不过是向量化的。例如</p>
-<pre><code>&gt; sprintf(&#39;file%03d.txt&#39;, c(1, 99, 100))
-## [1] &quot;file001.txt&quot; &quot;file099.txt&quot; &quot;file100.txt&quot;</code></pre>
-<h2 id="字符串拆分"><a href="#字符串拆分" class="headerlink" title="字符串拆分"></a>字符串拆分</h2><p>用strsplit()函数可以把一个字符串按照某种分隔符拆分开，例如</p>
-<pre><code>&gt; x &lt;- &#39;10,8,7&#39;
-&gt; strsplit(x, &#39;,&#39;, fixed=TRUE)[[1]]
-## [1] &quot;10&quot; &quot;8&quot;  &quot;7&quot;
+&gt; barplot(res1)</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact22-1.png"></p>
+<p>如果希望按照统计量次序对因子排序， 可以用forcats::fct_reorder()函数， 如</p>
+<pre><code>&gt; fac2 &lt;- fct_reorder(fac,x,sd)
+&gt; res2 &lt;- tapply(X = x,INDEX = fac2,FUN = sd)
+&gt; barplot(res2)</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact23-1.png"></p>
+<p>新的因子fac2的因子水平次序已经按照变量x的标准差从小到大排列。</p>
+<p>有时在因子水平数较多时仅想将特定的一个或几个水平次序放到因子水平最前面， 可以用forcats::fct_relevel()函数， 如：</p>
+<pre><code>&gt; fac3 &lt;- fct_relevel(fac,&quot;blue&quot;)
 
-&gt; sum(as.numeric(strsplit(x, &#39;,&#39;, fixed=TRUE)[[1]]))
-## [1] 25</code></pre>
-<p>因为strsplit()的结果是一个列表， 这个函数延后再详细讲。</p>
-<h2 id="字符串替换功能"><a href="#字符串替换功能" class="headerlink" title="字符串替换功能"></a>字符串替换功能</h2><p>用gsub()可以替换字符串中的子串， 这样的功能经常用在数据清理中。 比如，把数据中的中文标点改为英文标点， 去掉空格，等等。 如</p>
-<pre><code>&gt; x &lt;- &#39;1, 3; 5&#39;
-&gt; gsub(&#39;;&#39;, &#39;,&#39;, x, fixed=TRUE)
-## [1] &quot;1, 3, 5&quot;
+&gt; levels(fac3)
+[1] &quot;blue&quot;  &quot;red&quot;   &quot;green&quot;</code></pre>
+<p>fct_relevel()第一个参数是要修改次序的因子， 后续可以有多个字符型参数表示要提前的水平。</p>
+<p>forcats::fct_recode()可以修改每个水平的名称， 如：</p>
+<pre><code>&gt; fac4 &lt;- fct_recode(fac,&quot;红&quot;=&quot;red&quot;,&quot;蓝&quot;=&quot;blue&quot;,&quot;绿&quot;=&quot;green&quot;)
+&gt; attributes(fac4)
+$levels
+[1] &quot;红&quot; &quot;绿&quot; &quot;蓝&quot;
 
-&gt; strsplit(gsub(&#39;;&#39;, &#39;,&#39;, x, fixed=TRUE), &#39;,&#39;)[[1]]
-## [1] &quot;1&quot;  &quot; 3&quot; &quot; 5&quot;</code></pre>
-<p>字符串x中分隔符既有逗号又有分号， 上面的程序用gsub()把分号都换成逗号。</p>
-<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>正则表达式(regular expression)是一种匹配某种字符串模式的方法。 用这样的方法，可以从字符串中查找某种模式的出现位置， 替换某种模式，等等。 这样的技术可以用于文本数据的预处理， 比如用网络爬虫下载的大量网页文本数据。 R中支持perl语言格式的正则表达式， grep()和grepl()函数从字符串中查询某个模式， sub()和gsub()替换某模式。 比如， 下面的程序把多于一个空格替换成一个空格</p>
-<pre><code>&gt; gsub(&#39;[[:space:]]+&#39;, &#39; &#39;, &#39;a   cat  in a box&#39;, perl=TRUE)
-## [1] &quot;a cat in a box&quot;</code></pre>
+$class
+[1] &quot;factor&quot;</code></pre>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>设文件<a href="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/class.csv">class.csv</a>中包含如下内容:</p>
+<pre><code>name,sex,age,height,weight
+Alice,F,13,56.5,84
+Becka,F,13,65.3,98
+Gail,F,14,64.3,90
+Karen,F,12,56.3,77
+Kathy,F,12,59.8,84.5
+Mary,F,15,66.5,112
+Sandy,F,11,51.3,50.5
+Sharon,F,15,62.5,112.5
+Tammy,F,14,62.8,102.5
+Alfred,M,14,69,112.5
+Duke,M,14,63.5,102.5
+Guido,M,15,67,133
+James,M,12,57.3,83
+Jeffrey,M,13,62.5,84
+John,M,12,59,99.5
+Philip,M,16,72,150
+Robert,M,12,64.8,128
+Thomas,M,11,57.5,85
+William,M,15,66.5,112</code></pre>
+<p>用如下程序把该文件读入为R数据框d.class, 其中的sex列已经自动转换为因子。 取出其中的sex和age列到变量sex和age中</p>
+<pre><code>&gt; d.class &lt;- read.csv(&#39;class.csv&#39;, header=TRUE)
+&gt; sex &lt;- d.class[,&#39;sex&#39;]
+&gt; age &lt;- d.class[,&#39;age&#39;]</code></pre>
+<ol>
+<li><p>统计并显示列出sex的不同值频数；</p>
+</li>
+<li><p>分男女两组分别求年龄最大值；</p>
+</li>
+<li><p>把sex变量转换为一个新的因子，F显示成“Female”，M显示成“Male”。</p>
+</li>
+</ol>
+<h3 id="解答："><a href="#解答：" class="headerlink" title="解答："></a>解答：</h3><p>1.</p>
+<pre><code>&gt; table(sex)
+sex
+ F  M 
+ 9 10 </code></pre>
+<p>2.</p>
+<pre><code>&gt; tapply(age, sex, max)
+ F  M 
+15 16 </code></pre>
+<p>3.</p>
+<pre><code>&gt; sex
+ [1] F F F F F F F F F M M M M M M M M M M
+Levels: F M
+&gt; sex2 &lt;- fct_recode(sex,&quot;Female&quot;=&quot;F&quot;,&quot;Male&quot;=&quot;M&quot;)
+&gt; sex2
+ [1] Female Female Female Female Female Female Female
+ [8] Female Female Male   Male   Male   Male   Male  
+[15] Male   Male   Male   Male   Male  
+Levels: Female Male</code></pre>
 ]]></content>
       <tags>
         <tag>R</tag>
       </tags>
   </entry>
   <entry>
-    <title>逻辑型向量及其运算</title>
-    <url>/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/</url>
-    <content><![CDATA[<p>逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如</p>
-<pre><code>&gt; sele &lt;- (log10(15) &lt; 2)
-&gt; print(sele)
+    <title>R输入输出</title>
+    <url>/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/</url>
+    <content><![CDATA[<h2 id="输入输出的简单方法"><a href="#输入输出的简单方法" class="headerlink" title="输入输出的简单方法"></a>输入输出的简单方法</h2><h3 id="简单的输出"><a href="#简单的输出" class="headerlink" title="简单的输出"></a>简单的输出</h3><p>用print()函数显示某个变量或表达式的值， 如</p>
+<pre><code>&gt; x &lt;- 1.234
+&gt; print(x)
+## [1] 1.234
 
-## [1] TRUE</code></pre>
-<p>向量比较结果为逻辑型向量。如</p>
-<pre><code>&gt; c(1, 3, 5) &gt; 2
-## [1] FALSE  TRUE  TRUE
+&gt; y &lt;- c(1,3,5)
+&gt; print(y[2:3])
+## [1] 3 5</code></pre>
+<p>在命令行使用R时， 直接以变量名或表达式作为命令可以起到用print()函数显示的相同效果。</p>
+<p><strong>用cat()函数把字符串、变量、表达式连接起来显示</strong>， 其中变量和表达式的类型一般是标量或向量，不能是矩阵、列表等复杂数据。 如</p>
+<pre><code>&gt; cat(&quot;x =&quot;, x, &quot;\n&quot;)
+x = 1.234</code></pre>
+<p>注意cat()显示中需要换行需要在自变量中包含字符串”\n”， 即换行符。</p>
+<p>cat()默认显示在命令行窗口， 为了写入指定文件中， 在cat()调用中用file=选项， 这时如果已有文件会把原有内容覆盖， 为了在已有文件时不覆盖原有内容而是在末尾添加， 在cat()中使用append=TRUE选项。 如:</p>
+<pre><code>&gt; cat(&quot;=== 结果文件 ===\n&quot;, file=&quot;res.txt&quot;)
+&gt; cat(&quot;x =&quot;, x, &quot;\n&quot;, file=&quot;res.txt&quot;, append=TRUE)</code></pre>
+<p>R命令行环境中定义的变量、函数会保存在工作空间中，并在退出R会话时可以保存到硬盘文件中。 用save()命令要求把指定的若干个变量（直接用名字，不需要表示成字符串）保存到用file=指定的文件中， 随后可以用load()命令恢复到工作空间中。</p>
+<p>虽然允许保存多个变量到同一文件中， 但尽可能仅保存一个变量， 而且使用变量名作为文件名。 用save()保存的R特殊格式的文件是通用的， 不依赖于硬件和操作系统。 如</p>
+<pre><code>&gt; save(scores, file=&quot;scores.RData&quot;)
+&gt; load(&quot;scores.RData&quot;)</code></pre>
+<p>保存多个变量，如x, zeta，命令如：</p>
+<pre><code>save(x, zeta, file=&quot;myvars20200315.RData&quot;)</code></pre>
+<p>或</p>
+<pre><code>save(list = c(&quot;x&quot;, &quot;zeta&quot;), file=&quot;myvars20200315.RData&quot;)</code></pre>
+<p>对于一个数据框， 可以用**write.csv()或readr::write_csv()**将其保存为逗号分隔的文本文件， 这样的文件可以很容易地被其它软件识别访问， 如Microsoft Excel软件可以很容易地把这样的文件读成电子表格。 用如</p>
+<pre><code>&gt; library(tidyverse)
+&gt; da &lt;- tibble(&quot;name&quot;=c(&quot;李明&quot;, &quot;刘颖&quot;, &quot;张浩&quot;),
++              &quot;age&quot;=c(15, 17, 16))
+&gt; da
+# A tibble: 3 x 2
+  name    age
+  &lt;chr&gt; &lt;dbl&gt;
+1 李明     15
+2 刘颖     17
+3 张浩     16
+&gt; write_csv(da,&quot;mydata.csv&quot;)</code></pre>
+<p>结果生成的mydata.csv文件内容如下：</p>
+<pre><code>name,age
+李明,15
+刘颖,17
+张浩,16</code></pre>
+<p>但是，在Microsoft的中文版Windows操作系统中， 默认编码是GB编码， 用write_csv()生成的CSV文件总是使用UTF-8编码， 系统中的MS Office 软件不能自动识别这样编码的CSV文件， 可以改用write_csv_excel()函数； 基本R的write.csv()函数不存在这个问题。</p>
+<h2 id="CSV格式"><a href="#CSV格式" class="headerlink" title="CSV格式"></a>CSV格式</h2><p>对于保存在文本文件中的电子表格数据， R可以用read.csv(), read.table(), read.delim(), read.fwf()等函数读入, 但是建议在readr包的支持下用**read_csv(), read_table2(), read_delim(), read_fwf()**等函数读入， 这些将读入的数据框保存为tibble类型， tibble是数据框的一个变种， 改善了数据框的一些不适当的设计。 readr的读入速度比基本R软件的read.csv()等函数的速度快得多， 速度可以相差10倍， 也不自动将字符型列转换成因子， 不自动修改变量名为合法变量名， 不设置行名。</p>
+<p>对于中小规模的数据， CSV格式作为文件交换格式比较合适， 兼容性强， 各种数据管理软件与统计软件都可以很容易地读入和生成这样格式的文件， 但是特别大型的数据读入效率很低。</p>
+<p>CSV格式的文件用逗号分隔开同一行的数据项， 一般第一行是各列的列名（变量名）。 对于数值型数据， 只要表示成数值常量形式即可。 对于字符型数据， 可以用双撇号包围起来， 也可以不用撇号包围。 但是， 如果数据项本身包含逗号， 就需要用双撇号包围。 例如，下面是一个名为testcsv.csv的文件内容， 其中演示了内容中有逗号、有双撇号的情况。</p>
+<pre><code>id,words
+1,&quot;PhD&quot;
+2,Master&#39;s degree 
+3,&quot;Bond,James&quot;
+4,&quot;A &quot;&quot;special&quot;&quot; gift&quot;</code></pre>
+<p>为读入上面的内容，只要用如下程序:</p>
+<pre><code>&gt; d &lt;- read_csv(&quot;testcsv.csv&quot;)</code></pre>
+<p>读入的数据框显示如下:</p>
+<pre><code># A tibble: 4 × 2
+     id            words
+  &lt;int&gt;            &lt;chr&gt;
+1     1              PhD
+2     2  Master&#39;s degree
+3     3       Bond,James
+4     4 A &quot;special&quot; gift</code></pre>
+<h2 id="从字符串读入"><a href="#从字符串读入" class="headerlink" title="从字符串读入"></a>从字符串读入</h2><p>read_csv()还可以从字符串读入一个数据框，如</p>
+<pre><code>&gt; d.small &lt;- read_csv(&quot;name,x,y
+John, 33, 95
+Kim, 21, 64
+Sandy, 49, 100
+&quot;)
 
-&gt; (1:4) &gt;= (4:1)    
-## [1] FALSE FALSE  TRUE  TRUE</code></pre>
-<p>从例子可以看出，向量比较也遵从R的向量间运算的一般规则： 向量与标量的运算是向量每个元素与标量都分别运算一次， 等长向量的运算时对应元素的运算， 不等长但长度为倍数关系的向量运算是把短的从头重复利用。</p>
-<p>与NA比较产生NA，如</p>
-<pre><code>&gt; c(1, NA, 3) &gt; 2
-## [1] FALSE    NA  TRUE
+&gt; d.small
 
-&gt; NA == NA
-## [1] NA</code></pre>
-<p>为了判断向量每个元素是否NA， 用is.na()函数，如</p>
-<pre><code>&gt; is.na(c(1, NA, 3) &gt; 2)
-## [1] FALSE  TRUE FALSE</code></pre>
-<p>用**is.finite()**判断向量每个元素是否Inf值。</p>
-<p>比较运算符包括</p>
-<blockquote>
-<p>&lt;   &lt;=  &gt;  &gt;=  ==  !=  %in%<br>分别表示小于、小于等于、大于、大于等于、等于、不等于、属于。 要注意等于比较用了两个等号。</p>
-</blockquote>
-<p>%in%是比较特殊的比较， x %in% y的运算把向量y看成集合， 运算结果是一个逻辑型向量， 第个元素的值为x的第元素是否属于y的逻辑型值。 如</p>
-<pre><code>&gt; c(1,3) %in% c(2,3,4)
-## [1] FALSE  TRUE
+## # A tibble: 3 x 3
+##   name      x     y
+##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 John     33    95
+## 2 Kim      21    64
+## 3 Sandy    49   100</code></pre>
+<h2 id="read-csv选项"><a href="#read-csv选项" class="headerlink" title="read_csv选项"></a>read_csv选项</h2><p>read_csv()的skip=选项跳过开头的若干行。 当数据不包含列名时， 只要指定col_names=FALSE， 变量将自动命名为X1, X2, …， 也可以用col_names=指定各列的名字，如</p>
+<pre><code>&gt; d.small &lt;- read_csv(&quot;John, 33, 95
+Kim, 21, 64
+Sandy, 49, 100
+&quot;, col_names=c(&quot;name&quot;, &quot;x&quot;, &quot;y&quot;) )
 
-&gt; c(NA,3) %in% c(2,3,4)
-## [1] FALSE  TRUE
+&gt; d.small
+## # A tibble: 3 x 3
+##   name      x     y
+##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 John     33    95
+## 2 Kim      21    64
+## 3 Sandy    49   100</code></pre>
+<h2 id="文件访问"><a href="#文件访问" class="headerlink" title="文件访问"></a>文件访问</h2><h3 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h3><p>输入输出可以针对命令行，针对文件，R支持扩展的文件类型， 称为“连接(connection)”。</p>
+<p>函数file()生成到一个普通文件的连接， 函数url()生成一个到指定的URL的连接， 函数gzfile, bzfile, xzfile, unz支持对 压缩过的文件的访问（不是压缩包，只对一个文件压缩）。这些函数大概的用法如下：</p>
+<pre><code>file(&quot;path&quot;, open=&quot;&quot;, blocking=T,
+     encoding = getOption(&quot;encoding&quot;), 
+     raw = FALSE)
 
-&gt; c(1,3) %in% c(NA, 3, 4)
-## [1] FALSE  TRUE
+url(description, open = &quot;&quot;, blocking = TRUE,
+    encoding = getOption(&quot;encoding&quot;))
 
-&gt; c(NA,3) %in% c(NA, 3, 4)
-## [1] TRUE TRUE</code></pre>
-<p>函数match(x, y)起到和x %in% y运算类似的作用， 但是其返回结果不是找到与否， 而是对x的每个元素， 找到其在y中首次出现的下标，找不到时取缺失值，如</p>
-<pre><code>&gt; match(c(1, 3), c(2,3,4,3))
-## [1] NA  2</code></pre>
-<h2 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h2><p>为了表达如“而且”, “或者”之类的复合比较， 需要使用逻辑运算把两个比较连接起来。 逻辑运算符为&amp;, |和!, 分别表示“同时成立”、“两者至少其一成立”、“条件的反面”。 比如，设age&lt;=3表示婴儿，sex==’女’表示女性，则 age&lt;=3 &amp; sex==’女’表示女婴, age&lt;=3 | sex==’女’表示婴儿或妇女, !(age&lt;=3 | sex==’女’)表示既非婴儿也非妇女。 为了确定运算的先后次序可以用圆括号()指定。</p>
-<p>用xor(x, y)表示x与y的异或运算， 即值不相等时为真值，相等时为假值， 有缺失值参加运算时为缺失值。</p>
-<p>逻辑向量与逻辑标量之间的逻辑运算， 两个逻辑向量之间的逻辑运算规则遵从一般R向量间运算规则。</p>
-<p>在右运算符是缺失值时， 如果左运算符能够确定结果真假， 可以得到非缺失的结果。 例如，TRUE | NA为TRUE, FALSE &amp; NA为FALSE。 不能确定结果时返回NA， 比如， TRUE &amp; NA为NA, FALSE | NA为NA。</p>
-<p>&amp;&amp;和||分别为短路的标量逻辑与和短路的标量逻辑或， 仅对两个标量进行运算，如果有向量也仅使用第一个元素。 一般用在if语句、while语句中， 且只要第一个比较已经决定最终结果就不计算第二个比较。 例如</p>
-<pre><code>&gt; if(TRUE || sqrt(-1)&gt;0) 3+2 
+textConnection(description, open=&quot;r&quot;, 
+    local = FALSE,
+    encoding = c(&quot;&quot;, &quot;bytes&quot;, &quot;UTF-8&quot;))
 
-## [1] 5</code></pre>
-<p>其中的sqrt(-1)部分不会执行。</p>
-<p>这里结果为TRUE, 第二部分没有参加计算， 否则第二部分的计算会发生函数自变量范围错误。</p>
-<h2 id="逻辑运算函数"><a href="#逻辑运算函数" class="headerlink" title="逻辑运算函数"></a>逻辑运算函数</h2><p>因为R中比较与逻辑运算都支持向量之间、向量与标量之间的运算， 所以在需要一个标量结果时要特别注意， 后面讲到的if结构、while结构都需要逻辑标量而且不能是缺失值。 这时，应该对缺失值结果单独考虑。</p>
-<p>若cond是逻辑向量， 用all(cond)测试cond的所有元素为真； 用any(cond)测试cond至少一个元素为真。 cond中允许有缺失值，结果可能为缺失值。 如</p>
-<pre><code>&gt; c(1, NA, 3) &gt; 2
-## [1] FALSE    NA  TRUE
+gzfile(description, open = &quot;&quot;, 
+       encoding = getOption(&quot;encoding&quot;),
+       compression = 6)
 
-&gt; all(c(1, NA, 3) &gt; 2)
-## [1] FALSE
+bzfile(description, open = &quot;&quot;, 
+       encoding = getOption(&quot;encoding&quot;),
+       compression = 9)
 
-&gt; any(c(1, NA, 3) &gt; 2)
-## [1] TRUE
+xzfile(description, open = &quot;&quot;, 
+       encoding = getOption(&quot;encoding&quot;),
+       compression = 6)
 
-&gt; all(NA)
-## [1] NA
-
-&gt; any(NA)
-## [1] NA</code></pre>
-<p>函数which()返回真值对应的所有下标，如</p>
-<pre><code>&gt; which(c(FALSE, TRUE, TRUE, FALSE, NA))
-## [1] 2 3
-
-&gt; which((11:15) &gt; 12)
-## [1] 3 4 5</code></pre>
-<p>函数identical(x,y)比较两个R对象x与y的内容是否完全相同， 结果只会取标量TRUE与FALSE两种。 如</p>
-<pre><code>&gt; identical(c(1,2,3), c(1,2,NA))
-## [1] FALSE
-
-&gt; identical(c(1L,2L,3L), c(1,2,3))
-## [1] FALSE</code></pre>
-<p>其中第二个结果假值是因为前一向量是整数型， 后一向量是实数型。</p>
-<p>函数all.equal()与identical()类似， 但是在比较数值型时不区分整数型与实数型， 而且相同时返回标量TRUE， 但是不同时会返回一个说明有何不同的字符串。如</p>
-<pre><code>&gt; all.equal(c(1,2,3), c(1,2,NA))
-## [1] &quot;&#39;is.NA&#39; value mismatch: 1 in current 0 in target&quot;
-
-&gt; all.equal(c(1L,2L,3L), c(1,2,3))
-## [1] TRUE</code></pre>
-<p>函数duplicated()返回每个元素是否为重复值的结果，如：</p>
-<pre><code>&gt; duplicated(c(1,2,1,3,NA,4,NA))
-## [1] FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE</code></pre>
-<p>用函数unique()可以返回去掉重复值的结果。</p>
+unz(description, filename, open = &quot;&quot;,
+    encoding = getOption(&quot;encoding&quot;))</code></pre>
+<p>生成连接的函数不自动打开连接。 给定一个未打开的连接， 读取函数从中读取时会自动打开连接， 函数结束时自动关闭连接。 用open()函数打开连接，返回一个句柄； 生成连接时可以用open参数要求打开连接。 要多次从一个连接读取时就应该先打开连接， 读取完毕用close函数关闭。</p>
+<p>函数textConnection()打开一个字符串用于读写。</p>
+<p>在生成连接与打开连接的函数中用open参数指定打开方式， 取值为：</p>
+<ul>
+<li>r—文本型只读;</li>
+<li>w—文本型只写;</li>
+<li>a—文本型末尾添加;</li>
+<li>rb—二进制只读;</li>
+<li>wb—二进制只写;</li>
+<li>ab—二进制末尾添加;</li>
+<li>r+或r+b—允许读和写;</li>
+<li>w+或w+b—允许读和写，但刚打开时清空文件;</li>
+<li>a+或a+b—末尾添加并允许读。</li>
+</ul>
 ]]></content>
-      <tags>
-        <tag>R</tag>
-      </tags>
   </entry>
   <entry>
     <title>R向量下标和子集</title>
@@ -665,324 +795,6 @@ x[x &gt; 3]
       </tags>
   </entry>
   <entry>
-    <title>数据类型及性质</title>
-    <url>/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/</url>
-    <content><![CDATA[<h2 id="存储模式与基本类型"><a href="#存储模式与基本类型" class="headerlink" title="存储模式与基本类型"></a>存储模式与基本类型</h2><p>R的变量可以存储多种不同的数据类型， 可以用typeof()函数来返回一个变量或表达式的类型。比如</p>
-<pre><code>&gt; typeof(1:3)
-## [1] &quot;integer&quot;
-
-&gt; typeof(c(1,2,3))
-## [1] &quot;double&quot;
-
-&gt; typeof(c(1, 2.1, 3))
-## [1] &quot;double&quot;
-
-&gt; typeof(c(TRUE, NA, FALSE))
-## [1] &quot;logical&quot;
-
-&gt; typeof(&#39;Abc&#39;)
-## [1] &quot;character&quot;
-
-&gt; typeof(factor(c(&#39;F&#39;, &#39;M&#39;, &#39;M&#39;, &#39;F&#39;)))
-## [1] &quot;integer&quot;</code></pre>
-<p>*<em>注意**</em>因子的结果是integer而不是因子。*</p>
-<p>R还有两个函数mode()和storage.mode()起到与typeof()类似的作用， 这是为了提供与S语言兼容所遗留的， 应停止使用。</p>
-<p>R中数据的最基本的类型包括logical, integer, double, character, complex, raw, 其它数据类型都是由基本类型组合或转变得到的。 character类型就是字符串类型， raw类型是直接使用其二进制内容的类型。 为了判断某个向量x保存的基本类型， 可以用is.xxx()类函数， 如is.integer(x), is.double(x), is.numeric(x), is.logical(x), is.character(x), is.complex(x), is.raw(x)。 其中<strong>is.numeric(x)对integer和double内容都返回真值。</strong></p>
-<p>在R语言中数值一般看作double, 如果需要明确表明某些数值是整数， 可以在数值后面附加字母L，如</p>
-<pre><code>&gt; is.integer(c(1, -3))
-## [1] FALSE
-
-&gt; is.integer(c(1L, -3L))
-## [1] TRUE</code></pre>
-<p>整数型的缺失值是NA， 而double型的特殊值除了NA外， 还包括Inf, -Inf和NaN， 其中NaN也算是缺失值, Inf和-Inf不算是缺失值。 如:</p>
-<pre><code>&gt; c(-1, 0, 1)/0
-## [1] -Inf  NaN  Inf
-
-&gt; is.na(c(-1, 0, 1)/0)
-## [1] FALSE  TRUE FALSE</code></pre>
-<p>对double类型，可以用<strong>is.finite()判断是否有限值</strong>， NA、Inf, -Inf和NaN都不是有限值； 用is.infinite()判断是否Inf或-Inf； is.na()判断是否NA或NaN； is.nan()判断是否NaN。</p>
-<p>严格说来， NA表示逻辑型缺失值， 但是当作其它类型缺失值时一般能自动识别。 NA_integer_是整数型缺失值， NA_real是double型缺失值， NA_character_是字符型缺失值。</p>
-<p>在R的向量类型中， integer类型、double类型、logical类型、character类型、还有complex类型和raw类型称为原子类型(atomic types)， 原子类型的向量中元素都是同一基本类型的。 比如， double型向量的元素都是double或者缺失值。</p>
-<p>除了原子类型的向量， 在R语言的定义中， 向量还包括后面要讲到的列表（list）， 列表的元素不需要属于相同的基本类型， 而且列表的元素可以不是单一基本类型元素。 用typeof()函数可以返回向量的类型， 列表返回结果为”list”:</p>
-<pre><code>&gt; typeof(list(&quot;a&quot;, 1L, 1.5))
-## [1] &quot;list&quot;</code></pre>
-<p>原子类型的各个元素除了基本类型相同， 还不包含任何嵌套结构，如：</p>
-<pre><code>&gt; c(1, c(2,3, c(4,5)))
-## [1] 1 2 3 4 5</code></pre>
-<p>R有一个特殊的NULL类型， 这个类型只有唯一的一个NULL值， 表示不存在。 <strong>NULL长度为0， 不能有任何属性值</strong>。 用is.null()函数判断某个变量是否取NULL。</p>
-<p><strong>NULL值可以用来表示类型未知的零长度向量</strong>， 如c()没有自变量时返回值就是NULL； 也经常用作函数缺省值， 在函数内用is.null()判断其缺省后再用一定的计算逻辑得到真正的缺省情况下的数值。</p>
-<p>要把NULL与NA区分开来， <strong>NA是有类型的（integer、double、logical、character等)</strong>, <strong>NA表示存在但是未知</strong>。 数据库管理系统中的NULL值相当于R中的NA值。</p>
-<h2 id="类型转换与类型升档"><a href="#类型转换与类型升档" class="headerlink" title="类型转换与类型升档"></a>类型转换与类型升档</h2><p>可以用as.xxx()类的函数在不同类型之间进行强制转换。 如</p>
-<pre><code>&gt; as.numeric(c(FALSE, TRUE))
-## [1] 0 1
-
-&gt; as.character(sqrt(1:4))
-## [1] &quot;1&quot;                &quot;1.4142135623731&quot;  &quot;1.73205080756888&quot; &quot;2&quot;</code></pre>
-<p>类型转换也可能是隐含的，比如， <strong>四则运算中数值会被统一转换为double类型</strong>， 逻辑运算中运算元素会被统一转换为logical类型。 逻辑值转换成数值时，TRUE转换成1， FALSE转换成0。</p>
-<p>在用c()函数合并若干元素时， <strong>如果元素基本类型不同， 将统一转换成最复杂的一个</strong>，复杂程度从简单到复杂依次为： <strong>logical&lt;integer&lt;double&lt;character</strong>。 这种做法称为类型升档，如</p>
-<pre><code>&gt; c(FALSE, 1L, 2.5, &quot;3.6&quot;)
-## [1] &quot;FALSE&quot; &quot;1&quot;     &quot;2.5&quot;   &quot;3.6&quot;</code></pre>
-<p>不同类型参与要求类型相同的运算时， 也会统一转换为最复杂的类型， 也称为类型升档， 如：</p>
-<pre><code>&gt; TRUE + 10
-## [1] 11
-
-&gt; paste(&quot;abc&quot;, 1)
-## [1] &quot;abc 1&quot;</code></pre>
-<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>除了NULL以外， R的变量都可以看成是对象， 都可以有属性。 在R语言中， 属性是把变量看成对象后， 除了其存储内容（如元素）之外的其它附加信息， 如维数、类属等。 R对象一般都有length和mode两个属性。</p>
-<p>常用属性有<strong>names, dim，class</strong>等。</p>
-<h3 id="attributes函数"><a href="#attributes函数" class="headerlink" title="attributes函数"></a>attributes函数</h3><p>对象x的所有属性可以用attributes()读取， 如</p>
-<pre><code>&gt; x &lt;- table(c(1,2,1,3,2,1)); print(x)
-## 
-## 1 2 3 
-## 3 2 1
-
-&gt; attributes(x)
-## $dim
-## [1] 3
-## 
-## $dimnames
-## $dimnames[[1]]
-## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot;
-## 
-## 
-## $class
-## [1] &quot;table&quot;</code></pre>
-<p><em>table()</em> 函数用了输出其自变量中每个不同值的出现次数，称为<strong>频数</strong>。 从上例可以看出， table()函数的结果有三个属性，前两个是dim和dimnames, 这是数组(array)具有的属性； 另一个是class属性，值为”table”。 因为x是数组，可以访问如</p>
-<pre><code>&gt; x[1]
-## 1 
-## 3
-
-&gt; x[&quot;3&quot;]
-## 3 
-## 1</code></pre>
-<p>也可以用attributes()函数修改属性， 如</p>
-<pre><code>&gt; attributes(x) &lt;- NULL
-&gt; x
-## [1] 3 2 1</code></pre>
-<p>如上修改后x不再是数组，也不是table。</p>
-<h3 id="attr函数"><a href="#attr函数" class="headerlink" title="attr函数"></a>attr函数</h3><p>可以用attr(x, “属性名”)的格式读取或定义x的属性。 如：</p>
-<pre><code>&gt; x &lt;- c(1,3,5)
-&gt; attr(x, &quot;theta&quot;) &lt;- c(0, 1)
-&gt; print(x)
-
-## [1] 1 3 5
-## attr(,&quot;theta&quot;)
-## [1] 0 1</code></pre>
-<p>可以让向量x额外地保存一个theta属性， 这样的属性常常成为“元数据”(meta data)， 比如， 用来保存数据的说明、模拟数据的真实模型参数，等等。</p>
-<h3 id="names属性"><a href="#names属性" class="headerlink" title="names属性"></a>names属性</h3><p>有元素名的向量、列表、数据框等都有names属性， 许多R函数的输出本质上也是列表， 所以也有names属性。 用names(x)的格式读取或设定。 如：</p>
-<pre><code>&gt; x &lt;- 1:5
-&gt; y &lt;- x^2
-&gt; lmr &lt;- lm(y ~ x)
-&gt; print(names(lmr))
-
-##  [1] &quot;coefficients&quot;  &quot;residuals&quot;     &quot;effects&quot;       &quot;rank&quot;         
-##  [5] &quot;fitted.values&quot; &quot;assign&quot;        &quot;qr&quot;            &quot;df.residual&quot;  
-##  [9] &quot;xlevels&quot;       &quot;call&quot;          &quot;terms&quot;         &quot;model&quot;</code></pre>
-<p>对于没有元素名的向量x，names(x)的返回值是NULL。</p>
-<h3 id="dim属性"><a href="#dim属性" class="headerlink" title="dim属性"></a>dim属性</h3><p>dim属性的存在表明对象是矩阵或一维、多维数组。 如：</p>
-<pre><code>&gt; x &lt;- matrix(1:12, nrow=3, ncol=4)
-&gt; attr(x, &quot;dim&quot;) # 等同于dim(x)
-
-## [1] 3 4</code></pre>
-<p>修改dim属性就将向量转换成矩阵（数组）， 或修改了矩阵的性质， 元素按列次序重排填入新的矩阵。如：</p>
-<pre><code>&gt; x &lt;- 1:10
-&gt; dim(x) &lt;- c(2,5)
-&gt; x
-
-##   [,1] [,2] [,3] [,4] [,5]
-[1,]    1    3    5    7    9
-[2,]    2    4    6    8   10</code></pre>
-<p>R允许dim仅有一个元素， 这对应于一维向量， 与普通的没有dim属性的向量有区别。 另外要注意， <strong>取矩阵子集时如果结果仅有一列或一行， 除非用了drop=FALSE选项， 结果不再有dim属性， 退化成了普通向量</strong>。</p>
-<h3 id="str-函数"><a href="#str-函数" class="headerlink" title="str()函数"></a>str()函数</h3><p>用print()函数可以显示对象内容。 如果内容很多， 显示行数可能也很多。 用str()函数可以显示对象的类型和主要结构及典型内容。例如</p>
-<pre><code>&gt; s &lt;- 101:200
-&gt; attr(s,&#39;author&#39;) &lt;- &#39;李小明&#39;
-&gt; attr(s,&#39;date&#39;) &lt;- &#39;2016-09-12&#39;
-
-&gt; str(s)
-
-## int [1:100] 101 102 103 104 105 106 107 108 109 110 ...
- - attr(*, &quot;author&quot;)= chr &quot;李小明&quot;
- - attr(*, &quot;date&quot;)= chr &quot;2016-09-12&quot;
-
-&gt; print(s)
-
-## [1] 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120
- [21] 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140
- [41] 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160
- [61] 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
- [81] 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200
-attr(,&quot;author&quot;)
-[1] &quot;李小明&quot;
-attr(,&quot;date&quot;)
-[1] &quot;2016-09-12&quot;</code></pre>
-]]></content>
-      <tags>
-        <tag>R</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>R因子类型</title>
-    <url>/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<h2 id="R因子类型"><a href="#R因子类型" class="headerlink" title="R因子类型"></a>R因子类型</h2><h3 id="因子"><a href="#因子" class="headerlink" title="因子"></a>因子</h3><p>R中用<strong>因子代表数据中分类变量</strong>, 如性别、省份、职业。 有序因子代表有序量度，如打分结果，疾病严重程度等。</p>
-<p>用factor()函数把字符型向量转换成因子，如</p>
-<pre><code>&gt; x &lt;- c(&quot;男&quot;,&quot;女&quot;,&quot;女&quot;,&quot;男&quot;)
-&gt; sex &lt;- factor(x)
-&gt; sex
-[1] 男 女 女 男
-Levels: 男 女</code></pre>
-<p>因子有class属性，取值为”factor”</p>
-<pre><code>&gt; attributes(sex)
-$levels
-[1] &quot;男&quot; &quot;女&quot;
-
-$class
-[1] &quot;factor&quot;</code></pre>
-<p>还有一个levels(水平值)属性， 此属性可以用levels()函数访问，如</p>
-<pre><code>&gt; levels(sex)
-[1] &quot;男&quot; &quot;女&quot;</code></pre>
-<p>因子的levels属性可以看成是一个映射， 把整数值1,2,映射成这些水平值， 因子在保存时会保存成整数值1,2,等与水平值对应的编号。 这样可以节省存储空间， 在建模计算的程序中也比较有利于进行数学运算。</p>
-<p>事实上， <strong>read.csv()**函数的默认操作会把输入文件的字符型列</strong>自动转换成因子**,这对于性别、职业、地名这样的列是合适的， 但是对于姓名、日期、详细地址这样的列则不合适。</p>
-<p>所以，在read.csv()调用中经常加选项<strong>stringsAsFactors=FALSE</strong>选项禁止这样的自动转换，还可以用colClasses选项逐个指定每列的类型。</p>
-<p>用**as.numeric()**可以把因子转换为纯粹的整数值，如</p>
-<pre><code>&gt; as.numeric(sex)
-[1] 1 2 2 1</code></pre>
-<p>因为因子实际保存为整数值， 所以对因子进行一些字符型操作可能导致错误。 用as.character()可以把因子转换成原来的字符型，如</p>
-<pre><code>&gt; as.character(sex)
-[1] &quot;男&quot; &quot;女&quot; &quot;女&quot; &quot;男&quot;</code></pre>
-<p>为了对因子执行字符型操作（如取子串）， 保险的做法是先用as.character()函数强制转换为字符型。</p>
-<ul>
-<li>factor()函数的一般形式为</li>
-</ul>
-<pre><code>    factor(x, levels = sort(unique(x), na.last = TRUE), 
-           labels, exclude = NA, ordered = FALSE)</code></pre>
-<p>可以用选项labels指定各水平的标签, 不指定时用各水平值的对应字符串。ordered取真值时表示因子水平是有次序的(按编码次序)。</p>
-<p>在使用factor()函数定义因子时，如果知道自变量元素的所有可能取值，应尽可能使用levels=参数指定这些不同可能取值，这样，即使某个取值没有出现，此变量代表的含义和频数信息也是完整的。 自己指定levels=的另一好处是可以按正确的次序显示因子的分类统计值。</p>
-<p>因为一个因子的levels属性是该因子独有的， 所以合并两个因子有可能造成错误。如</p>
-<pre><code>&gt; li1 &lt;- factor(c(&#39;男&#39;, &#39;女&#39;))
-&gt; li2 &lt;- factor(c(&#39;男&#39;, &#39;男&#39;))
-&gt; c(li1, li2)
-[1] 1 2 1 1</code></pre>
-<p>结果不再是因子。 正确的做法是</p>
-<pre><code>&gt; factor(c(as.character(li1), as.character(li2)))
-[1] 男 女 男 男
-Levels: 男 女</code></pre>
-<p>即恢复成字符型后合并， 然后再转换为因子。 在合并两个数据框时也存在这样的问题。 当然，如果在定义li1和li2 时都用了levels=c(‘男’, ‘女’)选项， c(li1, li2)也能给出正确结果。</p>
-<h2 id="tapply-函数"><a href="#tapply-函数" class="headerlink" title="tapply()函数"></a>tapply()函数</h2><p>可以按照因子分组然后每组计算另一变量的概括统计。 如</p>
-<pre><code>&gt; h &lt;- c(165, 170, 168, 172)
-&gt; tapply(h,sex,mean)
-   男    女 
-168.5 169.0 </code></pre>
-<p>这里第一自变量h与与第二自变量sex是等长的， 对应元素分别为同一人的身高和性别， tapply()函数分男女两组计算了身高平均值。</p>
-<h2 id="forcats包的因子函数"><a href="#forcats包的因子函数" class="headerlink" title="forcats包的因子函数"></a>forcats包的因子函数</h2><pre><code>&gt; library(forcats)</code></pre>
-<p>在分类变量类数较多时，往往需要对因子水平另外排序、合并等， forcats包提供了一些针对因子的方便函数。</p>
-<p>forcats::fct_reorder()可以根据不同因子水平分成的组中另一数值型变量的统计量值排序。 如：</p>
-<pre><code>&gt; library(forcats)
-&gt; set.seed(1)
-&gt; fac &lt;- sample(c(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;),size = 30,replace = T)
-&gt; fac
- [1] &quot;red&quot;   &quot;green&quot; &quot;blue&quot;  &quot;green&quot; &quot;blue&quot;  &quot;blue&quot; 
- [7] &quot;green&quot; &quot;blue&quot;  &quot;red&quot;   &quot;green&quot; &quot;red&quot;   &quot;red&quot;  
-[13] &quot;red&quot;   &quot;red&quot;   &quot;red&quot;   &quot;red&quot;   &quot;green&quot; &quot;green&quot;
-[19] &quot;red&quot;   &quot;green&quot; &quot;blue&quot;  &quot;green&quot; &quot;blue&quot;  &quot;green&quot;
-[25] &quot;blue&quot;  &quot;red&quot;   &quot;blue&quot;  &quot;blue&quot;  &quot;green&quot; &quot;blue&quot; </code></pre>
-<p>用 attribute() 函数查看此时fac的属性</p>
-<pre><code>&gt; attributes(fac)
-NULL</code></pre>
-<p>显示，此时fac 并不是一个factor,利用factor函数对fac进行转化为factor</p>
-<pre><code>&gt; fac &lt;- factor(x = fac,labels = c(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;))
-&gt; attributes(fac)
-$levels
-[1] &quot;red&quot;   &quot;green&quot; &quot;blue&quot; 
-
-$class
-[1] &quot;factor&quot;</code></pre>
-<p>转化完成之后，用rt()函数生成服从T分布生成伪随机数，并赋值给x</p>
-<pre><code>&gt; x &lt;- round(100*(10+rt(30,2)))
-&gt; res1 &lt;- tapply(x, fac, sd)
-&gt; res1
-##       red     green      blue 
-##  370.9222  138.3185 1129.2587
-
-&gt; barplot(res1)</code></pre>
-<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact22-1.png"></p>
-<p>如果希望按照统计量次序对因子排序， 可以用forcats::fct_reorder()函数， 如</p>
-<pre><code>&gt; fac2 &lt;- fct_reorder(fac,x,sd)
-&gt; res2 &lt;- tapply(X = x,INDEX = fac2,FUN = sd)
-&gt; barplot(res2)</code></pre>
-<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/prog-type-fact_files/figure-html/prog-type-fact23-1.png"></p>
-<p>新的因子fac2的因子水平次序已经按照变量x的标准差从小到大排列。</p>
-<p>有时在因子水平数较多时仅想将特定的一个或几个水平次序放到因子水平最前面， 可以用forcats::fct_relevel()函数， 如：</p>
-<pre><code>&gt; fac3 &lt;- fct_relevel(fac,&quot;blue&quot;)
-
-&gt; levels(fac3)
-[1] &quot;blue&quot;  &quot;red&quot;   &quot;green&quot;</code></pre>
-<p>fct_relevel()第一个参数是要修改次序的因子， 后续可以有多个字符型参数表示要提前的水平。</p>
-<p>forcats::fct_recode()可以修改每个水平的名称， 如：</p>
-<pre><code>&gt; fac4 &lt;- fct_recode(fac,&quot;红&quot;=&quot;red&quot;,&quot;蓝&quot;=&quot;blue&quot;,&quot;绿&quot;=&quot;green&quot;)
-&gt; attributes(fac4)
-$levels
-[1] &quot;红&quot; &quot;绿&quot; &quot;蓝&quot;
-
-$class
-[1] &quot;factor&quot;</code></pre>
-<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>设文件<a href="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/class.csv">class.csv</a>中包含如下内容:</p>
-<pre><code>name,sex,age,height,weight
-Alice,F,13,56.5,84
-Becka,F,13,65.3,98
-Gail,F,14,64.3,90
-Karen,F,12,56.3,77
-Kathy,F,12,59.8,84.5
-Mary,F,15,66.5,112
-Sandy,F,11,51.3,50.5
-Sharon,F,15,62.5,112.5
-Tammy,F,14,62.8,102.5
-Alfred,M,14,69,112.5
-Duke,M,14,63.5,102.5
-Guido,M,15,67,133
-James,M,12,57.3,83
-Jeffrey,M,13,62.5,84
-John,M,12,59,99.5
-Philip,M,16,72,150
-Robert,M,12,64.8,128
-Thomas,M,11,57.5,85
-William,M,15,66.5,112</code></pre>
-<p>用如下程序把该文件读入为R数据框d.class, 其中的sex列已经自动转换为因子。 取出其中的sex和age列到变量sex和age中</p>
-<pre><code>&gt; d.class &lt;- read.csv(&#39;class.csv&#39;, header=TRUE)
-&gt; sex &lt;- d.class[,&#39;sex&#39;]
-&gt; age &lt;- d.class[,&#39;age&#39;]</code></pre>
-<ol>
-<li><p>统计并显示列出sex的不同值频数；</p>
-</li>
-<li><p>分男女两组分别求年龄最大值；</p>
-</li>
-<li><p>把sex变量转换为一个新的因子，F显示成“Female”，M显示成“Male”。</p>
-</li>
-</ol>
-<h3 id="解答："><a href="#解答：" class="headerlink" title="解答："></a>解答：</h3><p>1.</p>
-<pre><code>&gt; table(sex)
-sex
- F  M 
- 9 10 </code></pre>
-<p>2.</p>
-<pre><code>&gt; tapply(age, sex, max)
- F  M 
-15 16 </code></pre>
-<p>3.</p>
-<pre><code>&gt; sex
- [1] F F F F F F F F F M M M M M M M M M M
-Levels: F M
-&gt; sex2 &lt;- fct_recode(sex,&quot;Female&quot;=&quot;F&quot;,&quot;Male&quot;=&quot;M&quot;)
-&gt; sex2
- [1] Female Female Female Female Female Female Female
- [8] Female Female Male   Male   Male   Male   Male  
-[15] Male   Male   Male   Male   Male  
-Levels: Female Male</code></pre>
-]]></content>
-      <tags>
-        <tag>R</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>列表</title>
     <url>/2020/11/11/%E5%88%97%E8%A1%A8/</url>
     <content><![CDATA[<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>R中列表(list)类型来保存<strong>不同类型</strong>的数据。 一个主要目的是提供R分析结果输出包装： 输出一个变量， 这个变量包括回归系数、预测值、残差、检验结果等等一系列不能放到规则形状数据结构中的内容。 实际上，数据框也是列表的一种， 但是<u>数据框要求各列等长， 而列表不要求</u>。</p>
@@ -1140,235 +952,72 @@ $y
       </tags>
   </entry>
   <entry>
-    <title>矩阵和数组</title>
-    <url>/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/</url>
-    <content><![CDATA[<h2 id="R矩阵"><a href="#R矩阵" class="headerlink" title="R矩阵"></a>R矩阵</h2><p>矩阵用matrix函数定义，实际存储成一个向量，根据保存的行数和列数对应到矩阵的元素， 存储次序为按列存储。 定义如</p>
-<pre><code>&gt; A &lt;- matrix(11:16, nrow=3, ncol=2)
-&gt; print(A)
-     [,1] [,2]
-[1,]   11   14
-[2,]   12   15
-[3,]   13   16
+    <title>字符型数据及处理</title>
+    <url>/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<h2 id="字符型向量"><a href="#字符型向量" class="headerlink" title="字符型向量"></a>字符型向量</h2><p>字符型向量是元素为字符串的向量。 如</p>
+<pre><code>&gt; s1 &lt;- c(&#39;abc&#39;, &#39;&#39;, &#39;a cat&#39;, NA, &#39;李明&#39;)</code></pre>
+<p>注意空字符串并不能自动认为是缺失值， 字符型的缺失值仍用NA表示。</p>
+<h2 id="paste-函数"><a href="#paste-函数" class="headerlink" title="paste()函数"></a>paste()函数</h2><p>针对字符型数据最常用的R函数是paste()函数。 paste()用来连接两个字符型向量， 元素一一对应连接， 默认用空格连接。 如paste(c(“ab”, “cd”), c(“ef”, “gh”)) 结果相当于c(“ab ef”, “cd gh”)。</p>
+<p>paste()在连接两个字符型向量时采用R的一般向量间运算规则， 而且可以自动把数值型向量转换为字符型向量。 可以作一对多连接， 如paste(“x”, 1:3)结果相当于c(“x 1”, “x 2”, “x 3”)。</p>
+<p>用sep=指定分隔符， 如paste(“x”, 1:3, sep=””)结果相当于c(“x1”, “x2”, “x3”)。</p>
+<p>使用collapse=参数可以把字符型向量的各个元素连接成一个单一的字符串, 如paste(c(“a”, “b”, “c”), collapse=””)结果相当于”abc”。</p>
+<h2 id="转换大小写"><a href="#转换大小写" class="headerlink" title="转换大小写"></a>转换大小写</h2><p>toupper()函数把字符型向量内容转为大写， tolower()函数转为小写。 比如，toupper(‘aB cd’)结果为”AB CD”， tolower(c(‘aB’, ‘cd’))结果相当于c(“ab” “cd”)。 这两个函数可以用于不区分大小写的比较， 比如，不论x的值是’JAN’, ‘Jan’还是’jan’， toupper(x)==’JAN’的结果都为TRUE。</p>
+<h2 id="字符串长度"><a href="#字符串长度" class="headerlink" title="字符串长度"></a>字符串长度</h2><p>用nchar(x, type=’bytes’)计算字符型向量x中每个字符串的以字节为单位的长度，这一点对中英文是有差别的， 中文通常一个汉字占两个字节，英文字母、数字、标点占一个字节。 用nchar(x, type=’chars’)计算字符型向量x中每个字符串的以字符个数为单位的长度，这时一个汉字算一个单位。</p>
+<p>在画图时可以用strwidth()函数计算某个字符串或表达式占用的空间大小。</p>
+<h2 id="取子串"><a href="#取子串" class="headerlink" title="取子串"></a>取子串</h2><p>substr(x, start, stop)从字符串x中取出从第start个到第stop个的子串， 如</p>
+<pre><code>&gt; substr(&#39;JAN07&#39;, 1, 3)
+## [1] &quot;JAN&quot;</code></pre>
+<p>如果x是一个字符型向量，substr将对每个元素取子串。如</p>
+<pre><code>&gt; substr(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 1, 3)
+## [1] &quot;JAN&quot; &quot;MAR&quot;</code></pre>
+<p>用substring(x, start)可以从字符串x中取出从第start个到末尾的子串。如</p>
+<pre><code>&gt; substring(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 4)
+## [1] &quot;07&quot; &quot;66&quot;</code></pre>
+<p>##类型转换##</p>
+<p>用as.numeric()把内容是数字的字符型值转换为数值，如</p>
+<pre><code>&gt; substr(&#39;JAN07&#39;, 4, 5)
+## [1] &quot;07&quot;
 
-&gt; B &lt;- matrix(c(1,-1, 1,1), nrow=2, ncol=2, byrow=TRUE)
-&gt; B
-     [,1] [,2]
-[1,]    1   -1
-[2,]    1    1</code></pre>
-<p>matrix()函数把矩阵元素以一个<strong>向量的形式输入</strong>， 用nrow和ncol规定行数和列数，向量元素填入矩阵的缺省次序是按列填入， 用byrow=TRUE选项可以转换成按行填入。</p>
-<pre><code>&gt; nrow(A)
-[1] 3
-&gt; ncol(A)
-[1] 2</code></pre>
-<p>矩阵有一个dim属性，内容是两个元素的向量， 两个元素分别为矩阵的行数和列数。dim属性可以用dim()函数访问。如</p>
-<pre><code>&gt; attributes(A)
-$dim
-[1] 3 2
+&gt; substr(&#39;JAN07&#39;, 4, 5) + 2000
+## Error in substr(&quot;JAN07&quot;, 4, 5) + 2000 : 
+##   non-numeric argument to binary operator
 
-&gt; dim(A)
-[1] 3 2</code></pre>
-<p>函数<strong>t(A)**返回</strong>A的转置**。</p>
-<pre><code>&gt; t(A)
-     [,1] [,2] [,3]
-[1,]   11   12   13
-[2,]   14   15   16</code></pre>
-<h2 id="矩阵子集"><a href="#矩阵子集" class="headerlink" title="矩阵子集"></a>矩阵子集</h2><p>用A[1,]取出A的第一行，变成一个普通向量。 用A[,1]取出A的第一列，变成一个普通向量。 用A[c(1,3),1:2]取出指定行、列对应的子矩阵。 如</p>
-<pre><code>&gt; A[1,1:2]
-[1] 11 14
+&gt; as.numeric(substr(&#39;JAN07&#39;, 4, 5)) + 2000
+## [1] 2007
 
-&gt; A[c(1,3),1:2]
-     [,1] [,2]
-[1,]   11   14
-[2,]   13   16</code></pre>
-<p>用colnames()函数可以给矩阵每列命名， 也可以访问矩阵列名， 用rownames()函数可以给矩阵每行命名， 也可以访问矩阵行名。如</p>
-<pre><code>&gt; colnames(A) &lt;- c(&quot;A&quot;,&quot;C&quot;)
-&gt; rownames(A)&lt;- c(&quot;B&quot;,&quot;D&quot;,&quot;F&quot;)
-&gt; A
-   A  C
-B 11 14
-D 12 15
-F 13 16</code></pre>
-<p>有了列名、行名后，矩阵下标可以用字符型向量， 如</p>
-<pre><code>&gt; A[,&quot;A&quot;]
- B  D  F 
-11 12 13 
+&gt; as.numeric(substr(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 4, 5))
+## [1]  7 66</code></pre>
+<p>as.numeric()是向量化的， 可以转换一个向量的每个元素为数值型。</p>
+<p>用as.character()函数把数值型转换为字符型，如</p>
+<pre><code>&gt; as.character((1:5)*5)
+## [1] &quot;5&quot;  &quot;10&quot; &quot;15&quot; &quot;20&quot; &quot;25&quot;</code></pre>
+<p>如果自变量本来已经是字符型则结果不变。</p>
+<p>为了用指定的格式数值型转换成字符型， 可以使用sprintf()函数， 其用法与C语言的sprintf()函数相似， 只不过是向量化的。例如</p>
+<pre><code>&gt; sprintf(&#39;file%03d.txt&#39;, c(1, 99, 100))
+## [1] &quot;file001.txt&quot; &quot;file099.txt&quot; &quot;file100.txt&quot;</code></pre>
+<h2 id="字符串拆分"><a href="#字符串拆分" class="headerlink" title="字符串拆分"></a>字符串拆分</h2><p>用strsplit()函数可以把一个字符串按照某种分隔符拆分开，例如</p>
+<pre><code>&gt; x &lt;- &#39;10,8,7&#39;
+&gt; strsplit(x, &#39;,&#39;, fixed=TRUE)[[1]]
+## [1] &quot;10&quot; &quot;8&quot;  &quot;7&quot;
 
-&gt; A[&quot;B&quot;,]
- A  C 
-11 14
+&gt; sum(as.numeric(strsplit(x, &#39;,&#39;, fixed=TRUE)[[1]]))
+## [1] 25</code></pre>
+<p>因为strsplit()的结果是一个列表， 这个函数延后再详细讲。</p>
+<h2 id="字符串替换功能"><a href="#字符串替换功能" class="headerlink" title="字符串替换功能"></a>字符串替换功能</h2><p>用gsub()可以替换字符串中的子串， 这样的功能经常用在数据清理中。 比如，把数据中的中文标点改为英文标点， 去掉空格，等等。 如</p>
+<pre><code>&gt; x &lt;- &#39;1, 3; 5&#39;
+&gt; gsub(&#39;;&#39;, &#39;,&#39;, x, fixed=TRUE)
+## [1] &quot;1, 3, 5&quot;
 
-&gt; A[c(&quot;B&quot;,&quot;D&quot;),&quot;A&quot;]
- B  D 
-11 12 </code></pre>
-<p>注意在对矩阵取子集时， 如果<strong>取出的子集仅有一行或仅有一列， 结果就不再是矩阵而是变成了R向量</strong>， R向量既不是行向量也不是列向量。 如果想避免这样的规则起作用，需要在方括号下标中加选项<strong>drop=FALSE</strong>， 如</p>
-<pre><code>&gt; A[A[,1]&gt;=12,&#39;C&#39;]
- D  F 
-15 16 </code></pre>
-<p>矩阵本质上是一个向量添加了dim属性， 实际保存还是保存成一个向量， 其中元素的保存次序是<strong>按列填入</strong>，所以也可以向对一个向量取子集那样， 仅用一个正整数向量的矩阵取子集。如</p>
-<pre><code>&gt; A[c(1,3,5)]
-[1] 11 13 15</code></pre>
-<p>用c(A)或A[]返回矩阵A的所有元素。 如果要修改矩阵A的所有元素， 可以对A[]赋值。</p>
-<pre><code>#c(A)返回所有元素的方式是以列表的形式
-&gt; c(A)
-[1] 11 12 13 14 15 16
-
-# A[]的返回所有元素的方式是以矩阵的形式
-&gt; A[]
-   A  C
-B 11 14
-D 12 15
-F 13 16</code></pre>
-<p>对矩阵A，diag(A)访问A的主对角线元素组成的向量。 另外，若x为正整数值标量，diag(x)返回x阶单位阵； 若x为长度大于1的向量， diag(x)返回以x的元素为主对角线元素的对角矩阵。</p>
-<pre><code>&gt; diag(A)
-[1] 11 15</code></pre>
-<h2 id="cbind-和rbind-函数"><a href="#cbind-和rbind-函数" class="headerlink" title="cbind()和rbind()函数"></a>cbind()和rbind()函数</h2><p>若x是向量，<strong>cbind(x)把x变成列向量</strong>， 即列数为1的矩阵， <strong>rbind(x)把x变成行向量</strong>。</p>
-<p>若x1, x2, x3是等长的向量， cbind(x1, x2, x3)把它们看成列向量并在一起组成一个矩阵。 cbind()的自变量可以同时包含向量与矩阵，向量的长度必须与矩阵行数相等。 如</p>
-<pre><code>&gt; cbind(c(1,2), c(3,4), c(5,6))
-     [,1] [,2] [,3]
-[1,]    1    3    5
-[2,]    2    4    6
-
-
-&gt; cbind(A, c(1,-1,10))
-   A  C   
-B 11 14  1
-D 12 15 -1
-F 13 16 10</code></pre>
-<p>**cbind()**的自变量中也允许有标量， 这时此标量被重复使用。 如</p>
-<pre><code>&gt; cbind(1,c(1,-1,10))
-     [,1] [,2]
-[1,]    1    1
-[2,]    1   -1
-[3,]    1   10</code></pre>
-<p>**rbind()**用法类似， 可以等长的向量看成行向量上下摞在一起， 可以是矩阵与长度等于矩阵列数的向量上下摞在一起， 向量长度为1也可以。</p>
-<pre><code>&gt; rbind(c(1,2), c(3,4), c(5,6))
-     [,1] [,2]
-[1,]    1    2
-[2,]    3    4
-[3,]    5    6</code></pre>
-<h2 id="四则运算"><a href="#四则运算" class="headerlink" title="四则运算"></a>四则运算</h2><p>矩阵可以与标量作四则运算，结果<strong>为每个元素进行相应运算</strong>，如</p>
-<pre><code>&gt; c1 &lt;- A-1
-&gt; c1
-   A  C
-B 10 13
-D 11 14
-F 12 15
-
-&gt; c2 &lt;- A / 2
-&gt; c2
-    A   C
-B 5.5 7.0
-D 6.0 7.5
-F 6.5 8.0</code></pre>
-<p>两个同形状的矩阵进行加、减运算， 即对应元素相加、相减， 用A + B，A - B表示，如</p>
-<pre><code>&gt; c1+c2
-     A    C
-B 15.5 20.0
-D 17.0 21.5
-F 18.5 23.0</code></pre>
-<p>这就是线性代数中矩阵的加、减运算。</p>
-<p>对两个同形状的矩阵， 用*表示两个矩阵对应元素相乘(注意这不是线性代数中的矩阵乘法)， 用/表示两个矩阵对应元素相除。 如</p>
-<pre><code>&gt; c1 * c2
-   A   C
-B 55  91
-D 66 105
-F 78 120</code></pre>
-<h2 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h2><p>用<code>%*%</code>表示矩阵乘法而不是用<code>*</code>表示， 注意矩阵乘法要求左边的矩阵的列数等于右边的矩阵的行数。 如</p>
-<pre><code>&gt; B &lt;- cbind(c(1,1),c(-1,1))
-&gt; A%*%B
-  [,1] [,2]
-B   25    3
-D   27    3
-F   29    3</code></pre>
-<h2 id="向量与矩阵相乘"><a href="#向量与矩阵相乘" class="headerlink" title="向量与矩阵相乘"></a>向量与矩阵相乘</h2><p>矩阵与向量进行乘法运算时， 向量按需要解释成列向量或行向量。 当向量左乘矩阵时，看成行向量； 当向量右乘矩阵时，看成列向量。 如</p>
-<pre><code>&gt; B
-     [,1] [,2]
-[1,]    1   -1
-[2,]    1    1
-
-&gt; c(1,1) %*% B
-     [,1] [,2]
-[1,]    2    0
-
-&gt; B %*% c(1,1)
-     [,1]
-[1,]    0
-[2,]    2</code></pre>
-<p><strong>apply()函数</strong></p>
-<p>apply(A, 2, FUN)把矩阵A的每一列分别输入到函数FUN中， 得到对应于每一列的结果，如</p>
-<pre><code>&gt; D &lt;- matrix(c(6,2,3,5,4,1), nrow=3, ncol=2)
-&gt; D
-     [,1] [,2]
-[1,]    6    5
-[2,]    2    4
-[3,]    3    1
-
-&gt; apply(D, 2, sum)
-[1] 11 10</code></pre>
-<p>apply(A, 1, FUN)把矩阵A的每一行分别输入到函数FUN中， 得到与每一行对应的结果，如</p>
-<pre><code>&gt; apply(D, 1, mean)
-[1] 5.5 3.0 2.0</code></pre>
-<p>如果函数FUN返回多个结果， 则apply(A, 2, FUN)结果为矩阵， 矩阵的每一列是输入矩阵相应列输入到FUN的结果， 结果列数等于A的列数。如</p>
-<pre><code>&gt; apply(D, 2, range)
-     [,1] [,2]
-[1,]    2    1
-[2,]    6    5</code></pre>
-<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><p>多维数组的一般定义语法为</p>
-<blockquote>
-<p>数组名 &lt;- array(数组元素,<br>  dim=c(第一下标个数, 第二下标个数, …, 第s下标个数))</p>
-</blockquote>
-<p>其中数组元素的填入次序是第一下标变化最快， 第二下标次之， 最后一个下标是变化最慢的。 这种次序称为FORTRAN次序。</p>
-<p>下面是一个三维数组定义例子。</p>
-<pre><code>&gt; ara &lt;- array(1:24, dim=c(2,3,4))
-&gt; ara
-, , 1
-
-     [,1] [,2] [,3]
-[1,]    1    3    5
-[2,]    2    4    6
-
-, , 2
-
-     [,1] [,2] [,3]
-[1,]    7    9   11
-[2,]    8   10   12
-
-, , 3
-
-     [,1] [,2] [,3]
-[1,]   13   15   17
-[2,]   14   16   18
-
-, , 4
-
-     [,1] [,2] [,3]
-[1,]   19   21   23
-[2,]   20   22   24</code></pre>
-<p>三维数组ara可以看成是4个2x3矩阵。 取出其中一个如ara[,,2]<br>(取出第二个矩阵)</p>
-<pre><code>&gt; ara[,,2]
-     [,1] [,2] [,3]
-[1,]    7    9   11
-[2,]    8   10   12</code></pre>
-<p>多维数组可以利用下标进行一般的子集操作</p>
-<pre><code>&gt; ara[,2,2:3]
-     [,1] [,2]
-[1,]    9   15
-[2,]   10   16</code></pre>
-<p>多维数组在取子集时如果某一维下标是标量， 则结果维数会减少， 可以在方括号内用drop=FALSE选项避免这样的规则发生作用。</p>
-<pre><code>&gt; ara[,2,2:3,drop=FALSE]
-, , 1
-
-     [,1]
-[1,]    9
-[2,]   10
-
-, , 2
-
-     [,1]
-[1,]   15
-[2,]   16</code></pre>
-<p>类似于矩阵， 多维数组可以用一个矩阵作为下标， 如果是三维数组，矩阵就需要有3列， 四维数组需要用4列矩阵。 下标矩阵的每行对应于一个数组元素。</p>
+&gt; strsplit(gsub(&#39;;&#39;, &#39;,&#39;, x, fixed=TRUE), &#39;,&#39;)[[1]]
+## [1] &quot;1&quot;  &quot; 3&quot; &quot; 5&quot;</code></pre>
+<p>字符串x中分隔符既有逗号又有分号， 上面的程序用gsub()把分号都换成逗号。</p>
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>正则表达式(regular expression)是一种匹配某种字符串模式的方法。 用这样的方法，可以从字符串中查找某种模式的出现位置， 替换某种模式，等等。 这样的技术可以用于文本数据的预处理， 比如用网络爬虫下载的大量网页文本数据。 R中支持perl语言格式的正则表达式， grep()和grepl()函数从字符串中查询某个模式， sub()和gsub()替换某模式。 比如， 下面的程序把多于一个空格替换成一个空格</p>
+<pre><code>&gt; gsub(&#39;[[:space:]]+&#39;, &#39; &#39;, &#39;a   cat  in a box&#39;, perl=TRUE)
+## [1] &quot;a cat in a box&quot;</code></pre>
 ]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
   </entry>
   <entry>
     <title>数据框</title>
@@ -1671,137 +1320,488 @@ cols(
       </tags>
   </entry>
   <entry>
-    <title>R输入输出</title>
-    <url>/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/</url>
-    <content><![CDATA[<h2 id="输入输出的简单方法"><a href="#输入输出的简单方法" class="headerlink" title="输入输出的简单方法"></a>输入输出的简单方法</h2><h3 id="简单的输出"><a href="#简单的输出" class="headerlink" title="简单的输出"></a>简单的输出</h3><p>用print()函数显示某个变量或表达式的值， 如</p>
-<pre><code>&gt; x &lt;- 1.234
+    <title>数据类型及性质</title>
+    <url>/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/</url>
+    <content><![CDATA[<h2 id="存储模式与基本类型"><a href="#存储模式与基本类型" class="headerlink" title="存储模式与基本类型"></a>存储模式与基本类型</h2><p>R的变量可以存储多种不同的数据类型， 可以用typeof()函数来返回一个变量或表达式的类型。比如</p>
+<pre><code>&gt; typeof(1:3)
+## [1] &quot;integer&quot;
+
+&gt; typeof(c(1,2,3))
+## [1] &quot;double&quot;
+
+&gt; typeof(c(1, 2.1, 3))
+## [1] &quot;double&quot;
+
+&gt; typeof(c(TRUE, NA, FALSE))
+## [1] &quot;logical&quot;
+
+&gt; typeof(&#39;Abc&#39;)
+## [1] &quot;character&quot;
+
+&gt; typeof(factor(c(&#39;F&#39;, &#39;M&#39;, &#39;M&#39;, &#39;F&#39;)))
+## [1] &quot;integer&quot;</code></pre>
+<p>*<em>注意**</em>因子的结果是integer而不是因子。*</p>
+<p>R还有两个函数mode()和storage.mode()起到与typeof()类似的作用， 这是为了提供与S语言兼容所遗留的， 应停止使用。</p>
+<p>R中数据的最基本的类型包括logical, integer, double, character, complex, raw, 其它数据类型都是由基本类型组合或转变得到的。 character类型就是字符串类型， raw类型是直接使用其二进制内容的类型。 为了判断某个向量x保存的基本类型， 可以用is.xxx()类函数， 如is.integer(x), is.double(x), is.numeric(x), is.logical(x), is.character(x), is.complex(x), is.raw(x)。 其中<strong>is.numeric(x)对integer和double内容都返回真值。</strong></p>
+<p>在R语言中数值一般看作double, 如果需要明确表明某些数值是整数， 可以在数值后面附加字母L，如</p>
+<pre><code>&gt; is.integer(c(1, -3))
+## [1] FALSE
+
+&gt; is.integer(c(1L, -3L))
+## [1] TRUE</code></pre>
+<p>整数型的缺失值是NA， 而double型的特殊值除了NA外， 还包括Inf, -Inf和NaN， 其中NaN也算是缺失值, Inf和-Inf不算是缺失值。 如:</p>
+<pre><code>&gt; c(-1, 0, 1)/0
+## [1] -Inf  NaN  Inf
+
+&gt; is.na(c(-1, 0, 1)/0)
+## [1] FALSE  TRUE FALSE</code></pre>
+<p>对double类型，可以用<strong>is.finite()判断是否有限值</strong>， NA、Inf, -Inf和NaN都不是有限值； 用is.infinite()判断是否Inf或-Inf； is.na()判断是否NA或NaN； is.nan()判断是否NaN。</p>
+<p>严格说来， NA表示逻辑型缺失值， 但是当作其它类型缺失值时一般能自动识别。 NA_integer_是整数型缺失值， NA_real是double型缺失值， NA_character_是字符型缺失值。</p>
+<p>在R的向量类型中， integer类型、double类型、logical类型、character类型、还有complex类型和raw类型称为原子类型(atomic types)， 原子类型的向量中元素都是同一基本类型的。 比如， double型向量的元素都是double或者缺失值。</p>
+<p>除了原子类型的向量， 在R语言的定义中， 向量还包括后面要讲到的列表（list）， 列表的元素不需要属于相同的基本类型， 而且列表的元素可以不是单一基本类型元素。 用typeof()函数可以返回向量的类型， 列表返回结果为”list”:</p>
+<pre><code>&gt; typeof(list(&quot;a&quot;, 1L, 1.5))
+## [1] &quot;list&quot;</code></pre>
+<p>原子类型的各个元素除了基本类型相同， 还不包含任何嵌套结构，如：</p>
+<pre><code>&gt; c(1, c(2,3, c(4,5)))
+## [1] 1 2 3 4 5</code></pre>
+<p>R有一个特殊的NULL类型， 这个类型只有唯一的一个NULL值， 表示不存在。 <strong>NULL长度为0， 不能有任何属性值</strong>。 用is.null()函数判断某个变量是否取NULL。</p>
+<p><strong>NULL值可以用来表示类型未知的零长度向量</strong>， 如c()没有自变量时返回值就是NULL； 也经常用作函数缺省值， 在函数内用is.null()判断其缺省后再用一定的计算逻辑得到真正的缺省情况下的数值。</p>
+<p>要把NULL与NA区分开来， <strong>NA是有类型的（integer、double、logical、character等)</strong>, <strong>NA表示存在但是未知</strong>。 数据库管理系统中的NULL值相当于R中的NA值。</p>
+<h2 id="类型转换与类型升档"><a href="#类型转换与类型升档" class="headerlink" title="类型转换与类型升档"></a>类型转换与类型升档</h2><p>可以用as.xxx()类的函数在不同类型之间进行强制转换。 如</p>
+<pre><code>&gt; as.numeric(c(FALSE, TRUE))
+## [1] 0 1
+
+&gt; as.character(sqrt(1:4))
+## [1] &quot;1&quot;                &quot;1.4142135623731&quot;  &quot;1.73205080756888&quot; &quot;2&quot;</code></pre>
+<p>类型转换也可能是隐含的，比如， <strong>四则运算中数值会被统一转换为double类型</strong>， 逻辑运算中运算元素会被统一转换为logical类型。 逻辑值转换成数值时，TRUE转换成1， FALSE转换成0。</p>
+<p>在用c()函数合并若干元素时， <strong>如果元素基本类型不同， 将统一转换成最复杂的一个</strong>，复杂程度从简单到复杂依次为： <strong>logical&lt;integer&lt;double&lt;character</strong>。 这种做法称为类型升档，如</p>
+<pre><code>&gt; c(FALSE, 1L, 2.5, &quot;3.6&quot;)
+## [1] &quot;FALSE&quot; &quot;1&quot;     &quot;2.5&quot;   &quot;3.6&quot;</code></pre>
+<p>不同类型参与要求类型相同的运算时， 也会统一转换为最复杂的类型， 也称为类型升档， 如：</p>
+<pre><code>&gt; TRUE + 10
+## [1] 11
+
+&gt; paste(&quot;abc&quot;, 1)
+## [1] &quot;abc 1&quot;</code></pre>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>除了NULL以外， R的变量都可以看成是对象， 都可以有属性。 在R语言中， 属性是把变量看成对象后， 除了其存储内容（如元素）之外的其它附加信息， 如维数、类属等。 R对象一般都有length和mode两个属性。</p>
+<p>常用属性有<strong>names, dim，class</strong>等。</p>
+<h3 id="attributes函数"><a href="#attributes函数" class="headerlink" title="attributes函数"></a>attributes函数</h3><p>对象x的所有属性可以用attributes()读取， 如</p>
+<pre><code>&gt; x &lt;- table(c(1,2,1,3,2,1)); print(x)
+## 
+## 1 2 3 
+## 3 2 1
+
+&gt; attributes(x)
+## $dim
+## [1] 3
+## 
+## $dimnames
+## $dimnames[[1]]
+## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot;
+## 
+## 
+## $class
+## [1] &quot;table&quot;</code></pre>
+<p><em>table()</em> 函数用了输出其自变量中每个不同值的出现次数，称为<strong>频数</strong>。 从上例可以看出， table()函数的结果有三个属性，前两个是dim和dimnames, 这是数组(array)具有的属性； 另一个是class属性，值为”table”。 因为x是数组，可以访问如</p>
+<pre><code>&gt; x[1]
+## 1 
+## 3
+
+&gt; x[&quot;3&quot;]
+## 3 
+## 1</code></pre>
+<p>也可以用attributes()函数修改属性， 如</p>
+<pre><code>&gt; attributes(x) &lt;- NULL
+&gt; x
+## [1] 3 2 1</code></pre>
+<p>如上修改后x不再是数组，也不是table。</p>
+<h3 id="attr函数"><a href="#attr函数" class="headerlink" title="attr函数"></a>attr函数</h3><p>可以用attr(x, “属性名”)的格式读取或定义x的属性。 如：</p>
+<pre><code>&gt; x &lt;- c(1,3,5)
+&gt; attr(x, &quot;theta&quot;) &lt;- c(0, 1)
 &gt; print(x)
-## [1] 1.234
 
-&gt; y &lt;- c(1,3,5)
-&gt; print(y[2:3])
-## [1] 3 5</code></pre>
-<p>在命令行使用R时， 直接以变量名或表达式作为命令可以起到用print()函数显示的相同效果。</p>
-<p><strong>用cat()函数把字符串、变量、表达式连接起来显示</strong>， 其中变量和表达式的类型一般是标量或向量，不能是矩阵、列表等复杂数据。 如</p>
-<pre><code>&gt; cat(&quot;x =&quot;, x, &quot;\n&quot;)
-x = 1.234</code></pre>
-<p>注意cat()显示中需要换行需要在自变量中包含字符串”\n”， 即换行符。</p>
-<p>cat()默认显示在命令行窗口， 为了写入指定文件中， 在cat()调用中用file=选项， 这时如果已有文件会把原有内容覆盖， 为了在已有文件时不覆盖原有内容而是在末尾添加， 在cat()中使用append=TRUE选项。 如:</p>
-<pre><code>&gt; cat(&quot;=== 结果文件 ===\n&quot;, file=&quot;res.txt&quot;)
-&gt; cat(&quot;x =&quot;, x, &quot;\n&quot;, file=&quot;res.txt&quot;, append=TRUE)</code></pre>
-<p>R命令行环境中定义的变量、函数会保存在工作空间中，并在退出R会话时可以保存到硬盘文件中。 用save()命令要求把指定的若干个变量（直接用名字，不需要表示成字符串）保存到用file=指定的文件中， 随后可以用load()命令恢复到工作空间中。</p>
-<p>虽然允许保存多个变量到同一文件中， 但尽可能仅保存一个变量， 而且使用变量名作为文件名。 用save()保存的R特殊格式的文件是通用的， 不依赖于硬件和操作系统。 如</p>
-<pre><code>&gt; save(scores, file=&quot;scores.RData&quot;)
-&gt; load(&quot;scores.RData&quot;)</code></pre>
-<p>保存多个变量，如x, zeta，命令如：</p>
-<pre><code>save(x, zeta, file=&quot;myvars20200315.RData&quot;)</code></pre>
-<p>或</p>
-<pre><code>save(list = c(&quot;x&quot;, &quot;zeta&quot;), file=&quot;myvars20200315.RData&quot;)</code></pre>
-<p>对于一个数据框， 可以用**write.csv()或readr::write_csv()**将其保存为逗号分隔的文本文件， 这样的文件可以很容易地被其它软件识别访问， 如Microsoft Excel软件可以很容易地把这样的文件读成电子表格。 用如</p>
-<pre><code>&gt; library(tidyverse)
-&gt; da &lt;- tibble(&quot;name&quot;=c(&quot;李明&quot;, &quot;刘颖&quot;, &quot;张浩&quot;),
-+              &quot;age&quot;=c(15, 17, 16))
-&gt; da
-# A tibble: 3 x 2
-  name    age
-  &lt;chr&gt; &lt;dbl&gt;
-1 李明     15
-2 刘颖     17
-3 张浩     16
-&gt; write_csv(da,&quot;mydata.csv&quot;)</code></pre>
-<p>结果生成的mydata.csv文件内容如下：</p>
-<pre><code>name,age
-李明,15
-刘颖,17
-张浩,16</code></pre>
-<p>但是，在Microsoft的中文版Windows操作系统中， 默认编码是GB编码， 用write_csv()生成的CSV文件总是使用UTF-8编码， 系统中的MS Office 软件不能自动识别这样编码的CSV文件， 可以改用write_csv_excel()函数； 基本R的write.csv()函数不存在这个问题。</p>
-<h2 id="CSV格式"><a href="#CSV格式" class="headerlink" title="CSV格式"></a>CSV格式</h2><p>对于保存在文本文件中的电子表格数据， R可以用read.csv(), read.table(), read.delim(), read.fwf()等函数读入, 但是建议在readr包的支持下用**read_csv(), read_table2(), read_delim(), read_fwf()**等函数读入， 这些将读入的数据框保存为tibble类型， tibble是数据框的一个变种， 改善了数据框的一些不适当的设计。 readr的读入速度比基本R软件的read.csv()等函数的速度快得多， 速度可以相差10倍， 也不自动将字符型列转换成因子， 不自动修改变量名为合法变量名， 不设置行名。</p>
-<p>对于中小规模的数据， CSV格式作为文件交换格式比较合适， 兼容性强， 各种数据管理软件与统计软件都可以很容易地读入和生成这样格式的文件， 但是特别大型的数据读入效率很低。</p>
-<p>CSV格式的文件用逗号分隔开同一行的数据项， 一般第一行是各列的列名（变量名）。 对于数值型数据， 只要表示成数值常量形式即可。 对于字符型数据， 可以用双撇号包围起来， 也可以不用撇号包围。 但是， 如果数据项本身包含逗号， 就需要用双撇号包围。 例如，下面是一个名为testcsv.csv的文件内容， 其中演示了内容中有逗号、有双撇号的情况。</p>
-<pre><code>id,words
-1,&quot;PhD&quot;
-2,Master&#39;s degree 
-3,&quot;Bond,James&quot;
-4,&quot;A &quot;&quot;special&quot;&quot; gift&quot;</code></pre>
-<p>为读入上面的内容，只要用如下程序:</p>
-<pre><code>&gt; d &lt;- read_csv(&quot;testcsv.csv&quot;)</code></pre>
-<p>读入的数据框显示如下:</p>
-<pre><code># A tibble: 4 × 2
-     id            words
-  &lt;int&gt;            &lt;chr&gt;
-1     1              PhD
-2     2  Master&#39;s degree
-3     3       Bond,James
-4     4 A &quot;special&quot; gift</code></pre>
-<h2 id="从字符串读入"><a href="#从字符串读入" class="headerlink" title="从字符串读入"></a>从字符串读入</h2><p>read_csv()还可以从字符串读入一个数据框，如</p>
-<pre><code>&gt; d.small &lt;- read_csv(&quot;name,x,y
-John, 33, 95
-Kim, 21, 64
-Sandy, 49, 100
-&quot;)
+## [1] 1 3 5
+## attr(,&quot;theta&quot;)
+## [1] 0 1</code></pre>
+<p>可以让向量x额外地保存一个theta属性， 这样的属性常常成为“元数据”(meta data)， 比如， 用来保存数据的说明、模拟数据的真实模型参数，等等。</p>
+<h3 id="names属性"><a href="#names属性" class="headerlink" title="names属性"></a>names属性</h3><p>有元素名的向量、列表、数据框等都有names属性， 许多R函数的输出本质上也是列表， 所以也有names属性。 用names(x)的格式读取或设定。 如：</p>
+<pre><code>&gt; x &lt;- 1:5
+&gt; y &lt;- x^2
+&gt; lmr &lt;- lm(y ~ x)
+&gt; print(names(lmr))
 
-&gt; d.small
+##  [1] &quot;coefficients&quot;  &quot;residuals&quot;     &quot;effects&quot;       &quot;rank&quot;         
+##  [5] &quot;fitted.values&quot; &quot;assign&quot;        &quot;qr&quot;            &quot;df.residual&quot;  
+##  [9] &quot;xlevels&quot;       &quot;call&quot;          &quot;terms&quot;         &quot;model&quot;</code></pre>
+<p>对于没有元素名的向量x，names(x)的返回值是NULL。</p>
+<h3 id="dim属性"><a href="#dim属性" class="headerlink" title="dim属性"></a>dim属性</h3><p>dim属性的存在表明对象是矩阵或一维、多维数组。 如：</p>
+<pre><code>&gt; x &lt;- matrix(1:12, nrow=3, ncol=4)
+&gt; attr(x, &quot;dim&quot;) # 等同于dim(x)
 
-## # A tibble: 3 x 3
-##   name      x     y
-##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 John     33    95
-## 2 Kim      21    64
-## 3 Sandy    49   100</code></pre>
-<h2 id="read-csv选项"><a href="#read-csv选项" class="headerlink" title="read_csv选项"></a>read_csv选项</h2><p>read_csv()的skip=选项跳过开头的若干行。 当数据不包含列名时， 只要指定col_names=FALSE， 变量将自动命名为X1, X2, …， 也可以用col_names=指定各列的名字，如</p>
-<pre><code>&gt; d.small &lt;- read_csv(&quot;John, 33, 95
-Kim, 21, 64
-Sandy, 49, 100
-&quot;, col_names=c(&quot;name&quot;, &quot;x&quot;, &quot;y&quot;) )
+## [1] 3 4</code></pre>
+<p>修改dim属性就将向量转换成矩阵（数组）， 或修改了矩阵的性质， 元素按列次序重排填入新的矩阵。如：</p>
+<pre><code>&gt; x &lt;- 1:10
+&gt; dim(x) &lt;- c(2,5)
+&gt; x
 
-&gt; d.small
-## # A tibble: 3 x 3
-##   name      x     y
-##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 John     33    95
-## 2 Kim      21    64
-## 3 Sandy    49   100</code></pre>
-<h2 id="文件访问"><a href="#文件访问" class="headerlink" title="文件访问"></a>文件访问</h2><h3 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h3><p>输入输出可以针对命令行，针对文件，R支持扩展的文件类型， 称为“连接(connection)”。</p>
-<p>函数file()生成到一个普通文件的连接， 函数url()生成一个到指定的URL的连接， 函数gzfile, bzfile, xzfile, unz支持对 压缩过的文件的访问（不是压缩包，只对一个文件压缩）。这些函数大概的用法如下：</p>
-<pre><code>file(&quot;path&quot;, open=&quot;&quot;, blocking=T,
-     encoding = getOption(&quot;encoding&quot;), 
-     raw = FALSE)
+##   [,1] [,2] [,3] [,4] [,5]
+[1,]    1    3    5    7    9
+[2,]    2    4    6    8   10</code></pre>
+<p>R允许dim仅有一个元素， 这对应于一维向量， 与普通的没有dim属性的向量有区别。 另外要注意， <strong>取矩阵子集时如果结果仅有一列或一行， 除非用了drop=FALSE选项， 结果不再有dim属性， 退化成了普通向量</strong>。</p>
+<h3 id="str-函数"><a href="#str-函数" class="headerlink" title="str()函数"></a>str()函数</h3><p>用print()函数可以显示对象内容。 如果内容很多， 显示行数可能也很多。 用str()函数可以显示对象的类型和主要结构及典型内容。例如</p>
+<pre><code>&gt; s &lt;- 101:200
+&gt; attr(s,&#39;author&#39;) &lt;- &#39;李小明&#39;
+&gt; attr(s,&#39;date&#39;) &lt;- &#39;2016-09-12&#39;
 
-url(description, open = &quot;&quot;, blocking = TRUE,
-    encoding = getOption(&quot;encoding&quot;))
+&gt; str(s)
 
-textConnection(description, open=&quot;r&quot;, 
-    local = FALSE,
-    encoding = c(&quot;&quot;, &quot;bytes&quot;, &quot;UTF-8&quot;))
+## int [1:100] 101 102 103 104 105 106 107 108 109 110 ...
+ - attr(*, &quot;author&quot;)= chr &quot;李小明&quot;
+ - attr(*, &quot;date&quot;)= chr &quot;2016-09-12&quot;
 
-gzfile(description, open = &quot;&quot;, 
-       encoding = getOption(&quot;encoding&quot;),
-       compression = 6)
+&gt; print(s)
 
-bzfile(description, open = &quot;&quot;, 
-       encoding = getOption(&quot;encoding&quot;),
-       compression = 9)
-
-xzfile(description, open = &quot;&quot;, 
-       encoding = getOption(&quot;encoding&quot;),
-       compression = 6)
-
-unz(description, filename, open = &quot;&quot;,
-    encoding = getOption(&quot;encoding&quot;))</code></pre>
-<p>生成连接的函数不自动打开连接。 给定一个未打开的连接， 读取函数从中读取时会自动打开连接， 函数结束时自动关闭连接。 用open()函数打开连接，返回一个句柄； 生成连接时可以用open参数要求打开连接。 要多次从一个连接读取时就应该先打开连接， 读取完毕用close函数关闭。</p>
-<p>函数textConnection()打开一个字符串用于读写。</p>
-<p>在生成连接与打开连接的函数中用open参数指定打开方式， 取值为：</p>
-<ul>
-<li>r—文本型只读;</li>
-<li>w—文本型只写;</li>
-<li>a—文本型末尾添加;</li>
-<li>rb—二进制只读;</li>
-<li>wb—二进制只写;</li>
-<li>ab—二进制末尾添加;</li>
-<li>r+或r+b—允许读和写;</li>
-<li>w+或w+b—允许读和写，但刚打开时清空文件;</li>
-<li>a+或a+b—末尾添加并允许读。</li>
-</ul>
+## [1] 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120
+ [21] 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140
+ [41] 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160
+ [61] 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+ [81] 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200
+attr(,&quot;author&quot;)
+[1] &quot;李小明&quot;
+attr(,&quot;date&quot;)
+[1] &quot;2016-09-12&quot;</code></pre>
 ]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>矩阵和数组</title>
+    <url>/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/</url>
+    <content><![CDATA[<h2 id="R矩阵"><a href="#R矩阵" class="headerlink" title="R矩阵"></a>R矩阵</h2><p>矩阵用matrix函数定义，实际存储成一个向量，根据保存的行数和列数对应到矩阵的元素， 存储次序为按列存储。 定义如</p>
+<pre><code>&gt; A &lt;- matrix(11:16, nrow=3, ncol=2)
+&gt; print(A)
+     [,1] [,2]
+[1,]   11   14
+[2,]   12   15
+[3,]   13   16
+
+&gt; B &lt;- matrix(c(1,-1, 1,1), nrow=2, ncol=2, byrow=TRUE)
+&gt; B
+     [,1] [,2]
+[1,]    1   -1
+[2,]    1    1</code></pre>
+<p>matrix()函数把矩阵元素以一个<strong>向量的形式输入</strong>， 用nrow和ncol规定行数和列数，向量元素填入矩阵的缺省次序是按列填入， 用byrow=TRUE选项可以转换成按行填入。</p>
+<pre><code>&gt; nrow(A)
+[1] 3
+&gt; ncol(A)
+[1] 2</code></pre>
+<p>矩阵有一个dim属性，内容是两个元素的向量， 两个元素分别为矩阵的行数和列数。dim属性可以用dim()函数访问。如</p>
+<pre><code>&gt; attributes(A)
+$dim
+[1] 3 2
+
+&gt; dim(A)
+[1] 3 2</code></pre>
+<p>函数<strong>t(A)**返回</strong>A的转置**。</p>
+<pre><code>&gt; t(A)
+     [,1] [,2] [,3]
+[1,]   11   12   13
+[2,]   14   15   16</code></pre>
+<h2 id="矩阵子集"><a href="#矩阵子集" class="headerlink" title="矩阵子集"></a>矩阵子集</h2><p>用A[1,]取出A的第一行，变成一个普通向量。 用A[,1]取出A的第一列，变成一个普通向量。 用A[c(1,3),1:2]取出指定行、列对应的子矩阵。 如</p>
+<pre><code>&gt; A[1,1:2]
+[1] 11 14
+
+&gt; A[c(1,3),1:2]
+     [,1] [,2]
+[1,]   11   14
+[2,]   13   16</code></pre>
+<p>用colnames()函数可以给矩阵每列命名， 也可以访问矩阵列名， 用rownames()函数可以给矩阵每行命名， 也可以访问矩阵行名。如</p>
+<pre><code>&gt; colnames(A) &lt;- c(&quot;A&quot;,&quot;C&quot;)
+&gt; rownames(A)&lt;- c(&quot;B&quot;,&quot;D&quot;,&quot;F&quot;)
+&gt; A
+   A  C
+B 11 14
+D 12 15
+F 13 16</code></pre>
+<p>有了列名、行名后，矩阵下标可以用字符型向量， 如</p>
+<pre><code>&gt; A[,&quot;A&quot;]
+ B  D  F 
+11 12 13 
+
+&gt; A[&quot;B&quot;,]
+ A  C 
+11 14
+
+&gt; A[c(&quot;B&quot;,&quot;D&quot;),&quot;A&quot;]
+ B  D 
+11 12 </code></pre>
+<p>注意在对矩阵取子集时， 如果<strong>取出的子集仅有一行或仅有一列， 结果就不再是矩阵而是变成了R向量</strong>， R向量既不是行向量也不是列向量。 如果想避免这样的规则起作用，需要在方括号下标中加选项<strong>drop=FALSE</strong>， 如</p>
+<pre><code>&gt; A[A[,1]&gt;=12,&#39;C&#39;]
+ D  F 
+15 16 </code></pre>
+<p>矩阵本质上是一个向量添加了dim属性， 实际保存还是保存成一个向量， 其中元素的保存次序是<strong>按列填入</strong>，所以也可以向对一个向量取子集那样， 仅用一个正整数向量的矩阵取子集。如</p>
+<pre><code>&gt; A[c(1,3,5)]
+[1] 11 13 15</code></pre>
+<p>用c(A)或A[]返回矩阵A的所有元素。 如果要修改矩阵A的所有元素， 可以对A[]赋值。</p>
+<pre><code>#c(A)返回所有元素的方式是以列表的形式
+&gt; c(A)
+[1] 11 12 13 14 15 16
+
+# A[]的返回所有元素的方式是以矩阵的形式
+&gt; A[]
+   A  C
+B 11 14
+D 12 15
+F 13 16</code></pre>
+<p>对矩阵A，diag(A)访问A的主对角线元素组成的向量。 另外，若x为正整数值标量，diag(x)返回x阶单位阵； 若x为长度大于1的向量， diag(x)返回以x的元素为主对角线元素的对角矩阵。</p>
+<pre><code>&gt; diag(A)
+[1] 11 15</code></pre>
+<h2 id="cbind-和rbind-函数"><a href="#cbind-和rbind-函数" class="headerlink" title="cbind()和rbind()函数"></a>cbind()和rbind()函数</h2><p>若x是向量，<strong>cbind(x)把x变成列向量</strong>， 即列数为1的矩阵， <strong>rbind(x)把x变成行向量</strong>。</p>
+<p>若x1, x2, x3是等长的向量， cbind(x1, x2, x3)把它们看成列向量并在一起组成一个矩阵。 cbind()的自变量可以同时包含向量与矩阵，向量的长度必须与矩阵行数相等。 如</p>
+<pre><code>&gt; cbind(c(1,2), c(3,4), c(5,6))
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+
+
+&gt; cbind(A, c(1,-1,10))
+   A  C   
+B 11 14  1
+D 12 15 -1
+F 13 16 10</code></pre>
+<p>**cbind()**的自变量中也允许有标量， 这时此标量被重复使用。 如</p>
+<pre><code>&gt; cbind(1,c(1,-1,10))
+     [,1] [,2]
+[1,]    1    1
+[2,]    1   -1
+[3,]    1   10</code></pre>
+<p>**rbind()**用法类似， 可以等长的向量看成行向量上下摞在一起， 可以是矩阵与长度等于矩阵列数的向量上下摞在一起， 向量长度为1也可以。</p>
+<pre><code>&gt; rbind(c(1,2), c(3,4), c(5,6))
+     [,1] [,2]
+[1,]    1    2
+[2,]    3    4
+[3,]    5    6</code></pre>
+<h2 id="四则运算"><a href="#四则运算" class="headerlink" title="四则运算"></a>四则运算</h2><p>矩阵可以与标量作四则运算，结果<strong>为每个元素进行相应运算</strong>，如</p>
+<pre><code>&gt; c1 &lt;- A-1
+&gt; c1
+   A  C
+B 10 13
+D 11 14
+F 12 15
+
+&gt; c2 &lt;- A / 2
+&gt; c2
+    A   C
+B 5.5 7.0
+D 6.0 7.5
+F 6.5 8.0</code></pre>
+<p>两个同形状的矩阵进行加、减运算， 即对应元素相加、相减， 用A + B，A - B表示，如</p>
+<pre><code>&gt; c1+c2
+     A    C
+B 15.5 20.0
+D 17.0 21.5
+F 18.5 23.0</code></pre>
+<p>这就是线性代数中矩阵的加、减运算。</p>
+<p>对两个同形状的矩阵， 用*表示两个矩阵对应元素相乘(注意这不是线性代数中的矩阵乘法)， 用/表示两个矩阵对应元素相除。 如</p>
+<pre><code>&gt; c1 * c2
+   A   C
+B 55  91
+D 66 105
+F 78 120</code></pre>
+<h2 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h2><p>用<code>%*%</code>表示矩阵乘法而不是用<code>*</code>表示， 注意矩阵乘法要求左边的矩阵的列数等于右边的矩阵的行数。 如</p>
+<pre><code>&gt; B &lt;- cbind(c(1,1),c(-1,1))
+&gt; A%*%B
+  [,1] [,2]
+B   25    3
+D   27    3
+F   29    3</code></pre>
+<h2 id="向量与矩阵相乘"><a href="#向量与矩阵相乘" class="headerlink" title="向量与矩阵相乘"></a>向量与矩阵相乘</h2><p>矩阵与向量进行乘法运算时， 向量按需要解释成列向量或行向量。 当向量左乘矩阵时，看成行向量； 当向量右乘矩阵时，看成列向量。 如</p>
+<pre><code>&gt; B
+     [,1] [,2]
+[1,]    1   -1
+[2,]    1    1
+
+&gt; c(1,1) %*% B
+     [,1] [,2]
+[1,]    2    0
+
+&gt; B %*% c(1,1)
+     [,1]
+[1,]    0
+[2,]    2</code></pre>
+<p><strong>apply()函数</strong></p>
+<p>apply(A, 2, FUN)把矩阵A的每一列分别输入到函数FUN中， 得到对应于每一列的结果，如</p>
+<pre><code>&gt; D &lt;- matrix(c(6,2,3,5,4,1), nrow=3, ncol=2)
+&gt; D
+     [,1] [,2]
+[1,]    6    5
+[2,]    2    4
+[3,]    3    1
+
+&gt; apply(D, 2, sum)
+[1] 11 10</code></pre>
+<p>apply(A, 1, FUN)把矩阵A的每一行分别输入到函数FUN中， 得到与每一行对应的结果，如</p>
+<pre><code>&gt; apply(D, 1, mean)
+[1] 5.5 3.0 2.0</code></pre>
+<p>如果函数FUN返回多个结果， 则apply(A, 2, FUN)结果为矩阵， 矩阵的每一列是输入矩阵相应列输入到FUN的结果， 结果列数等于A的列数。如</p>
+<pre><code>&gt; apply(D, 2, range)
+     [,1] [,2]
+[1,]    2    1
+[2,]    6    5</code></pre>
+<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><p>多维数组的一般定义语法为</p>
+<blockquote>
+<p>数组名 &lt;- array(数组元素,<br>  dim=c(第一下标个数, 第二下标个数, …, 第s下标个数))</p>
+</blockquote>
+<p>其中数组元素的填入次序是第一下标变化最快， 第二下标次之， 最后一个下标是变化最慢的。 这种次序称为FORTRAN次序。</p>
+<p>下面是一个三维数组定义例子。</p>
+<pre><code>&gt; ara &lt;- array(1:24, dim=c(2,3,4))
+&gt; ara
+, , 1
+
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+
+, , 2
+
+     [,1] [,2] [,3]
+[1,]    7    9   11
+[2,]    8   10   12
+
+, , 3
+
+     [,1] [,2] [,3]
+[1,]   13   15   17
+[2,]   14   16   18
+
+, , 4
+
+     [,1] [,2] [,3]
+[1,]   19   21   23
+[2,]   20   22   24</code></pre>
+<p>三维数组ara可以看成是4个2x3矩阵。 取出其中一个如ara[,,2]<br>(取出第二个矩阵)</p>
+<pre><code>&gt; ara[,,2]
+     [,1] [,2] [,3]
+[1,]    7    9   11
+[2,]    8   10   12</code></pre>
+<p>多维数组可以利用下标进行一般的子集操作</p>
+<pre><code>&gt; ara[,2,2:3]
+     [,1] [,2]
+[1,]    9   15
+[2,]   10   16</code></pre>
+<p>多维数组在取子集时如果某一维下标是标量， 则结果维数会减少， 可以在方括号内用drop=FALSE选项避免这样的规则发生作用。</p>
+<pre><code>&gt; ara[,2,2:3,drop=FALSE]
+, , 1
+
+     [,1]
+[1,]    9
+[2,]   10
+
+, , 2
+
+     [,1]
+[1,]   15
+[2,]   16</code></pre>
+<p>类似于矩阵， 多维数组可以用一个矩阵作为下标， 如果是三维数组，矩阵就需要有3列， 四维数组需要用4列矩阵。 下标矩阵的每行对应于一个数组元素。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>逻辑型向量及其运算</title>
+    <url>/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/</url>
+    <content><![CDATA[<p>逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如</p>
+<pre><code>&gt; sele &lt;- (log10(15) &lt; 2)
+&gt; print(sele)
+
+## [1] TRUE</code></pre>
+<p>向量比较结果为逻辑型向量。如</p>
+<pre><code>&gt; c(1, 3, 5) &gt; 2
+## [1] FALSE  TRUE  TRUE
+
+&gt; (1:4) &gt;= (4:1)    
+## [1] FALSE FALSE  TRUE  TRUE</code></pre>
+<p>从例子可以看出，向量比较也遵从R的向量间运算的一般规则： 向量与标量的运算是向量每个元素与标量都分别运算一次， 等长向量的运算时对应元素的运算， 不等长但长度为倍数关系的向量运算是把短的从头重复利用。</p>
+<p>与NA比较产生NA，如</p>
+<pre><code>&gt; c(1, NA, 3) &gt; 2
+## [1] FALSE    NA  TRUE
+
+&gt; NA == NA
+## [1] NA</code></pre>
+<p>为了判断向量每个元素是否NA， 用is.na()函数，如</p>
+<pre><code>&gt; is.na(c(1, NA, 3) &gt; 2)
+## [1] FALSE  TRUE FALSE</code></pre>
+<p>用**is.finite()**判断向量每个元素是否Inf值。</p>
+<p>比较运算符包括</p>
+<blockquote>
+<p>&lt;   &lt;=  &gt;  &gt;=  ==  !=  %in%<br>分别表示小于、小于等于、大于、大于等于、等于、不等于、属于。 要注意等于比较用了两个等号。</p>
+</blockquote>
+<p>%in%是比较特殊的比较， x %in% y的运算把向量y看成集合， 运算结果是一个逻辑型向量， 第个元素的值为x的第元素是否属于y的逻辑型值。 如</p>
+<pre><code>&gt; c(1,3) %in% c(2,3,4)
+## [1] FALSE  TRUE
+
+&gt; c(NA,3) %in% c(2,3,4)
+## [1] FALSE  TRUE
+
+&gt; c(1,3) %in% c(NA, 3, 4)
+## [1] FALSE  TRUE
+
+&gt; c(NA,3) %in% c(NA, 3, 4)
+## [1] TRUE TRUE</code></pre>
+<p>函数match(x, y)起到和x %in% y运算类似的作用， 但是其返回结果不是找到与否， 而是对x的每个元素， 找到其在y中首次出现的下标，找不到时取缺失值，如</p>
+<pre><code>&gt; match(c(1, 3), c(2,3,4,3))
+## [1] NA  2</code></pre>
+<h2 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h2><p>为了表达如“而且”, “或者”之类的复合比较， 需要使用逻辑运算把两个比较连接起来。 逻辑运算符为&amp;, |和!, 分别表示“同时成立”、“两者至少其一成立”、“条件的反面”。 比如，设age&lt;=3表示婴儿，sex==’女’表示女性，则 age&lt;=3 &amp; sex==’女’表示女婴, age&lt;=3 | sex==’女’表示婴儿或妇女, !(age&lt;=3 | sex==’女’)表示既非婴儿也非妇女。 为了确定运算的先后次序可以用圆括号()指定。</p>
+<p>用xor(x, y)表示x与y的异或运算， 即值不相等时为真值，相等时为假值， 有缺失值参加运算时为缺失值。</p>
+<p>逻辑向量与逻辑标量之间的逻辑运算， 两个逻辑向量之间的逻辑运算规则遵从一般R向量间运算规则。</p>
+<p>在右运算符是缺失值时， 如果左运算符能够确定结果真假， 可以得到非缺失的结果。 例如，TRUE | NA为TRUE, FALSE &amp; NA为FALSE。 不能确定结果时返回NA， 比如， TRUE &amp; NA为NA, FALSE | NA为NA。</p>
+<p>&amp;&amp;和||分别为短路的标量逻辑与和短路的标量逻辑或， 仅对两个标量进行运算，如果有向量也仅使用第一个元素。 一般用在if语句、while语句中， 且只要第一个比较已经决定最终结果就不计算第二个比较。 例如</p>
+<pre><code>&gt; if(TRUE || sqrt(-1)&gt;0) 3+2 
+
+## [1] 5</code></pre>
+<p>其中的sqrt(-1)部分不会执行。</p>
+<p>这里结果为TRUE, 第二部分没有参加计算， 否则第二部分的计算会发生函数自变量范围错误。</p>
+<h2 id="逻辑运算函数"><a href="#逻辑运算函数" class="headerlink" title="逻辑运算函数"></a>逻辑运算函数</h2><p>因为R中比较与逻辑运算都支持向量之间、向量与标量之间的运算， 所以在需要一个标量结果时要特别注意， 后面讲到的if结构、while结构都需要逻辑标量而且不能是缺失值。 这时，应该对缺失值结果单独考虑。</p>
+<p>若cond是逻辑向量， 用all(cond)测试cond的所有元素为真； 用any(cond)测试cond至少一个元素为真。 cond中允许有缺失值，结果可能为缺失值。 如</p>
+<pre><code>&gt; c(1, NA, 3) &gt; 2
+## [1] FALSE    NA  TRUE
+
+&gt; all(c(1, NA, 3) &gt; 2)
+## [1] FALSE
+
+&gt; any(c(1, NA, 3) &gt; 2)
+## [1] TRUE
+
+&gt; all(NA)
+## [1] NA
+
+&gt; any(NA)
+## [1] NA</code></pre>
+<p>函数which()返回真值对应的所有下标，如</p>
+<pre><code>&gt; which(c(FALSE, TRUE, TRUE, FALSE, NA))
+## [1] 2 3
+
+&gt; which((11:15) &gt; 12)
+## [1] 3 4 5</code></pre>
+<p>函数identical(x,y)比较两个R对象x与y的内容是否完全相同， 结果只会取标量TRUE与FALSE两种。 如</p>
+<pre><code>&gt; identical(c(1,2,3), c(1,2,NA))
+## [1] FALSE
+
+&gt; identical(c(1L,2L,3L), c(1,2,3))
+## [1] FALSE</code></pre>
+<p>其中第二个结果假值是因为前一向量是整数型， 后一向量是实数型。</p>
+<p>函数all.equal()与identical()类似， 但是在比较数值型时不区分整数型与实数型， 而且相同时返回标量TRUE， 但是不同时会返回一个说明有何不同的字符串。如</p>
+<pre><code>&gt; all.equal(c(1,2,3), c(1,2,NA))
+## [1] &quot;&#39;is.NA&#39; value mismatch: 1 in current 0 in target&quot;
+
+&gt; all.equal(c(1L,2L,3L), c(1,2,3))
+## [1] TRUE</code></pre>
+<p>函数duplicated()返回每个元素是否为重复值的结果，如：</p>
+<pre><code>&gt; duplicated(c(1,2,1,3,NA,4,NA))
+## [1] FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE</code></pre>
+<p>用函数unique()可以返回去掉重复值的结果。</p>
+]]></content>
+      <tags>
+        <tag>R</tag>
+      </tags>
   </entry>
 </search>
