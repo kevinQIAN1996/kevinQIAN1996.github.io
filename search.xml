@@ -1946,6 +1946,41 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
 ## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
 <p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01g-1.png"></p>
 <p>scale_xxx()的labels选项指定如何标出坐标刻度数字， 参数值是一个函数对象， 如果scales包中找不到适当的功能， 可以自定义一个函数将数值转换为字符串。 scales包提供了comma, date, dollar, math, number, ordinal, pvalue, scientific, time等坐标刻度值转换函数。</p>
+<h2 id="颜色、符号、线型等映射"><a href="#颜色、符号、线型等映射" class="headerlink" title="颜色、符号、线型等映射"></a>颜色、符号、线型等映射</h2><p>在ggplot()函数的mapping参数的aes()设定中将变量映射到x、y轴， 颜色、符号、线型等图形元素类型， 也可以作为图形设置将某些图形元素设置为固定值。</p>
+<p>例如， 用不同颜色表示不同大洲， 就是将continent变量映射到color:</p>
+<pre><code>&gt; p &lt;- ggplot(data=gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp,
++                 color = continent))</code></pre>
+<p>程序中仅指定了将大洲映射到颜色维， 并不具体指定所用的颜色。</p>
+<p>作带有局部多项式曲线拟合的散点图：</p>
+<pre><code>&gt; p + geom_point() + geom_smooth(method =&quot;loess&quot;) + scale_x_log10(labels=scales::dollar)
+
+`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point02b-1.png"></p>
+<p>可以看出， 不同散点用了不同颜色表示其continent变量的值， 五个大洲分别进行了曲线拟合， 曲线使用了不同颜色但置信域颜色相同， 使得难以认读。 在图形右侧自动生成了颜色与continent变量值的对应关系图例。</p>
+<p>下面的图形仍分不同大洲作曲线拟合， 并将置信区间阴影的颜色也用不同大洲区分， 方法是在aes()中将color和fill都指定为变量continent:</p>
+<pre><code>&gt; p &lt;- ggplot(data=gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp,
++                 color = continent,
++                 fill = continent))
+
+&gt; p + geom_point() + geom_smooth(method =&quot;loess&quot;) + scale_x_log10(labels=scales::dollar)
+
+`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point03-1.png"></p>
+<pre><code>&gt; p &lt;- ggplot(data=gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp,
++                 color = &quot;chartreuse4&quot;))
+
+&gt; p + geom_point() +
++     geom_smooth(method=&quot;loess&quot;) +
++     scale_x_log10(labels=scales::dollar)</code></pre>
 ]]></content>
   </entry>
 </search>
