@@ -1804,4 +1804,148 @@ F   29    3</code></pre>
         <tag>R</tag>
       </tags>
   </entry>
+  <entry>
+    <title>ggplot2可视化入门及作图一般原则</title>
+    <url>/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Hadley Wickem的ggplot2包是R的一个作图用的扩展包， 它实现了“图形的语法”， 将一个作图任务分解为若干个子任务， 只要完成各个子任务就可以完成作图。 在作常用的图形时， 只需要两个步骤：</p>
+<blockquote>
+<p> <strong>首先将图形所展现的数据输入到ggplot()函数中， 然后调用某个geom_xxx()函数， 指定图形类型，如散点图、曲线图、盒形图等。</strong></p>
+</blockquote>
+<p>如果需要进一步控制图形细节， 只要继续调用其它函数， 就可以控制变量值的表现方式(scale)、图例、配色等。 这使得我们很容易做出基本的图形， 在有需要时再深入学习， 做出更为满意的图形。</p>
+<p>与基本R中的作图系统相比， ggplot2的作图有规律可循， 作图结果直接达到出版印刷质量， 除了可以按照一些既定模式做出常见种类的图形， 也很容易将不同图形种类组合在一起， 或者设计新颖的图形。 基本R的作图结果通常不够美观， 如果要将不同种类图形组合在一起比较困难， 对设计新的图形类型支持也不够好。</p>
+<h2 id="ggplot2的作图一般步骤为："><a href="#ggplot2的作图一般步骤为：" class="headerlink" title="ggplot2的作图一般步骤为："></a>ggplot2的作图一般步骤为：</h2><ul>
+<li>准备数据，一般为数据框， 且一般为长表， 即每个观测时间占一行， 每个观测变量占一列。</li>
+</ul>
+<ul>
+<li>将数据输入到ggplot()函数中， 并指定参与作图的每个变量分别映射到哪些图形特性， 比如映射为x坐标、y坐标、颜色、形状等。 这些映射称为aesthetic mappings或aesthetics。</li>
+</ul>
+<ul>
+<li>选择一个合适的图形类型， 函数名以geom_开头， 如geom_point()表示散点图。 图形类型简称为geom。 将ggplot()部分与geom_xxx()部分用加号连接。 到此已经可以作图，下面的步骤是进一步的细化设定。</li>
+</ul>
+<ul>
+<li>设定适当的坐标系统， 如coord_cartesian(), scale_x_log10()等。 仍用加号连接。<br>设定标题和图例位置等，如labs()。 仍用加号连接。</li>
+</ul>
+<p><strong>这个流程的一个大致的模板为</strong>：</p>
+<pre><code>p &lt;- ggplot(data=&lt;输入数据框&gt;,
+  mapping=aes(&lt;维度&gt;=&lt;变量名&gt;,
+    &lt;维度&gt;=&lt;变量名&gt;, &lt;...&gt;))
+p + geom_&lt;图形类型&gt;(&lt;...&gt;) + 
+  scale_&lt;映射&gt;_&lt;类型&gt;(&lt;...&gt;) +
+  coord_&lt;类型&gt;(&lt;...&gt;) +
+  labs(&lt;...&gt;)</code></pre>
+<p>其中&lt;…&gt;表示额外的选项。 变量p包含做出的图形的所有数据与设定， 变量名可以任意取。</p>
+<p>Wickham的书主要需要安装tidyverse扩展包， 安装时会自动安装其它一些有关扩展包。 Healy的的书需要通过如下程序安装socviz软件包：</p>
+<pre><code>&gt; devtools::install_github(&quot;kjhealy/socviz&quot;)</code></pre>
+<p>后续的例子中用到一些数据集:</p>
+<ul>
+<li>来自gapminder扩展包的gapminder数据集， 有若干个国家不同年份的一些数据， 包括所属洲、期望寿命、人口数、人均GDP。 有1704个观测和6个变量。</li>
+</ul>
+<ul>
+<li>socviz包的gss_sm数据集，是2016年美国一般社会调查数据的部分内容。 有2867个观测，32个变量。 社会调查数据的变量主要取属性值， 比如无序分类、有序分类、分组的数值、整数值等。</li>
+</ul>
+<ul>
+<li>socviz包的organdata数据集， 是17个OECD国家历年的器官捐献情况以及一些其它记录。</li>
+</ul>
+<ul>
+<li>socviz扩展包的elections_historic数据集。 包括美国历次总统大选当选人、所属党派、支持比例等。</li>
+</ul>
+<ul>
+<li>socviz扩展包的asasec数据集。 这是美国社会学学会(ASA)的各分会2005年到2015年的一些数据。</li>
+</ul>
+<ul>
+<li>ggplot2包中的midwest数据集包含了美国中西部的一些县的统计数据， 如面积等。<br>来自ggplot2包的钻石数据集。</li>
+</ul>
+<h2 id="作图时应考虑的一些因素："><a href="#作图时应考虑的一些因素：" class="headerlink" title="作图时应考虑的一些因素："></a>作图时应考虑的一些因素：</h2><p>1.数值型变量的不同值可以表示为：</p>
+<ul>
+<li>同一坐标轴上的不同位置、</li>
+<li>不同轴上的位置、</li>
+<li>不同长度、</li>
+<li>不同角度或者斜率、</li>
+<li>不同面积、</li>
+<li>三维空间中的不同位置、</li>
+<li>颜色的不同明暗度、</li>
+<li>不同颜色饱和度、</li>
+<li>曲线的不同曲率、</li>
+<li>三维体积，</li>
+</ul>
+<p>这些表示的选择项越往后越难以被读者正确辨识。 使用颜色时，应该使用渐变的明暗度或者渐变色。</p>
+<p>2.分类变量的不同值可以表示为：</p>
+<ul>
+<li>不同分组、</li>
+<li>不同颜色、</li>
+<li>三维动态、</li>
+<li>不同符号。</li>
+</ul>
+<p>这些表示的选择项越往后越难辨识。 使用颜色时，应该使用明显不同的颜色而不应该使用渐变色。</p>
+<p>对于最少是零的变量， 是否应该以零作为坐标轴的最低值需要考虑， 但没有一定的规则。 同一组数据在不同的坐标范围或者长宽比下曲线的斜率会有很大差别。</p>
+]]></content>
+      <tags>
+        <tag>数据可视化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ggplot2散点图</title>
+    <url>/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/</url>
+    <content><![CDATA[<h2 id="基本的散点图"><a href="#基本的散点图" class="headerlink" title="基本的散点图"></a>基本的散点图</h2><p>以gapminder数据集作为输入数据， 做出简单的散点图， 并逐步进行改善。 这个数据集有多个国家在多个年份的期望寿命与人均GDP值， 作期望寿命对人均GDP的散点图， 每个国家的每个年份作为一个点。 散点图最重要的映射是x轴与y轴两个维度。</p>
+<p>首先调用ggplot()函数， 指定数据集， 将人均GDP映射到x轴， 将期望寿命映射到y轴， 结果保存为一个R变量：</p>
+<pre><code>&gt; install.packages(&quot;gapminder&quot;)
+
+&gt; library(gapminder)
+
+&gt; head(gapminder,20)
+# A tibble: 20 x 6
+   country     continent  year lifeExp     pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8.43e6      779.
+ 2 Afghanistan Asia       1957    30.3  9.24e6      821.
+ 3 Afghanistan Asia       1962    32.0  1.03e7      853.
+ 4 Afghanistan Asia       1967    34.0  1.15e7      836.
+ 5 Afghanistan Asia       1972    36.1  1.31e7      740.
+ 6 Afghanistan Asia       1977    38.4  1.49e7      786.
+ 7 Afghanistan Asia       1982    39.9  1.29e7      978.
+ 8 Afghanistan Asia       1987    40.8  1.39e7      852.
+ 9 Afghanistan Asia       1992    41.7  1.63e7      649.
+10 Afghanistan Asia       1997    41.8  2.22e7      635.
+11 Afghanistan Asia       2002    42.1  2.53e7      727.
+12 Afghanistan Asia       2007    43.8  3.19e7      975.
+13 Albania     Europe     1952    55.2  1.28e6     1601.
+14 Albania     Europe     1957    59.3  1.48e6     1942.
+15 Albania     Europe     1962    64.8  1.73e6     2313.
+16 Albania     Europe     1967    66.2  1.98e6     2760.
+17 Albania     Europe     1972    67.7  2.26e6     3313.
+18 Albania     Europe     1977    68.9  2.51e6     3533.
+19 Albania     Europe     1982    70.4  2.78e6     3631.
+20 Albania     Europe     1987    72    3.08e6     3739.
+
+&gt; p &lt;- ggplot(data = gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp))</code></pre>
+<p>ggplot()的调用中， 可以省略data =, mapping =, x =, y =， 写成：</p>
+<pre><code>&gt; p &lt;- ggplot(gapminder, aes(gdpPercap, lifeExp))</code></pre>
+<p>在如上指定了数据和映射后， 只要用geom_xxx()指定一个图形类型， 并与ggplot()的结果用加号连接就可以作图了，如：</p>
+<pre><code>&gt; p + geom_point()</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01b-1.png"></p>
+<p>实际上，上面的程序等同于调用<code>print(p + geom_point())</code>。 在R函数中或者在循环中需要显式地调用print()， 否则不会显示结果。 当载入了tidyverse系统时可以写成 <code>(p + geom_point()) %&gt;% print()</code>。</p>
+<h2 id="逐步改善"><a href="#逐步改善" class="headerlink" title="逐步改善"></a>逐步改善</h2><p>指定数据集、指定映射、选择适当的图形类型就可以做出基本的图形， 随后可以逐步对坐标系、坐标系刻度、标签与图例、配色等进行改善。 实际上，ggplot2包已经提供了十分合理的预设值， 用户只要进行一些必要的改动即可。</p>
+<p><strong>作图步骤之间用加号连接</strong>，这是ggplot包特有的语法。 例如， 用相同的映射做出拟合曲线图：</p>
+<pre><code>&gt; p + geom_smooth()
+`geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01c-1.png"></p>
+<pre><code>&gt; p + geom_smooth() + geom_point()
+`geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01d-1.png"></p>
+<pre><code>&gt; p + geom_point() + geom_smooth(method=&quot;lm&quot;)
+`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01e-1.png"></p>
+<p>注意geom_xxx()函数计算所需的变量值是从ggplot()函数保存在变量p中的信息提取的。</p>
+<p>在以上的所有图形中， x轴变量（人均GDP）分布非正态，严重右偏， 使得大多数散点重叠地分布在直角坐标系的左下角。 将x轴用对数刻度可以改善， 函数为scale_x_log10():</p>
+<pre><code>&gt; p + geom_point() + geom_smooth() + scale_x_log10(labels=scales::dollar)
+
+
+## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01g-1.png"></p>
+<p>scale_xxx()的labels选项指定如何标出坐标刻度数字， 参数值是一个函数对象， 如果scales包中找不到适当的功能， 可以自定义一个函数将数值转换为字符串。 scales包提供了comma, date, dollar, math, number, ordinal, pvalue, scientific, time等坐标刻度值转换函数。</p>
+]]></content>
+  </entry>
 </search>

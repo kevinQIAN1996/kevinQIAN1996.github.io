@@ -238,14 +238,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -284,6 +284,216 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/" class="post-title-link" itemprop="url">ggplot2散点图</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2020-11-20 11:18:47 / Modified: 16:42:21" itemprop="dateCreated datePublished" datetime="2020-11-20T11:18:47+08:00">2020-11-20</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="基本的散点图"><a href="#基本的散点图" class="headerlink" title="基本的散点图"></a>基本的散点图</h2><p>以gapminder数据集作为输入数据， 做出简单的散点图， 并逐步进行改善。 这个数据集有多个国家在多个年份的期望寿命与人均GDP值， 作期望寿命对人均GDP的散点图， 每个国家的每个年份作为一个点。 散点图最重要的映射是x轴与y轴两个维度。</p>
+<p>首先调用ggplot()函数， 指定数据集， 将人均GDP映射到x轴， 将期望寿命映射到y轴， 结果保存为一个R变量：</p>
+<pre><code>&gt; install.packages(&quot;gapminder&quot;)
+
+&gt; library(gapminder)
+
+&gt; head(gapminder,20)
+# A tibble: 20 x 6
+   country     continent  year lifeExp     pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8.43e6      779.
+ 2 Afghanistan Asia       1957    30.3  9.24e6      821.
+ 3 Afghanistan Asia       1962    32.0  1.03e7      853.
+ 4 Afghanistan Asia       1967    34.0  1.15e7      836.
+ 5 Afghanistan Asia       1972    36.1  1.31e7      740.
+ 6 Afghanistan Asia       1977    38.4  1.49e7      786.
+ 7 Afghanistan Asia       1982    39.9  1.29e7      978.
+ 8 Afghanistan Asia       1987    40.8  1.39e7      852.
+ 9 Afghanistan Asia       1992    41.7  1.63e7      649.
+10 Afghanistan Asia       1997    41.8  2.22e7      635.
+11 Afghanistan Asia       2002    42.1  2.53e7      727.
+12 Afghanistan Asia       2007    43.8  3.19e7      975.
+13 Albania     Europe     1952    55.2  1.28e6     1601.
+14 Albania     Europe     1957    59.3  1.48e6     1942.
+15 Albania     Europe     1962    64.8  1.73e6     2313.
+16 Albania     Europe     1967    66.2  1.98e6     2760.
+17 Albania     Europe     1972    67.7  2.26e6     3313.
+18 Albania     Europe     1977    68.9  2.51e6     3533.
+19 Albania     Europe     1982    70.4  2.78e6     3631.
+20 Albania     Europe     1987    72    3.08e6     3739.
+
+&gt; p &lt;- ggplot(data = gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp))</code></pre>
+<p>ggplot()的调用中， 可以省略data =, mapping =, x =, y =， 写成：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">ggplot2可视化入门及作图一般原则</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2020-11-20 10:43:02 / Modified: 11:18:12" itemprop="dateCreated datePublished" datetime="2020-11-20T10:43:02+08:00">2020-11-20</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Hadley Wickem的ggplot2包是R的一个作图用的扩展包， 它实现了“图形的语法”， 将一个作图任务分解为若干个子任务， 只要完成各个子任务就可以完成作图。 在作常用的图形时， 只需要两个步骤：</p>
+<blockquote>
+<p> <strong>首先将图形所展现的数据输入到ggplot()函数中， 然后调用某个geom_xxx()函数， 指定图形类型，如散点图、曲线图、盒形图等。</strong></p>
+</blockquote>
+<p>如果需要进一步控制图形细节， 只要继续调用其它函数， 就可以控制变量值的表现方式(scale)、图例、配色等。 这使得我们很容易做出基本的图形， 在有需要时再深入学习， 做出更为满意的图形。</p>
+<p>与基本R中的作图系统相比， ggplot2的作图有规律可循， 作图结果直接达到出版印刷质量， 除了可以按照一些既定模式做出常见种类的图形， 也很容易将不同图形种类组合在一起， 或者设计新颖的图形。 基本R的作图结果通常不够美观， 如果要将不同种类图形组合在一起比较困难， 对设计新的图形类型支持也不够好。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1094,212 +1304,11 @@ Levels: 男 女</code></pre>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="WENJU QIAN">
-      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" class="post-title-link" itemprop="url">数值型向量及其运算</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2020-10-31 18:21:24" itemprop="dateCreated datePublished" datetime="2020-10-31T18:21:24+08:00">2020-10-31</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-11-04 20:07:29" itemprop="dateModified" datetime="2020-11-04T20:07:29+08:00">2020-11-04</time>
-      </span>
 
   
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="数值型向量"><a href="#数值型向量" class="headerlink" title="数值型向量"></a>数值型向量</h2><p><strong>向量</strong>是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。</p>
-<p>用c()函数把多个元素或向量组合成一个向量。如</p>
-<pre><code>&gt; marks &lt;- c(10, 6, 4, 7, 8)
-&gt; x &lt;- c(1:3, 10:13)
-&gt; x1 &lt;- c(1, 2)
-&gt; x2 &lt;- c(3, 4)
-&gt; x &lt;- c(x1, x2)
-&gt; x
-
-运行结果
-## [1] 1 2 3 4</code></pre>
-<p>10:13这样的写法表示从10到13的整数组成的向量。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="WENJU QIAN">
-      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" class="post-title-link" itemprop="url">逻辑型向量及其运算</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2020-10-31 18:21:24" itemprop="dateCreated datePublished" datetime="2020-10-31T18:21:24+08:00">2020-10-31</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-11-04 20:07:26" itemprop="dateModified" datetime="2020-11-04T20:07:26+08:00">2020-11-04</time>
-      </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>逻辑型是R的基本数据类型之一，只有两个值TRUE和FALSE, 缺失时为NA。逻辑值一般产生自比较，如</p>
-<pre><code>&gt; sele &lt;- (log10(15) &lt; 2)
-&gt; print(sele)
-
-## [1] TRUE</code></pre>
-<p>向量比较结果为逻辑型向量。如</p>
-<pre><code>&gt; c(1, 3, 5) &gt; 2
-## [1] FALSE  TRUE  TRUE
-
-&gt; (1:4) &gt;= (4:1)    
-## [1] FALSE FALSE  TRUE  TRUE</code></pre>
-<p>从例子可以看出，向量比较也遵从R的向量间运算的一般规则： 向量与标量的运算是向量每个元素与标量都分别运算一次， 等长向量的运算时对应元素的运算， 不等长但长度为倍数关系的向量运算是把短的从头重复利用。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-
-  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
