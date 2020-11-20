@@ -1981,6 +1981,38 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
 &gt; p + geom_point() +
 +     geom_smooth(method=&quot;loess&quot;) +
 +     scale_x_log10(labels=scales::dollar)</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point04-bad-1.png"></p>
+<p>我们发现，散点并没有使用草绿色，而且图形右侧有一个chartreuse4图例。 这是因为， aes()仅用来指定变量与图形元素类型的映射，所以实际上是生成了一个仅有一个常数值”chartreuse4”的新变量， 用颜色表示这个新变量。 为了指定固定颜色， 应将color=作为geom_xxx()函数的选项， 而不是放在aes()映射中，如：</p>
+<pre><code>&gt; p &lt;- ggplot(data=gapminder,
+  mapping = aes(
+    x = gdpPercap,
+    y = lifeExp))
+
+&gt; p + geom_point(color=&quot;chartreuse4&quot;) +
++ geom_smooth(method=&quot;loess&quot;) +
++     scale_x_log10(labels=scales::dollar)
+
+`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point05-1.png"></p>
+<p>geom_xxx()函数接受许多关于颜色、透明度、符号、线型的设置参数。 比如， 下面的程序指定了散点的透明度， 以及拟合直线的粗细：</p>
+<pre><code>&gt; p + geom_point(alpha=0.5) +
++ geom_smooth(method = &quot;lm&quot;,color=&quot;cadetblue1&quot;,se=FALSE,size=4,alpha=0.3) + scale_x_log10(labels=scales::dollar)
+
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point05b-1.png"></p>
+<p>程序中size指定了线的以毫米为单位的粗细， se = FALSE关闭了置信区间显示。 用alpha =设置了透明度， 取0和1之间的值， 数值越小越透明。</p>
+<p>下面用labs()函数给图形加上适当的标题：</p>
+<pre><code>&gt; p + geom_point(alpha=0.5) + 
++     geom_smooth(method = &quot;gam&quot;) +
++     scale_x_log10(labels=scales::dollar) + 
++     labs(
++         x=&quot;人均GDP&quot;,
++         y=&quot;期望寿命(年数)&quot;,
++         title = &quot;经济增长与期望寿命&quot;,
++         subtitle = &quot;数据点为每个国家每年&quot;,
++         caption = &quot;数据来源：gapminder&quot;)</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point06-1.png"></p>
+<p>可以看出， labs()规定了上方的标题、小标题， x轴、y轴的标题， 右下方的标注(caption)。 坐标轴刻度数值的规定则需要在scale_xxx()函数中给出</p>
 ]]></content>
   </entry>
 </search>
