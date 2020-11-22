@@ -2295,4 +2295,161 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
         <tag>RNAseq</tag>
       </tags>
   </entry>
+  <entry>
+    <title>RNAseq_6_无重复差异基因分析</title>
+    <url>/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p>######1）简介<br>edgeR作用对象是count文件，rows 代表基因，行代表文库，count代表的是比对到每个基因的reads数目。它主要关注的是差异表达分析，而不是定量基因表达水平。</p>
+<p>edgeR works on a table of integer read counts, with rows corresponding to genes and columns to independent libraries. The counts represent the total number of reads aligning to each gene (or other genomic locus).edgeR is concerned with diﬀerential expression analysis rather than with the quantiﬁcation of expression levels. It is concerned with relative changes in expression levels between conditions,but not directly with estimating absolute expression levels.</p>
+<p>edgeR作用的是真实的比对统计，因此不建议用预测的转录本</p>
+<p>Note that edgeR is designed to work with actual read counts. We not recommend that predicted transcript abundances are input the edgeR in place of actual counts.</p>
+<p>归一化原因：</p>
+<blockquote>
+<p>技术原因影响差异表达分析：<br>1）Sequencing depth：统计测序深度(即代表的是library size)；<br>2）RNA composition：个别异常高表达基因导致其它基因采样不足<br>3）GC content： sample-speciﬁc eﬀects for GC-content can be detected<br>4）sample-speciﬁc eﬀects for gene length have been detected</p>
+</blockquote>
+<p><strong>注意：edgeR必须是原始表达量，而不能是rpkm等矫正过的。</strong><br>Note that normalization in edgeR is model-based, and the original read counts are not themselves transformed. This means that users should not transform the read counts in any way before inputing them to edgeR. For example, users should not enter RPKM or FPKM values to edgeR in place of read counts. Such quantities will prevent edgeR from correctly estimating the mean-variance relationship in the data, which is a crucial to the statistical strategies underlying edgeR.Similarly, users should not add artiﬁcial values to the counts before inputing them to edgeR.<br>个人是不太推荐没有重复的差异表达分析，因为毕竟统计学上的p值是为了证明两个样本的差异是真实存在而不是抽样误差导致的，<br>因此每当别人提问的时候, 我个人的建议就是定性看看倍数变化吧. 但是如果真的强行要算p值, 其实也不是不行, edgeR就是一种选择.</p>
+<h5 id="2-、首先安装edgeR-包"><a href="#2-、首先安装edgeR-包" class="headerlink" title="2)、首先安装edgeR 包"></a>2)、首先安装edgeR 包</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#如果没有安装BiocMaRnager则先安装BiocManager，之后通过BiocManager安装edgeR包</span><br><span class="line"></span><br><span class="line">if (!requireNamespace(&quot;BiocManager&quot;, quietly &#x3D; TRUE))</span><br><span class="line">    install.packages(&quot;BiocManager&quot;)</span><br><span class="line"></span><br><span class="line">BiocManager::install(&quot;edgeR&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>安装结束之后开始处理文件</p>
+<h5 id="3）矩阵构建及差异分析"><a href="#3）矩阵构建及差异分析" class="headerlink" title="3）矩阵构建及差异分析"></a>3）矩阵构建及差异分析</h5><p>需要构建2个矩阵：1、表达矩阵；2、分组矩阵( 实验设计)；</p>
+<h6 id="3-1-表达矩阵"><a href="#3-1-表达矩阵" class="headerlink" title="3.1 表达矩阵"></a>3.1 表达矩阵</h6><p>3.11 读取文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 首先读取counts文件之后查看count文件前6行</span><br><span class="line">&gt; rawdata &lt;- read.csv(file &#x3D; &quot;C:&#x2F;&#x2F;Users&#x2F;My&#x2F;Desktop&#x2F;diff_name&quot;,header &#x3D; T,stringsAsFactors &#x3D; F)</span><br><span class="line"># 查看读取的diff_name文件</span><br><span class="line">&gt; head(rawdata)</span><br><span class="line">  X    ensembl_gene_id               gene_id control_W55 test_K54 external_gene_name</span><br><span class="line">1 1 ENSMUSG00000000001  ENSMUSG00000000001.4           7       11              Gnai3</span><br><span class="line">2 2 ENSMUSG00000000003 ENSMUSG00000000003.15           0        0               Pbsn</span><br><span class="line">3 3 ENSMUSG00000000028 ENSMUSG00000000028.15           1        0              Cdc45</span><br><span class="line">4 4 ENSMUSG00000000031 ENSMUSG00000000031.16           0        2                H19</span><br><span class="line">5 5 ENSMUSG00000000037 ENSMUSG00000000037.17           0        0              Scml2</span><br><span class="line">6 6 ENSMUSG00000000049 ENSMUSG00000000049.11          54       33               Apoh</span><br></pre></td></tr></table></figure>
+<p>读取完数据之后我们先预处理一下数据，比如我只想要ensembl_gene_id、control_w55、tese_k54、external_gene_name这几列，并调整一下顺序。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; swap_rawdata &lt;- cbind(rawdata$ensembl_gene_id,rawdata$external_gene_name,rawdata$control_W55,rawdata$test_K54)</span><br><span class="line">&gt; head(swap_rawdata)</span><br><span class="line">     [,1]                 [,2]    [,3] [,4]</span><br><span class="line">[1,] &quot;ENSMUSG00000000001&quot; &quot;Gnai3&quot; &quot;7&quot;  &quot;11&quot;</span><br><span class="line">[2,] &quot;ENSMUSG00000000003&quot; &quot;Pbsn&quot;  &quot;0&quot;  &quot;0&quot; </span><br><span class="line">[3,] &quot;ENSMUSG00000000028&quot; &quot;Cdc45&quot; &quot;1&quot;  &quot;0&quot; </span><br><span class="line">[4,] &quot;ENSMUSG00000000031&quot; &quot;H19&quot;   &quot;0&quot;  &quot;2&quot; </span><br><span class="line">[5,] &quot;ENSMUSG00000000037&quot; &quot;Scml2&quot; &quot;0&quot;  &quot;0&quot; </span><br><span class="line">[6,] &quot;ENSMUSG00000000049&quot; &quot;Apoh&quot;  &quot;54&quot; &quot;33&quot;</span><br><span class="line"># 得到的这个swap_rawdata是一个matrix，如果想要让其变为data frame</span><br><span class="line">&gt; swap_rawdata &lt;- data.frame(swap_rawdata)</span><br><span class="line"># 查看一下是否转化成功</span><br><span class="line">&gt; head(swap_rawdata)</span><br><span class="line">     ensembl_gene_id external_gene_name control_W55 test_K54</span><br><span class="line">1 ENSMUSG00000000001              Gnai3           7       11</span><br><span class="line">2 ENSMUSG00000000003               Pbsn           0        0</span><br><span class="line">3 ENSMUSG00000000028              Cdc45           1        0</span><br><span class="line">4 ENSMUSG00000000031                H19           0        2</span><br><span class="line">5 ENSMUSG00000000037              Scml2           0        0</span><br><span class="line">6 ENSMUSG00000000049               Apoh          54       33</span><br><span class="line"># 转化完转化先存一份csv文件在电脑里，便于之后用电脑查看</span><br><span class="line">&gt; write.csv(x &#x3D; swap_rawdata,file &#x3D; &quot;C:&#x2F;&#x2F;Users&#x2F;My&#x2F;Desktop&#x2F;swap_rawdata.csv&quot;)</span><br><span class="line"># 存完之后直接从电脑导入你刚存的文件，这样做可以避免出现numeric数据框变成factor形式</span><br><span class="line">&gt; swap_rawdata &lt;- read.table(&quot;swap_rawdata.csv&quot;,header &#x3D; T,sep &#x3D; &quot;,&quot;)</span><br><span class="line"># 查看</span><br><span class="line">&gt; head(swap_rawdata)</span><br><span class="line">  X    ensembl_gene_id external_gene_name control_W55 test_K54</span><br><span class="line">1 1 ENSMUSG00000000001              Gnai3           7       11</span><br><span class="line">2 2 ENSMUSG00000000003               Pbsn           0        0</span><br><span class="line">3 3 ENSMUSG00000000028              Cdc45           1        0</span><br><span class="line">4 4 ENSMUSG00000000031                H19           0        2</span><br><span class="line">5 5 ENSMUSG00000000037              Scml2           0        0</span><br><span class="line">6 6 ENSMUSG00000000049               Apoh          54       33</span><br><span class="line">&gt; data.class(swap_rawdata[1,1])</span><br></pre></td></tr></table></figure>
+
+
+<h6 id="3-2-接着构建DGEList对象"><a href="#3-2-接着构建DGEList对象" class="headerlink" title="3.2 接着构建DGEList对象"></a>3.2 接着构建DGEList对象</h6><p>这里因为已经有rawdata的count文件，因此直接用DGEList()函数就行了，否则要用readDGE()函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 首先载入edgeR 包</span><br><span class="line">&gt; library(edgeR)</span><br><span class="line"># 构建DGEList</span><br><span class="line">&gt; group &lt;- 1:2</span><br><span class="line">&gt; y &lt;- DGEList(counts &#x3D; swap_rawdata[,4:5],genes &#x3D; swap_rawdata[,2:3],group &#x3D; group)</span><br><span class="line"># 查看构建完y的信息</span><br><span class="line">&gt; y</span><br></pre></td></tr></table></figure>
+<p>查看构建DGElist的运行结果:</p>
+<p> DGEList对象主要有三部分：</p>
+<p>1、counts矩阵：包含的是整数counts;</p>
+<p>2、samples数据框：包含的是文库(sample)信息。包含 lib.size列 ：for the library size (sequencing depth) for each sample,如果不自定义，  the library sizes will be computed from the column sums of the counts。其中还有一个group列，用于指定每个sample组信息</p>
+<p>3、一个可选的数据框genes：gene的注释信息</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-fa83a5ee0fe58872.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><strong>第二步： 过滤 low counts数据。</strong>与DESeq2的预过滤不同，DESeq2的预过滤只是为了改善后续运算性能，在运行过程中依旧会自动处理low count数据，edgeR需要在分析前就要排除那些low count数据，而且非常严格。从生物学角度，有生物学意义的基因的表达量必须高于某一个阈值。从统计学角度上， low count的数据不太可能有显著性差异，而且在多重试验矫正阶段还会拖后腿。 </p>
+<h5 id="数据过滤"><a href="#数据过滤" class="headerlink" title="数据过滤"></a>数据过滤</h5><p>由于原来的表达量矩阵基因数太大, 可能存在某些基因根本没有表达, 因此需要预先过滤</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; keep &lt;- rowSums(cpm(y)&gt;1) &gt;&#x3D; 1</span><br><span class="line">&gt; y &lt;- y[keep, , keep.lib.sizes&#x3D;FALSE]</span><br><span class="line">&gt; y</span><br></pre></td></tr></table></figure>
+<p>这部分代码的意思指的是保留在至少在一个样本里有表达的基因(CPM &gt; 1)。 基因数就从原来的55318变为15868</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-d1f8202b26ca0a6b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>###标准化<br>考虑到测序深度不同, 我们需要对其进行标准化, 避免文库大小不同导致的分析误差.</p>
+<p>edgeR里默认采用TMM(trimmed mean of M-values) 对配对样本进行标准化，用到的函数是calcNormFactors</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; y &lt;- calcNormFactors(y)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-8b5ece418efe7862.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<h3 id="差异表达分析"><a href="#差异表达分析" class="headerlink" title="差异表达分析"></a>差异表达分析</h3><p>不同差异表达分析工具的目标就是预测出dispersion(离散值), 有了离散值就能够计算p值. 那么dispersion怎么计算呢? edgeR给了几个方法</p>
+<p>根据经验给定一个值(BCV, square-root-dispersion). edgeR给的建议是, 如果你是人类数据, 且实验做的很好(无过多的其他因素影响), 设置为0.4, 如果是遗传上相似的模式物种（这里为小鼠）, 设置为0.1 （查询edgeR的bioconductor包所得）<br>Simply pick a reasonable dispersion value, based on your experience with similar data,and use that for exactTest or glmFit. Typical values for the common BCV (square-root dispersion) for datasets arising from well-controlled experiments are 0.4 for human data,0.1 for data on genetically identical model organisms or 0.01 for technical replicates.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; y_bcv &lt;- y</span><br><span class="line"># 因为本次的数据使用的是小鼠的数据，所以使用0.1</span><br><span class="line">&gt; bcv &lt;- 0.1</span><br><span class="line">&gt; et &lt;- exactTest(y_bcv, dispersion &#x3D; bcv ^ 2)</span><br><span class="line">&gt; gene1 &lt;- decideTestsDGE(et, p.value &#x3D; 0.05, lfc &#x3D; 0)</span><br><span class="line">&gt; head(gene1)</span><br><span class="line">&gt; summary(gene1)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-d48f8e81d2527524.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>由统计结果可知，下调的基因为816个，上调的基因为572个</p>
+<p>如果觉得觉得基因较多的话，可以上调bcv的值</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; y_bcv &lt;- y</span><br><span class="line">&gt; bcv &lt;- 0.2</span><br><span class="line">&gt; et2 &lt;- exactTest(y_bcv, dispersion &#x3D; bcv ^ 2)</span><br><span class="line">&gt; gene2 &lt;- decideTestsDGE(et2, p.value &#x3D; 0.05, lfc &#x3D; 0)</span><br><span class="line">&gt; summary(gene2)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-7c9c6b8d2527a3a0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>由统计结果可知，下调的基因为377个，上调的基因为221个<br>与之前的结果相比，的确已经减少很多</p>
+<p>将结果整理成excel表</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 改一下gene1的名称</span><br><span class="line">&gt; colnames(gene1) &lt;- &quot;Signifi&quot;</span><br><span class="line"># 组合将所需要的数据组成一个新的data.frame</span><br><span class="line">&gt; results &lt;- cbind(y$genes,y$counts,et$table,gene1)</span><br><span class="line">&gt; head(results)</span><br><span class="line"># 将新生成的results数据框写成一个excel数据表</span><br><span class="line">&gt; write.csv(x &#x3D; results,file &#x3D; &quot;C:&#x2F;&#x2F;Users&#x2F;My&#x2F;Desktop&#x2F;DEresult.csv&quot;,row.names &#x3D; F)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-15d86de730b879bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="组合成的新的data.frame表"></p>
+<p>生成的excel表可以将down expressed 和 up expressed基因分开</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-1b078402234a1257.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="生成的excel"></p>
+<p>参考文献：<a href="https://blog.csdn.net/u012110870/article/details/102804557">https://blog.csdn.net/u012110870/article/details/102804557</a><br><a href="https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf">https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>RNAseq_5_count与基因注释</title>
+    <url>/2020/11/23/RNAseq_5_count%E4%B8%8E%E5%9F%BA%E5%9B%A0%E6%B3%A8%E9%87%8A/</url>
+    <content><![CDATA[<h2 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h2><p>在上篇的比对中，我们需要纠结是否真的需要比对，如果你只需要知道已知基因的表达情况，那么可以选择alignment-free工具（例如salmon, sailfish)，如果你需要找到noval isoforms，那么就需要alignment-based工具（如HISAT2, STAR）。到了这一篇的基因（转录本）定量，需要考虑的因素就更加多了，以至于我不知道如何说清才能理清逻辑。</p>
+<p>定量分为三个水平</p>
+<ul>
+<li>  基因水平(gene-level)</li>
+<li>  转录本水平(transcript-level)</li>
+<li>  外显子使用水平(exon-usage-level)。</li>
+</ul>
+<p>在<strong>基因水平</strong>上，常用的软件为HTSeq-count，featureCounts，BEDTools, Qualimap, Rsubread, GenomicRanges等。以常用的HTSeq-count为例，这些工具要解决的问题就是根据read和基因位置的overlap判断这个read到底是谁家的孩子。值得<strong>注意</strong>的是不同工具对multimapping reads处理方式也是不同的，例如HTSeq-count就直接当它们不存在。而Qualimpa则是一人一份，平均分配。</p>
+<p><img src="//upload-images.jianshu.io/upload_images/2013053-b58df35852061ed0.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/678/format/webp" alt="image"></p>
+<p>对每个基因计数之后得到的count matrix再后续的分析中，要注意标准化的问题。如果你要比较同一个样本(within-sample)不同基因之间的表达情况，你就需要考虑到<strong>转录本长度</strong>，因为转录本越长，那么检测的片段也会更多，直接比较等于让小孩和大人进行赛跑。如果你是比较不同样本（across sample）同一个基因的表达情况，虽然不必在意转录本长度，但是你要考虑到<strong>测序深度</strong>（sequence depth)，毕竟测序深度越高，检测到的概率越大。除了这两个因素外，你还需要考虑GC%所导致的偏差，以及测序仪器的系统偏差。目前对read count标准化的算法有RPKM（SE）, FPKM（PE），TPM, TMM等，不同算法之间的差异与换算方法已经有文章进行整理和吐槽了。<strong>但是</strong>，有一些下游分析的软件会要求是输入的count matrix是原始数据，未经标准化，比如说DESeq2，这个时候你需要<strong>注意</strong>你上一步所用软件会不会进行标准化。</p>
+<p>在<strong>转录本水平</strong>上，一般常用工具为Cufflinks和它的继任者StringTie， eXpress。这些软件要处理的难题就时转录本亚型（isoforms）之间通常是有重叠的，当二代测序读长低于转录本长度时，如何进行区分？这些工具大多采用的都是expectation maximization（EM）。好在我们有三代测序。</p>
+<p>上述软件都是alignment-based，目前许多alignment-free软件，如kallisto, silfish, salmon，能够省去比对这一步，直接得到read count，在运行效率上更高。不过最近一篇文献[1]指出这类方法在估计丰度时存在样本特异性和读长偏差。</p>
+<p>在<strong>外显子使用水平</strong>上，其实和基因水平的统计类似。但是值得注意的是为了更好的计数，我们需要提供无重叠的外显子区域的gtf文件[2]。用于分析差异外显子使用的DEXSeq提供了一个Python脚本（dexseq_prepare_annotation.py）执行这个任务。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>计数分为三个水平： gene-level, transcript-level, exon-usage-level</p>
+<p>标准化方法： FPKM RPKM TMM TPM</p>
+<h2 id="输出表达矩阵"><a href="#输出表达矩阵" class="headerlink" title="输出表达矩阵"></a>输出表达矩阵</h2><p>在RNA-Seq分析中，每一个基因就是一个feature（特征？），而基因被认为是它的所有外显子的和集。在可变剪切分析中，可以单独把每个外显子当作一个feature。而在ChIP-Seq分析中，feature则是预先定义的结合域。但是确定一个read到底属于哪一个feature有时会非常棘手。因此HTSeq提供了三种模式，示意图见前一幅图</p>
+<ul>
+<li>  the union of all the sets S(i) for mode union. This mode is recommended for most use cases.</li>
+<li>  the intersection of all the sets S(i) for mode intersection-strict.</li>
+<li>  the intersection of all non-empty sets S(i) for mode intersection-nonempty.</li>
+</ul>
+<p>基本用法非常的简单：</p>
+<blockquote>
+<p>htseq-count [options] <alignment_file> <gtf_file></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 安装</span><br><span class="line">conda install htseq</span><br><span class="line"># 利用htseq-count对sort之后的bam文件进行reads计数</span><br><span class="line">htseq-count -r pos -f bam &#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;19R577_paired.hisat2_sorted.bam &#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;genome&#x2F;Anotation&#x2F;gencode.vM23.annotation.gtf &gt; 19R577_paired.count 2&gt;&#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;19R577_htseq.log &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行的时间会比较久，所以可以去了解不同参数的用法了，其中比较常用的为：</p>
+<ul>
+<li>  -f bam/sam： 指定输入文件格式，默认SAM</li>
+<li>  -r name/pos: 你需要利用samtool sort对数据根据read name或者位置进行排序，默认是name</li>
+<li>  -s yes/no/reverse: 数据是否来自于strand-specific assay。DNA是双链的，所以需要判断到底来自于哪条链。如果选择了no， 那么每一条read都会跟正义链和反义链进行比较。默认的yes对于双端测序表示第一个read都在同一个链上，第二个read则在另一条链上。</li>
+<li>  -a 最低质量， 剔除低于阈值的read</li>
+<li>  -m 模式 union（默认）, intersection-strict and intersection-nonempty。一般而言就用默认的，作者也是这样认为的。</li>
+<li>  -i id attribute: 在GTF文件的最后一栏里，会有这个基因的多个命名方式（如下）， RNA-Seq数据分析常用的是gene_id， 当然你可以写一个脚本替换成其他命名方式。</li>
+</ul>
+<p>对count数据进行查看</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 利用wc指令我们可以计算count文件的行数</span><br><span class="line">&gt; wc -l *.count</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-470a0a097f2c6e28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="统计count文件的行数"></p>
+<p>看下每个文件的格式，</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看前4行,第一列ensembl_gene_id,第二列read_count计数</span><br><span class="line">&gt; $ head -n 4 *.count     </span><br><span class="line"> # 查看后四行</span><br><span class="line">&gt; $ tail -n 4 *.count</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-01520ab9d5e7a426.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="查看count文件的首行及末行"></p>
+<h4 id="合并表达矩阵并进行注释（R中进行）"><a href="#合并表达矩阵并进行注释（R中进行）" class="headerlink" title="合并表达矩阵并进行注释（R中进行）"></a>合并表达矩阵并进行注释（R中进行）</h4><p>上一步得到的2个单独的矩阵文件，现在要把这<strong>2个文件合并为行为基因名，列为样本名，中间为count的矩阵文件</strong>。</p>
+<ul>
+<li><h6 id="从上面看出需要至少做两步工作才能更好理解和往下进行分析"><a href="#从上面看出需要至少做两步工作才能更好理解和往下进行分析" class="headerlink" title="从上面看出需要至少做两步工作才能更好理解和往下进行分析"></a>从上面看出需要至少做两步工作才能更好理解和往下进行分析</h6></li>
+</ul>
+<h6 id="第一，需要把2个文件合并；"><a href="#第一，需要把2个文件合并；" class="headerlink" title="第一，需要把2个文件合并；"></a>第一，需要把2个文件合并；</h6><h6 id="第二，需要把ensembl-gene-id转换为gene-symbol-（这一步不进行也行，后面还需要）"><a href="#第二，需要把ensembl-gene-id转换为gene-symbol-（这一步不进行也行，后面还需要）" class="headerlink" title="第二，需要把ensembl_gene_id转换为gene_symbol;（这一步不进行也行，后面还需要）"></a>第二，需要把ensembl_gene_id转换为gene_symbol;（这一步不进行也行，后面还需要）</h6><ul>
+<li>  熟悉python的朋友可以参考<a href="https://www.jianshu.com/p/e9742bbf83b9">这篇文章</a></li>
+<li>  我用R中的merge命令来处理，参考<a href="https://www.jianshu.com/p/24cf44b610a7">这里</a>和<a href="https://www.jianshu.com/p/e9742bbf83b9">这里</a></li>
+</ul>
+<p>运行R设置工作路径并查看当前目录下的文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; setwd(&quot;&#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;&quot;)</span><br><span class="line">&gt; list.files()</span><br></pre></td></tr></table></figure>
+<p>运行结果</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-b70af825113864eb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<h6 id="1-载入数据，添加列名"><a href="#1-载入数据，添加列名" class="headerlink" title="(1) 载入数据，添加列名"></a>(1) 载入数据，添加列名</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 防止R自动把字符串string的列辨认成factor</span><br><span class="line">&gt; options(stringAsFactor &#x3D;  FALSE)  </span><br><span class="line"># 从19R576_paired.count文件中读取数据，并添加列名，之后生成新文件命名为control_W55</span><br><span class="line">&gt; control_W55 &lt;- read.table(&quot;19R576_paired.count&quot;,sep &#x3D; &quot;\t&quot;,col.names&#x3D;c(&quot;gene_id&quot;,&quot;control_W55&quot;))</span><br><span class="line"># 查看前6行</span><br><span class="line">&gt; head(control_W55)</span><br><span class="line"># 类似的方法处理19R577_paired.count，并存储到</span><br><span class="line">&gt; test_K54 &lt;- read.table(&quot;19R577_paired.count&quot;,sep &#x3D; &quot;\t&quot;,col.names&#x3D;c(&quot;gene_id&quot;,&quot;test_K54&quot;))</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-5948b355119d8bec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>######(2)数据整合<br><strong>merge进行整合</strong><br>gencode的注释文件中的gene_id（如ENSMUSG00000105298.13_3）在EBI是不能搜索到的，所以用gsub功能只保留ENSMUSG00000105298这部分<br>处理之前先看一下,也就是最后5行是我们不需要的，可以删除</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-1fa21910e16f20e7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="查看文件的最后五行"></p>
+<p>整合文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 将control_w55和test_K54这两个文件通过&quot;gene_id&quot;进行merge，生成新的merge好的文件raw_count</span><br><span class="line">&gt; raw_count &lt;- merge(control_W55,test_K54, by &#x3D; &quot;gene_id&quot;)</span><br><span class="line"># 查看merge后的文件的前6行</span><br><span class="line">&gt; head(raw_count)</span><br><span class="line"># 查看后六行</span><br><span class="line">&gt; tail(raw_count)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-04cb464c28b58a9b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并文件并查看前六行"><br><img src="https://upload-images.jianshu.io/upload_images/3194654-3eae806f3b0f9875.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="查看合并后的文件的后六行"></p>
+<p>######删除前5行<br>这里要注意，因为读入之后顺序变了，删除的时候看下删除的是哪些行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; raw_count_filt &lt;- raw_count[-1:-5,]</span><br><span class="line">&gt; head(raw_count_filt)</span><br></pre></td></tr></table></figure>
+<p>删除之后的结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-52b3b3550c8494b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><br>######因为我们无法在EBI数据库上直接搜索找到ENSMUSG00000024045.5这样的基因，只能是ENSMUSG00000024045的整数，没有小数点，所以需要进一步替换为整数的形式。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 第一步通过gsub工具将匹配到的.以及后面的数字连续匹配并替换为空，并赋值给ENSEMBL</span><br><span class="line">&gt;ENSEMBL &lt;- gsub(&quot;\\.\\d*&quot;, &quot;&quot;, raw_count_filt$gene_id) </span><br><span class="line"># 将ENSEMBL重新添加到raw_count_filt1矩阵</span><br><span class="line">&gt;row.names(raw_count_filt) &lt;- ENSEMBL</span><br><span class="line"># 查看&gt;head(raw_count_filt)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-51cc729134d0ca5b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>可以将最后得到的raw_count_filt文件通过save()函数保存成.Rdata文件，然后复制放在自己的桌面，然后用自己的Rstudio打开</p>
+<h6 id="3-对基因进行注释-获取gene-symbol"><a href="#3-对基因进行注释-获取gene-symbol" class="headerlink" title="(3) 对基因进行注释-获取gene_symbol"></a>(3) 对基因进行注释-获取gene_symbol</h6><h6 id="以下两种方式可以进行"><a href="#以下两种方式可以进行" class="headerlink" title="以下两种方式可以进行"></a>以下两种方式可以进行</h6><p>第一：去<a href="https://biodbnet-abcc.ncifcrf.gov/db/db2db.php">这里</a>或<a href="https://www.biotools.fr/mouse/ensembl_symbol_converter">这里</a>的网页版，输入列表即可输出，不再赘述<br>第二：用bioMart对ensembl_id转换成gene_symbol<br>bioMart包是一个连接bioMart数据库的R语言接口，能通过这个软件包自由连接到bioMart数据库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 首先检查BioManager包是否安装</span><br><span class="line">if (!requireNamespace(&quot;BiocManager&quot;, quietly &#x3D; TRUE))</span><br><span class="line">    install.packages(&quot;BiocManager&quot;)</span><br><span class="line"># 如果BioManager包已经安装，则通过BioManager包安装biomaRt包</span><br><span class="line">BiocManager::install(&quot;biomaRt&quot;)</span><br><span class="line"># 因为我的文件是放在桌面上的，所以先设置R的工作目录为桌面路径</span><br><span class="line">&gt; setwd(&quot;C:&#x2F;&#x2F;Users&#x2F;My&#x2F;Desktop&#x2F;&quot;)</span><br><span class="line"># 加载放在桌面上的.Rdata文件</span><br><span class="line">&gt; load(&quot;raw_count.Rdata&quot;)</span><br><span class="line"># 加载所需要的R包</span><br><span class="line">&gt; library(&#39;biomaRt&#39;)</span><br><span class="line">&gt; library(&quot;curl&quot;)</span><br><span class="line"># 用bioMart对差异表达基因进行注释</span><br><span class="line">&gt; mart &lt;- useDataset(&quot;mmusculus_gene_ensembl&quot;, useMart(&quot;ensembl&quot;))</span><br><span class="line">&gt; my_ensembl_gene_id&lt;-row.names(raw_count_filt)</span><br><span class="line">&gt; mms_symbols&lt;- getBM(attributes&#x3D;c(&#39;ensembl_gene_id&#39;,&#39;external_gene_name&#39;,&quot;description&quot;),filters &#x3D; &#39;ensembl_gene_id&#39;, values &#x3D; my_ensembl_gene_id, mart &#x3D; mart)</span><br></pre></td></tr></table></figure>
+<p>执行完之后需要等待一段时间提交检索，下方会有一个进度条</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-6a199fb658862085.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>基因注释结束后，查看注释结果</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-abbae3370602ce6d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="基因注释结束后的结果"></p>
+<p>####合并数据成一个文件</p>
+<p>注意：合并的话两个数据必须有共同的列名，我们先看一下</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-216b5ca4d3e7504a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>可见，两个文件没有共同的列名，所以要先给’raw_count_filt’添加一个‘ensembl_gene_id’的列名<br>方法如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 将raw_count_filt的行名赋值到一个ensembl_gene_id的变量</span><br><span class="line">&gt; ensembl_gene_id&lt;-rownames(raw_count_filt)</span><br><span class="line"># 将行名单独变成一列加到raw_count_filt文件中</span><br><span class="line">&gt; raw_count_filt &lt;- cbind(ensembl_gene_id,raw_count_filt)</span><br><span class="line"># 添加列名</span><br><span class="line">&gt; colnames(raw_count_filt)[1] &lt;- c(&quot;ensembl_gene_id&quot;)</span><br><span class="line"># 将raw_count_filt文件和mms_symbols文件通过ensembl_gene_id而merge在一起，生成新的文件</span><br><span class="line">&gt; diff_name&lt;-merge(raw_count_filt,mms_symbols,by&#x3D;&quot;ensembl_gene_id&quot;)</span><br><span class="line"># 查看新文件前6行</span><br><span class="line">&gt; head(diff_name)</span><br></pre></td></tr></table></figure>
+<p>代码执行结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-f1953191a5dde621.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="执行结果"></p>
+<p>现在成功地生成了一个带有基因名称的count表达矩阵</p>
+<p>参考链接：<br><a href="https://blog.csdn.net/lztttao/article/details/82086346">https://blog.csdn.net/lztttao/article/details/82086346</a><br><a href="https://www.jianshu.com/p/3a0e1e3e41d0">https://www.jianshu.com/p/3a0e1e3e41d0</a></p>
+]]></content>
+      <tags>
+        <tag>RNAseq</tag>
+      </tags>
+  </entry>
 </search>
