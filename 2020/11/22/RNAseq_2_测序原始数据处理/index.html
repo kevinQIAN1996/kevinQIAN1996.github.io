@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="###1、fastq文件一般我们从公司里得到的原始测序数据都是属于fastq.gz文件, .gz是一种压缩格式的缩写，于是首先第一步是对这些压缩格式进行解压操作 gzip -d 19R576_combined_R1.fastq.gz 19R576_combined_R2.fastq.gz 19R577_combined_R1.fastq.gz 19R577_combined_R2.fastq.gz">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RNAseq_2_测序原始数据处理">
+<meta property="og:url" content="http://example.com/2020/11/22/RNAseq_2_%E6%B5%8B%E5%BA%8F%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="###1、fastq文件一般我们从公司里得到的原始测序数据都是属于fastq.gz文件, .gz是一种压缩格式的缩写，于是首先第一步是对这些压缩格式进行解压操作 gzip -d 19R576_combined_R1.fastq.gz 19R576_combined_R2.fastq.gz 19R577_combined_R1.fastq.gz 19R577_combined_R2.fastq.gz">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-6c7f1ae724836c1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-0960d9117ba7b837.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-34575c8f297fc99e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-3a962a7125288d55.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-f26dc792288fe572.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-2e8fc8ac37a9a1cf.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-2a3cbafbf334db67.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-bc35e4ce887156f4.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-1a7db177f9e1cf4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-77a0deec5c5d4532.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-88c5b49855d0817a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-b32de3de66fa88f6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-df2d26db48586472.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-7162d46bf4432054.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2020-11-22T13:54:54.000Z">
+<meta property="article:modified_time" content="2020-11-22T13:57:51.341Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/3194654-6c7f1ae724836c1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+<link rel="canonical" href="http://example.com/2020/11/22/RNAseq_2_%E6%B5%8B%E5%BA%8F%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>RNAseq_2_测序原始数据处理 | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">时光匆匆独白，将颠沛磨成卡带</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Trimmomatic-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Trimmomatic 简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Trimmomatic-%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.</span> <span class="nav-text">Trimmomatic 下载</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health, CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+ 
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/22/RNAseq_2_%E6%B5%8B%E5%BA%8F%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RNAseq_2_测序原始数据处理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2020-11-22 21:54:54 / Modified: 21:57:51" itemprop="dateCreated datePublished" datetime="2020-11-22T21:54:54+08:00">2020-11-22</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/11/22/RNAseq_2_%E6%B5%8B%E5%BA%8F%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/22/RNAseq_2_%E6%B5%8B%E5%BA%8F%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>###1、fastq文件<br>一般我们从公司里得到的原始测序数据都是属于fastq.gz文件, .gz是一种压缩格式的缩写，于是首先第一步是对这些压缩格式进行解压操作<br><img src="https://upload-images.jianshu.io/upload_images/3194654-6c7f1ae724836c1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gzip -d 19R576_combined_R1.fastq.gz 19R576_combined_R2.fastq.gz 19R577_combined_R1.fastq.gz 19R577_combined_R2.fastq.gz</span><br></pre></td></tr></table></figure>
+<p>解压好的文件即正常的Fastq文件，当然这里只是演示一下Fastq.gz是怎样解压的，给大家看一下即可，建议还是暂时不用解压，以为后面将介绍的测序质控还是用的压缩格式的gz文件作为输入文件<br><img src="https://upload-images.jianshu.io/upload_images/3194654-0960d9117ba7b837.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>首先先简单介绍一下什么是fataq文件</p>
+<p>在illumina的测序文件中，采用双端测序（paired-end），一个样本得到的是seq_1.fastq.gz和seq_2.fastq.gz两个文件，每个文件存放一段测序文件。在illumina的测序的cDNA短链被修饰为以下形式（图源见水印）：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-34575c8f297fc99e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p>两端的序列是保护碱基（terminal sequence）、接头序列（adapter）、索引序列（index）、引物结合位点（Primer Binding Site）：其中 adapter是和flowcell上的接头互补配对结合的；index是一段特异序列，加入index是为了提高illumina测序仪的使用率，因为同一个泳道可能会测序多个样品，样品间的区分就是通过index区分。参考：<a href="https://link.zhihu.com/?target=https://blog.csdn.net/hanli1992/article/details/82980042">illumina 双端测序（pair end）</a>、<a href="https://link.zhihu.com/?target=https://www.jianshu.com/p/b18ee79a0285">双端测序中read1和read2的关系</a>。</p>
+<p>在illumina公司测得的序列文件经过处理以fastq文件协议存储为*.fastq格式文件。在fastq文件中每4行存储一个read。</p>
+<p><strong>第一行</strong>：以@开头接ReadID和其他信息，分别介绍了 <strong>第二行</strong>：read测序信息 <strong>第三行</strong>：规定必须以“+”开头，后面跟着可选的ID标识符和可选的描述内容，如果“+”后面有内容，该内容必须与第一行“@”后的内容相同 <strong>第四行</strong>：每个碱基的质量得分。记分方法是利用ERROR P经过对数和运算分为40个级别分别与ASCII码的第33号<code>!</code>和第73号<code>I</code>对应。用ASCII码表示碱基质量是为了减少文件空间占据和防止移码导致的数据损失。fastq文件预览如下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-3a962a7125288d55.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>###2、对数据进行质控（去接头和低质量的reads以及Fastqc）<br>为什么要对数据进行clean data这一步呢，主要是在测序过程中加入了接头序列（便于测序），以及测序过程中产生的一些低质量的reads, 如果不事先对这些进行筛选的很有可能会影响之后进行序列比对。</p>
+<p>这里给大家介绍的就是数据质控界常用的——Trimmomatic软件。</p>
+<h5 id="Trimmomatic-简介"><a href="#Trimmomatic-简介" class="headerlink" title="Trimmomatic 简介"></a>Trimmomatic 简介</h5><p>Trimmomatic软件，2014年首次发表在Bioinformatics期刊上，是一款专门对Illumina平台测序产生的reads进行修剪和过滤的软件。自发表以来，Trimmomatic软件凭借其简单的安装方法、较快的运行速度（支持多线程）、强大的去接头能力（simple和palindrome两种模式）、多元化的低质量数据处理方式、人性化的输出格式（clean reads为一一对应的pair-end形式，无需再次处理）等特点，深受数据处理者喜爱！下面就由小奥带大家一起来学习下Trimmomatic的具体用法。</p>
+<h5 id="Trimmomatic-下载"><a href="#Trimmomatic-下载" class="headerlink" title="Trimmomatic 下载"></a>Trimmomatic 下载</h5><p>######(一)在Linux系统下通过命令行进行下载安装</p>
+<p><strong>1.mkdir Trimmomatic</strong>（创建一个名为Trimmomatic的文件夹）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-f26dc792288fe572.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><strong>2.cd Trimmomatic</strong> （进入Trimmomatic文件夹工作路径下）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-2e8fc8ac37a9a1cf.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><strong>3.wget</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.38.zip%EF%BC%88%E9%80%9A%E8%BF%87wget%E5%91%BD%E4%BB%A4%E4%B8%8B%E8%BD%BDTrimmomatic-0.38.zip%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6%EF%BC%89">http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.38.zip（通过wget命令下载Trimmomatic-0.38.zip压缩文件）</a></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-2a3cbafbf334db67.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p><strong>4.unzip Trimmomatic-0.38.zip</strong> （解压缩Trimmomatic-0.36.zip文件）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-bc35e4ce887156f4.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p><strong>5.java</strong> -jar~/biosoft/Trimmomatic/Trimmomatic-0.36/trimmomatic-0.36.jar –h（运行安装命令，即可完成安装）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-1a7db177f9e1cf4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>######（二）通过conda直接一键安装</p>
+<p>先search一下到底conda可不可以搜索到软件安装的channel</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda search trimmomatic</span><br></pre></td></tr></table></figure>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-77a0deec5c5d4532.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>反馈显示可以从相应的channel中找到trimmomatic软件<br>于是直接用conda一键安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install trimmomatic</span><br></pre></td></tr></table></figure>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-88c5b49855d0817a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>安装完成</p>
+<p>####Trimmomatic 质控用法</p>
+<p>根据单端测序和双端测序两种模式，Trimmomatic软件也有两种质控用法</p>
+<p>######◆ 1. SE 模式</p>
+<p>SE模式下，只有一个输入文件和一个质控后的输出文件，运行命令如下</p>
+<p>Java –jar &lt; trimmomatic的安装路径&gt; SE –threads &lt;线程数&gt; <input> <output> <step1> <step2> …<step1><step2>… 表示每一步的质控参数</p>
+<p>######◆ 2. PE模式</p>
+<p>PE 模式下，有两个输入文件（正向测序reads和反向测序reads）和四个质控后的输出文件（双端序列都保留的paired序列文件和只保留一端序列的unpaired序列文件），运行命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -jar $trimmomatic PE -threads 12 -phred33 $R1.fq.gz $R2.fq.gz $R1.paired.fq.gz $R1.unpaired.fq.gz $R2.paired.fq.gz $R2.unpaired.fq.gz ILLUMINACLIP:$adapter.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数设置说明（同一个命令下的不同参数可以用“：”来界定）：<br>$ 表示软件或文件所在的路径（建议使用绝对路径）<br> 其中<strong>R1.fq.gz</strong>以及 <strong>R2.fq.gz</strong> 为两个输入文件<br><strong>R1.paired.fq.gz</strong> 、<strong>R1.unpaired.fq.gz</strong>、 <strong>R2.paired.fq.gz</strong> 、<strong>R2.unpaired.fq.gz</strong> 为四个对应的输出文件<br>Phred33 设置碱基的质量格式，默认的是-phred64。</p>
+</blockquote>
+<blockquote>
+<p>ILLUMINACLIP:$adapter.fa:2:30:10 adapter.fa为接头文件，2表示最大mismatch数，30表示palindrome模式下碱基的匹配阈值，10表示simple模式下碱基的匹配阈值。<br>LEADING: 3 表示切除reads 5’端碱基质量低于3的碱基。<br>TRAILING:3 表示切除3’ 端碱基质量低于3的碱基。<br>SLIDINGWINDOW:4:15 表示以4个碱基为窗口进行滑动，切除窗口内碱基平均质量小于15的。<br>MINLEN:36 丢弃以上步骤处理后，序列长度小于36的reads。</p>
+</blockquote>
+<p>运行代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">trimmomatic PE -threads 12 -phred33 &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R576_combined_R1.fastq.gz  &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R576_combined_R2.fastq.gz  &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R576_combined_R1.paired.fq.gz &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R576_c</span><br><span class="line">ombined_R1.unpaired.fq.gz &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R576_combined_R2.paired.fq.gz &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R576_combined_R2.unpaired.fq.gz ILLUMINACLI</span><br><span class="line">P:$adapter.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 ; trimmomatic PE -threads 12 -phred33 &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R577_combined_R1.fastq.gz  &#x2F;mnt&#x2F;e&#x2F;</span><br><span class="line">sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R577_combined_R2.fastq.gz  &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R577_combined_R1.paired.fq.gz &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R577</span><br><span class="line">_combined_R1.unpaired.fq.gz &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R577_combined_R2.paired.fq.gz &#x2F;mnt&#x2F;e&#x2F;sequence_data_YNY&#x2F;20191030_NGS_DATA&#x2F;19R577_combined_R2.unpaired.fq.gz ILLUMINAC</span><br><span class="line">LIP:$adapter.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-b32de3de66fa88f6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="开始执行去接头"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-df2d26db48586472.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="运行结束"></p>
+<p>最终运行出的结果输出文件有四个，R1.paired.fq.gz 、R1.unpaired.fq.gz、 R2.paired.fq.gz 、R2.unpaired.fq.gz ，如果在接下来要进行序列比对的话用的文件只需要使用到两个paired文件。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3194654-7162d46bf4432054.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="输出结果"></p>
+<p>到这里，我们的RNAseq流程中的原始数据处理(clean data)这一步就已经到这里就告一段落了。</p>
+<p>参考链接：<br><a target="_blank" rel="noopener" href="https://www.sohu.com/a/252244330_100269283">https://www.sohu.com/a/252244330_100269283</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61847802">https://zhuanlan.zhihu.com/p/61847802</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/22/RNAseqeq-1-conda%E5%AE%89%E8%A3%85/" rel="prev" title="RNAseqeq_1_conda安装">
+                  <i class="fa fa-chevron-left"></i> RNAseqeq_1_conda安装
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/2020/11/22/RNAseq_2_%E6%B5%8B%E5%BA%8F%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/",
+    }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+
+<!-- <script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script> -->
+
+
+</body>
+</html>
