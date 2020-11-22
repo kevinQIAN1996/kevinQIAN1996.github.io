@@ -2140,9 +2140,9 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
       </tags>
   </entry>
   <entry>
-    <title>RNAseq_2_测序原始数据处理</title>
-    <url>/2020/11/22/RNAseq_2_%E6%B5%8B%E5%BA%8F%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/</url>
-    <content><![CDATA[<p>###1、fastq文件<br>一般我们从公司里得到的原始测序数据都是属于fastq.gz文件, .gz是一种压缩格式的缩写，于是首先第一步是对这些压缩格式进行解压操作<br><img src="https://upload-images.jianshu.io/upload_images/3194654-6c7f1ae724836c1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+    <title>RNAseq_2_原始测序数据处理</title>
+    <url>/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<h3 id="1、fastq文件"><a href="#1、fastq文件" class="headerlink" title="1、fastq文件"></a>1、fastq文件</h3><p>一般我们从公司里得到的原始测序数据都是属于fastq.gz文件, .gz是一种压缩格式的缩写，于是首先第一步是对这些压缩格式进行解压操作<br><img src="https://upload-images.jianshu.io/upload_images/3194654-6c7f1ae724836c1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gzip -d 19R576_combined_R1.fastq.gz 19R576_combined_R2.fastq.gz 19R577_combined_R1.fastq.gz 19R577_combined_R2.fastq.gz</span><br></pre></td></tr></table></figure>
 <p>解压好的文件即正常的Fastq文件，当然这里只是演示一下Fastq.gz是怎样解压的，给大家看一下即可，建议还是暂时不用解压，以为后面将介绍的测序质控还是用的压缩格式的gz文件作为输入文件<br><img src="https://upload-images.jianshu.io/upload_images/3194654-0960d9117ba7b837.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
 <p>首先先简单介绍一下什么是fataq文件</p>
@@ -2179,7 +2179,7 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
 <p>根据单端测序和双端测序两种模式，Trimmomatic软件也有两种质控用法</p>
 <p>######◆ 1. SE 模式</p>
 <p>SE模式下，只有一个输入文件和一个质控后的输出文件，运行命令如下</p>
-<p>Java –jar &lt; trimmomatic的安装路径&gt; SE –threads &lt;线程数&gt; <input> <output> <step1> <step2> …<step1><step2>… 表示每一步的质控参数</p>
+<pre><code>Java –jar &lt; trimmomatic的安装路径&gt; SE –threads &lt;线程数&gt; &lt;input&gt; &lt;output&gt; &lt;step1&gt; &lt;step2&gt; …&lt;step1&gt;&lt;step2&gt;… 表示每一步的质控参数</code></pre>
 <p>######◆ 2. PE模式</p>
 <p>PE 模式下，有两个输入文件（正向测序reads和反向测序reads）和四个质控后的输出文件（双端序列都保留的paired序列文件和只保留一端序列的unpaired序列文件），运行命令如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -jar $trimmomatic PE -threads 12 -phred33 $R1.fq.gz $R2.fq.gz $R1.paired.fq.gz $R1.unpaired.fq.gz $R2.paired.fq.gz $R2.unpaired.fq.gz ILLUMINACLIP:$adapter.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
