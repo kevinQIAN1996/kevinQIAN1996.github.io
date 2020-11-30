@@ -30,19 +30,19 @@
 <meta property="og:site_name" content="WENJU QIAN‘s tech blog">
 <meta property="og:description" content="简介edgeR作用对象是count文件，rows 代表基因，行代表文库，count代表的是比对到每个基因的reads数目。它主要关注的是差异表达分析，而不是定量基因表达水平。 edgeR works on a table of integer read counts, with rows corresponding to genes and columns to independent libra">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-fa83a5ee0fe58872.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-d1f8202b26ca0a6b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-8b5ece418efe7862.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-d48f8e81d2527524.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-7c9c6b8d2527a3a0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-15d86de730b879bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-1b078402234a1257.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_1.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_2.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_3.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_4.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_5.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_6.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_7.jpg">
 <meta property="article:published_time" content="2020-11-22T16:25:57.000Z">
-<meta property="article:modified_time" content="2020-11-25T16:51:11.623Z">
+<meta property="article:modified_time" content="2020-11-30T16:02:17.327Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta property="article:tag" content="RNAseq">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/3194654-fa83a5ee0fe58872.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_1.jpg">
 
 
 <link rel="canonical" href="http://example.com/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/">
@@ -336,7 +336,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-11-26 00:51:11" itemprop="dateModified" datetime="2020-11-26T00:51:11+08:00">2020-11-26</time>
+        <time title="Modified: 2020-12-01 00:02:17" itemprop="dateModified" datetime="2020-12-01T00:02:17+08:00">2020-12-01</time>
       </span>
 
   
@@ -399,34 +399,34 @@
 <blockquote>
 <p>3、<strong>一个可选的数据框genes</strong>：gene的注释信息</p>
 </blockquote>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-fa83a5ee0fe58872.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_1.jpg"></p>
 <p><strong>第二步： 过滤 low counts数据。</strong>与DESeq2的预过滤不同，DESeq2的预过滤只是为了改善后续运算性能，在运行过程中依旧会自动处理low count数据，edgeR需要在分析前就要排除那些low count数据，而且非常严格。从生物学角度，有生物学意义的基因的表达量必须高于某一个阈值。从统计学角度上， low count的数据不太可能有显著性差异，而且在多重试验矫正阶段还会拖后腿。 </p>
 <h5 id="数据过滤"><a href="#数据过滤" class="headerlink" title="数据过滤"></a>数据过滤</h5><p>由于原来的表达量矩阵基因数太大, 可能存在某些基因根本没有表达, 因此需要预先过滤</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; keep &lt;- rowSums(cpm(y)&gt;1) &gt;&#x3D; 1</span><br><span class="line">&gt; y &lt;- y[keep, , keep.lib.sizes&#x3D;FALSE]</span><br><span class="line">&gt; y</span><br></pre></td></tr></table></figure>
 <p>这部分代码的意思指的是保留在至少在一个样本里有表达的基因(CPM &gt; 1)。 基因数就从原来的55318变为15868</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-d1f8202b26ca0a6b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_2.jpg"></p>
 <p>###标准化<br>考虑到测序深度不同, 我们需要对其进行标准化, 避免文库大小不同导致的分析误差.</p>
 <p>edgeR里默认采用TMM(trimmed mean of M-values) 对配对样本进行标准化，用到的函数是calcNormFactors</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; y &lt;- calcNormFactors(y)</span><br></pre></td></tr></table></figure>
 <p>执行结果：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-8b5ece418efe7862.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_3.jpg"></p>
 <h3 id="差异表达分析"><a href="#差异表达分析" class="headerlink" title="差异表达分析"></a>差异表达分析</h3><p>不同差异表达分析工具的目标就是预测出dispersion(离散值), 有了离散值就能够计算p值. 那么dispersion怎么计算呢? edgeR给了几个方法</p>
 <p>根据经验给定一个值(BCV, square-root-dispersion). edgeR给的建议是, 如果你是人类数据, 且实验做的很好(无过多的其他因素影响), 设置为0.4, 如果是遗传上相似的模式物种（这里为小鼠）, 设置为0.1 （查询edgeR的bioconductor包所得）<br>Simply pick a reasonable dispersion value, based on your experience with similar data,and use that for exactTest or glmFit. Typical values for the common BCV (square-root dispersion) for datasets arising from well-controlled experiments are 0.4 for human data,0.1 for data on genetically identical model organisms or 0.01 for technical replicates.</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; y_bcv &lt;- y</span><br><span class="line"># 因为本次的数据使用的是小鼠的数据，所以使用0.1</span><br><span class="line">&gt; bcv &lt;- 0.1</span><br><span class="line">&gt; et &lt;- exactTest(y_bcv, dispersion &#x3D; bcv ^ 2)</span><br><span class="line">&gt; gene1 &lt;- decideTestsDGE(et, p.value &#x3D; 0.05, lfc &#x3D; 0)</span><br><span class="line">&gt; head(gene1)</span><br><span class="line">&gt; summary(gene1)</span><br></pre></td></tr></table></figure>
 <p>执行结果：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-d48f8e81d2527524.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_4.jpg"></p>
 <p>由统计结果可知，下调的基因为816个，上调的基因为572个</p>
 <p>如果觉得觉得基因较多的话，可以上调bcv的值</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; y_bcv &lt;- y</span><br><span class="line">&gt; bcv &lt;- 0.2</span><br><span class="line">&gt; et2 &lt;- exactTest(y_bcv, dispersion &#x3D; bcv ^ 2)</span><br><span class="line">&gt; gene2 &lt;- decideTestsDGE(et2, p.value &#x3D; 0.05, lfc &#x3D; 0)</span><br><span class="line">&gt; summary(gene2)</span><br></pre></td></tr></table></figure>
 <p>执行结果：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-7c9c6b8d2527a3a0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_5.jpg"></p>
 <p>由统计结果可知，下调的基因为377个，上调的基因为221个<br>与之前的结果相比，的确已经减少很多</p>
 <p>将结果整理成excel表</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 改一下gene1的名称</span><br><span class="line">&gt; colnames(gene1) &lt;- &quot;Signifi&quot;</span><br><span class="line"># 组合将所需要的数据组成一个新的data.frame</span><br><span class="line">&gt; results &lt;- cbind(y$genes,y$counts,et$table,gene1)</span><br><span class="line">&gt; head(results)</span><br><span class="line"># 将新生成的results数据框写成一个excel数据表</span><br><span class="line">&gt; write.csv(x &#x3D; results,file &#x3D; &quot;C:&#x2F;&#x2F;Users&#x2F;My&#x2F;Desktop&#x2F;DEresult.csv&quot;,row.names &#x3D; F)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>执行结果：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-15d86de730b879bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="组合成的新的data.frame表"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_6.jpg" alt="组合成的新的data.frame表"></p>
 <p>生成的excel表可以将down expressed 和 up expressed基因分开</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-1b078402234a1257.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="生成的excel"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/6_7.jpg" alt="生成的excel"></p>
 <p>参考文献：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u012110870/article/details/102804557">https://blog.csdn.net/u012110870/article/details/102804557</a><br><a target="_blank" rel="noopener" href="https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf">https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf</a></p>
 <p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/">https://cdn.jsdelivr.net</a></p>
 
