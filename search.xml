@@ -2101,13 +2101,10 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install trimmomatic</span><br></pre></td></tr></table></figure>
 <p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/2_11.webp"></p>
 <p>安装完成</p>
-<p>####Trimmomatic 质控用法</p>
-<p>根据单端测序和双端测序两种模式，Trimmomatic软件也有两种质控用法</p>
-<p>######◆ 1. SE 模式</p>
-<p>SE模式下，只有一个输入文件和一个质控后的输出文件，运行命令如下</p>
+<h4 id="Trimmomatic-质控用法"><a href="#Trimmomatic-质控用法" class="headerlink" title="Trimmomatic 质控用法"></a>Trimmomatic 质控用法</h4><p>根据单端测序和双端测序两种模式，Trimmomatic软件也有两种质控用法</p>
+<h5 id="◆-1-SE-模式"><a href="#◆-1-SE-模式" class="headerlink" title="◆ 1. SE 模式"></a>◆ 1. SE 模式</h5><p>SE模式下，只有一个输入文件和一个质控后的输出文件，运行命令如下</p>
 <pre><code>Java –jar &lt; trimmomatic的安装路径&gt; SE –threads &lt;线程数&gt; &lt;input&gt; &lt;output&gt; &lt;step1&gt; &lt;step2&gt; …&lt;step1&gt;&lt;step2&gt;… 表示每一步的质控参数</code></pre>
-<p>######◆ 2. PE模式</p>
-<p>PE 模式下，有两个输入文件（正向测序reads和反向测序reads）和四个质控后的输出文件（双端序列都保留的paired序列文件和只保留一端序列的unpaired序列文件），运行命令如下：</p>
+<h5 id="◆-2-PE模式"><a href="#◆-2-PE模式" class="headerlink" title="◆ 2. PE模式"></a>◆ 2. PE模式</h5><p>PE 模式下，有两个输入文件（正向测序reads和反向测序reads）和四个质控后的输出文件（双端序列都保留的paired序列文件和只保留一端序列的unpaired序列文件），运行命令如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -jar $trimmomatic PE -threads 12 -phred33 $R1.fq.gz $R2.fq.gz $R1.paired.fq.gz $R1.unpaired.fq.gz $R2.paired.fq.gz $R2.unpaired.fq.gz ILLUMINACLIP:$adapter.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>参数设置说明（同一个命令下的不同参数可以用“：”来界定）：<br>$ 表示软件或文件所在的路径（建议使用绝对路径）<br> 其中<strong>R1.fq.gz</strong>以及 <strong>R2.fq.gz</strong> 为两个输入文件<br><strong>R1.paired.fq.gz</strong> 、<strong>R1.unpaired.fq.gz</strong>、 <strong>R2.paired.fq.gz</strong> 、<strong>R2.unpaired.fq.gz</strong> 为四个对应的输出文件<br>Phred33 设置碱基的质量格式，默认的是-phred64。</p>
@@ -2130,24 +2127,24 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
     <title>RNAseq_3_测序数据质控</title>
     <url>/2020/11/23/RNAseq-3-%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%8E%A7/</url>
     <content><![CDATA[<h2 id="质量汇报生成与读取"><a href="#质量汇报生成与读取" class="headerlink" title="质量汇报生成与读取"></a>质量汇报生成与读取</h2><h3 id="fastq质量汇报"><a href="#fastq质量汇报" class="headerlink" title="fastq质量汇报"></a>fastq质量汇报</h3><p>使用命令<code>fastqc -o &lt;output dir&gt; &lt;seqfile1,seqfile2..&gt;</code>来进行质量报告。</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 下载fastqc工具包</span><br><span class="line">$ wget https:&#x2F;&#x2F;www.bioinformatics.babraham.ac.uk&#x2F;projects&#x2F;fastqc&#x2F;fastqc_v0.11.8.zip</span><br><span class="line"># 解压</span><br><span class="line">&amp; unzip fastqc_v0.11.8.zip</span><br><span class="line"># 执行fastqc</span><br><span class="line">&amp; ~FastQC&#x2F;.&#x2F;fastqc -f fastq -o &#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;result &#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;19R576_combined_R1.fastq</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 下载fastqc工具包</span><br><span class="line">$ wget https:&#x2F;&#x2F;www.bioinformatics.babraham.ac.uk&#x2F;projects&#x2F;fastqc&#x2F;fastqc_v0.11.8.zip</span><br><span class="line"># 解压</span><br><span class="line">&amp; unzip fastqc_v0.11.8.zip</span><br><span class="line"># 执行fastqc</span><br><span class="line">&amp; ~FastQC&#x2F;.&#x2F;fastqc -f fastq -o &#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;result &#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;19R576_combined_R1.fastq</span><br></pre></td></tr></table></figure>
 <p>需要注意的是./fastqc前面的”.”不可以省略</p>
 <p>每个fastqc文件会获得一个质量分析报告，来描述此次RNA-seq的测序质量。 获取质量报告如图：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-963d416408466a62.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Fastqc basic information"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/3_1.jpg" alt="Fastqc basic information"></p>
 <h5 id="Basic-Statistics"><a href="#Basic-Statistics" class="headerlink" title="Basic Statistics"></a>Basic Statistics</h5><p>从read水平来总览，判断测序质量。 Encoding ：测序平台的版本，因为不同版本的 error p的计算方法不一样。 Total sequence：测序深度。一共测序的read数。是质量分析的主要参数。 Sequence length：测序长度。 %GC：GC碱基含量比，一般是物种特异性，比如人类是42%左右。</p>
 <h5 id="Perbase-sequence-quality"><a href="#Perbase-sequence-quality" class="headerlink" title="Perbase sequence quality"></a>Perbase sequence quality</h5><p>横坐标： 第1-100个测序得到的碱基 纵坐标： 测序质量评估。这里的Q=-10*lg10(error P),即20%代表1%的错误读取率，30%代表0.1%的错误读取率 箱型图： 红色线，是某个顺序下测序碱基所有测序质量的中位数。黄色块，是测序质量在25%-75%区域。蓝色线，平均数。 一般要求： 测序箱型图10%的线大于Q=20。Q20过滤法。</p>
 <h5 id="per-tail-sequence-quality"><a href="#per-tail-sequence-quality" class="headerlink" title="per tail sequence quality"></a>per tail sequence quality</h5><p>横坐标：同上。 纵坐标：tail的index编号。 目的：防止测序过程中某些tail受不可控因素测序质量低。 标准：蓝色表示质量高，浅色或暖色表示质量低，后续的分析可以去除低质量tail。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-95c486f10220c207.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="per tail sequence quality"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/3_2.jpg" alt="per tail sequence quality"></p>
 <h5 id="Per-sequence-quality-scores"><a href="#Per-sequence-quality-scores" class="headerlink" title="Per sequence quality scores"></a>Per sequence quality scores</h5><p>从read的总体测序质量分布来判定此次的测序质量，是质量分析的重要标准之一。 横坐标：表示read的测序质量Q=-10*lg10(error P)。 纵坐标：表示在该Q值下的read 的数量 标准：需要集中在高分区</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-2711614ef1a63dfe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Per sequence quality scores"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/3_3.jpg" alt="Per sequence quality scores"></p>
 <h5 id="Per-base-sequence-content"><a href="#Per-base-sequence-content" class="headerlink" title="Per base sequence content"></a>Per base sequence content</h5><p>横坐标：1-100的测序碱基位置 纵坐标：碱基百分比 标准：理论上，ATCG碱基的分布应该差别不大，即四条线应该大致平行状态。如果AT或CG差异超过10%，此项检测是危险的。一般是测序机器前几个碱基测序时候因为状态调整导致测序略有偏差，如果前几个碱基偏差较大，可以在后期将前几个碱基切掉。造成这个偏差较大的原因重要是由于测序数据中的adapter没有clean干净。所以在接下来的数据处理中需要对测序数据进行clean data的处理，下一个章节会详细介绍clean data的步骤。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-a5a49a0ef6ebbca5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Per base sequence content"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/3_4.jpg" alt="Per base sequence content"></p>
 <h5 id="Sequence-Length-Distribution"><a href="#Sequence-Length-Distribution" class="headerlink" title="Sequence Length Distribution"></a>Sequence Length Distribution</h5><p>统计read的碱基长度，本例理论上测序应该全是150bp。 横坐标：是read的碱基长度 纵坐标：是该长度下的read数量</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-758ed1c39abb493c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Sequence Length Distribution"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/3_5.jpg" alt="Sequence Length Distribution"></p>
 <h5 id="Per-sequence-GC-content"><a href="#Per-sequence-GC-content" class="headerlink" title="Per sequence GC content"></a>Per sequence GC content</h5><p>横坐标：每个read的平局GC含量占比 纵坐标：一定GC比下的read数 标准：蓝色是理论值，红色是真实值。两者接近是比较好的状态。如果有双峰，可能混有了其他物种的DNA序列。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-3777a0a933d6ea7b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Per sequence GC content"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/3_6.jpg" alt="Per sequence GC content"></p>
 <h5 id="Adapter-Content"><a href="#Adapter-Content" class="headerlink" title="Adapter Content"></a>Adapter Content</h5><p>一般测序在初步生成fastq文件时候，adapter会被去除，但是有的会没有去除或者遗漏部分adapter。所以这一步是检测RNA-seq测序过程中adapter是否去除。如果没有去除会严重影响后续的比对工作。没有去除的adapter在质量处理环节会被处理掉。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-46b7f01bc01e0b09.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Adapter Content"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/3_7.jpg" alt="Adapter Content"></p>
 <ol start="2">
 <li>multiqc质量报告<br>multiqc可以对几个fastqc报告文件进行总结并汇总到一个报告文件中，以更直观到防止展示。使用方法</li>
 </ol>
@@ -2166,16 +2163,16 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
     <content><![CDATA[<p><strong>概况</strong>：使用处理后的fastq文件和基因组与转录组比对，确定在转录组或者基因组中的关系。在转录组和基因组的比对采取的方案不同。分别是<code>ungapped alignment to transcriptome</code>和<code>Gapped aligenment to genome</code>。 <strong>软件</strong>：<code>hisat2</code>和<code>STAR</code>在比对上都有比较好的表现。有文献显示，hisat2在纳伪较少但是弃真较多，但是速度比较快。STAR就比对而言综合质量比较好，在长短reads回帖上都有良好发挥。由于hisat2的速度优势，选择hisat2作为本次比对的软件。 在比对之前首先要先进行索引文件的获取或者制作。</p>
 <h3 id="比对还是不比对"><a href="#比对还是不比对" class="headerlink" title="比对还是不比对"></a>比对还是不比对</h3><p>在比对之前，我们得了解比对的目的是什么？RNA-Seq数据比对和DNA-Seq数据比对有什么差异？<br>RNA-Seq数据分析分为很多种，比如说找差异表达基因或寻找新的可变剪切。如果找差异表达基因单纯只需要确定不同的read计数就行的话，我们可以用bowtie, bwa这类比对工具，或者是salmon这类align-free工具，并且后者的速度更快。</p>
 <p>但是如果你需要找到新的isoform，或者RNA的可变剪切，看看外显子使用差异的话，你就需要TopHat, HISAT2或者是STAR这类工具用于找到剪切位点。因为RNA-Seq不同于DNA-Seq，DNA在转录成mRNA的时候会把内含子部分去掉。所以mRNA反转的cDNA如果比对不到参考序列，会被分开，重新比对一次，判断中间是否有内含子。</p>
-<p><img src="//upload-images.jianshu.io/upload_images/2013053-61b92d51f37e74ce.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/707/format/webp"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_1.jpg"></p>
 <h5 id="比对工具抉择"><a href="#比对工具抉择" class="headerlink" title="比对工具抉择"></a>比对工具抉择</h5><p>在2016年的一篇综述<em>A survey of best practices for RNA-seq data analysis</em>，提到目前有三种RNA数据分析的策略。那个时候的工具也主要用的是<strong>TopHat</strong>,<strong>STAR</strong>和<strong>Bowtie</strong>.其中<strong>TopHat</strong>目前已经被它的作者推荐改用<strong>HISAT</strong>进行替代。</p>
-<p><img src="//upload-images.jianshu.io/upload_images/2013053-66bff01df3f00c91.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1146/format/webp"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_2.jpg"></p>
 <p>最近的Nature Communication发表了一篇题为的<em>Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis</em>的文章–被称之为史上最全RNA-Seq数据分析流程，也是我一直以来想做的事情，只不过他们做的超乎我的想象。文章中在基于参考基因组的转录本分析中所用的工具，是TopHat,HISAT2和STAR，<strong>结论</strong>就是HISAT2<strong>找到junction正确率</strong>最高，但是在总数上却比TopHat和STAR少。从这里可以看出HISAT2的二类错误(<strong>纳伪</strong>）比较少，但是一类错误（<strong>弃真</strong>）就高起来。<br>就<strong>唯一比对</strong>而言，STAR是三者最佳的，主要是因为它不会像TopHat和HISAT2一样在PE比对不上的情况还强行把SE也比对到基因组上。而且在处理较长的read和较短read的不同情况，STAR的稳定性也是最佳的。<br>就<strong>速度</strong>而言，HISAT2比STAR和TopHat2平均快上2.5~100倍。</p>
-<p><img src="//upload-images.jianshu.io/upload_images/2013053-b73988da34913dee.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/998/format/webp" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_3.jpg" alt="image"></p>
 <p>如果学习RNA-Seq数据分析，上面提到的两篇文献是必须要看上3遍以上的，而且建议每隔一段时间回顾一下。但是如果就比对工具而言，基本上就是HISAT2和STAR选一个就行。</p>
 <h5 id="1-索引文件的获取"><a href="#1-索引文件的获取" class="headerlink" title="1. 索引文件的获取"></a>1. 索引文件的获取</h5><p>######下载index</p>
 <p>首先，问自己一个问题，为什么比对的时候需要用到index？这里强烈建议大家去看Jimmy写的<a href="https://links.jianshu.com/go?to=http://www.biotrainee.com/thread-26-1-1.html">bowtie算法原理探究bowtie算法原理探究</a>。但是只是建议，你不需要真的去看，反正你也看不懂。</p>
 <p>高通量测序遇到的第一个问题就是，成千上万甚至上几亿条read如果在合理的时间内比对到参考基因组上，并且保证错误率在接受范围内。为了提高比对速度，就需要根据参考基因组序列，经过BWT算法转换成index，而我们比对的序列其实是index的一个子集。当然转录组比对还要考虑到可变剪切的情况，所以更加复杂。</p>
-<p>因此我门不是直接把read回贴到基因组上，而是把read和index进行比较。人类的index一般都是有现成的，我建议大家下载现成的，我曾经尝试过用服务器自己创建index，花的时间让我怀疑人生。<br>所以一般建议的做法就是直接从网站上下载已经index好的数据<br><img src="https://upload-images.jianshu.io/upload_images/3194654-2330547b927a9c28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="hisat2的index"></p>
+<p>因此我门不是直接把read回贴到基因组上，而是把read和index进行比较。人类的index一般都是有现成的，我建议大家下载现成的，我曾经尝试过用服务器自己创建index，花的时间让我怀疑人生。<br>所以一般建议的做法就是直接从网站上下载已经index好的数据<br><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_4.jpg" alt="hisat2的index"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 下载小鼠基因组的index</span><br><span class="line">mkdir mm10_indexed</span><br><span class="line">cd mm10_indexed&#x2F;</span><br><span class="line"># 从网站上下载安装包</span><br><span class="line">wget ftp:&#x2F;&#x2F;ftp.ccb.jhu.edu&#x2F;pub&#x2F;infphilo&#x2F;hisat2&#x2F;data&#x2F;mm10.tar.gz</span><br><span class="line">#解压</span><br><span class="line">tar zvfx mm10.tar.gz </span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -2197,7 +2194,7 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 首先利用conda安装版本为2.1.0的hisat软件</span><br><span class="line">conda install hisat2&#x3D;2.1.0</span><br><span class="line">#因为比对的过程比较长，所以利用nohup命令将程序放在后台执行，并将执行结束的</span><br><span class="line">nohup &#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;bio_soft&#x2F;Hisat2&#x2F;hisat2-2.1.0&#x2F;.&#x2F;hisat2 -p 16 -x ~&#x2F;QWJ&#x2F;sequence_data&#x2F;genome&#x2F;mm10_indexed&#x2F;mm10&#x2F;genome  -1 ~&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;Clean_data&#x2F;19R576_combined_paired_R1.fastq -2 ~&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;Clean_data&#x2F;19R576_combined_paired_R2.fastq -S ~&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;19R576_paired.hisat2_2.sam &gt; program_2.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>&amp;会把任务丢到后台，所以会同时执行这3个比对程序，如果CPU和内存承受不住，去掉&amp;一个个来。比对这一步是非常消耗内存资源的，这是比对工具要将索引数据放入内存引起的。</p>
 <h4 id="HISAT2输出结果"><a href="#HISAT2输出结果" class="headerlink" title="HISAT2输出结果"></a>HISAT2输出结果</h4><p>比对之后会输出如下结果</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-2bd31a23e5e18ff0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_5.jpg"></p>
 <p>根据结果，显示的overall的比对率为97.19%</p>
 <h5 id="3-SAMtools三板斧"><a href="#3-SAMtools三板斧" class="headerlink" title="3. SAMtools三板斧"></a>3. SAMtools三板斧</h5><p>SAM（sequence Alignment/mapping)数据格式是目前高通量测序中存放比对数据的标准格式，当然他可以用于存放未比对的数据。所以，<a href="https://links.jianshu.com/go?to=https://samtools.github.io/hts-specs/SAMv1.pdf">SAM</a>的格式说明</p>
 <p>而目前处理SAM格式的工具主要是SAMTools，这是Heng Li大神写的.除了C语言版本，还有Java的Picard，Python的Pysam，Common lisp的cl-sam等其他版本。SAMTools的主要功能如下：</p>
@@ -2214,7 +2211,7 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 利用samtools工具将比对得到的sam文件转换为bam文件</span><br><span class="line">samtools view -S 19R576_paired.hisat2_2.sam -b &gt; 19R576_paired.hisat2_2.bam &amp;</span><br><span class="line"># 将得到的sam文件sort一下</span><br><span class="line">samtools sort 19R576_paired.hisat2_2.bam -o 19R576_paired.hisat2_2_sorted.bam</span><br><span class="line">#将得到的sort之后的bam文件排序</span><br><span class="line">samtools index 19R576_paired.hisat2_2_sorted.bam &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h5 id="4-IGV查看"><a href="#4-IGV查看" class="headerlink" title="4. IGV查看"></a>4. IGV查看</h5><p>这个<code>seq_sourted.bam</code>文件可以通过<code>samtools</code>或者**<a href="https://link.zhihu.com/?target=http://www.igv.org/">IGV( Integrative Genomics Viewer)</a>**独立软件进行查看。在IGV软件中载入<code>seq_sourted.bam</code>文件。 可以很直观清晰地观察到reads在基因组中的回帖情况和外显子与内含子的关系。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-9b6cbe4639545939.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="IGV查看结果"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_6.jpg" alt="IGV查看结果"></p>
 <p>参考文献：<br><a href="https://zhuanlan.zhihu.com/p/61847802">https://zhuanlan.zhihu.com/p/61847802</a><br><a href="https://www.jianshu.com/p/681e02e7f9af">https://www.jianshu.com/p/681e02e7f9af</a></p>
 ]]></content>
       <tags>

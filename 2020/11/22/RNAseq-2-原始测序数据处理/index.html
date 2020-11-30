@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/2_14.webp">
 <meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/2_15.webp">
 <meta property="article:published_time" content="2020-11-22T14:01:22.000Z">
-<meta property="article:modified_time" content="2020-11-30T14:57:27.440Z">
+<meta property="article:modified_time" content="2020-11-30T15:01:03.657Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/2_1.webp">
@@ -240,7 +240,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81fastq%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">1、fastq文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Trimmomatic-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.0.1.</span> <span class="nav-text">Trimmomatic 简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Trimmomatic-%E4%B8%8B%E8%BD%BD"><span class="nav-number">1.0.2.</span> <span class="nav-text">Trimmomatic 下载</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81fastq%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">1、fastq文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Trimmomatic-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.0.1.</span> <span class="nav-text">Trimmomatic 简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Trimmomatic-%E4%B8%8B%E8%BD%BD"><span class="nav-number">1.0.2.</span> <span class="nav-text">Trimmomatic 下载</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Trimmomatic-%E8%B4%A8%E6%8E%A7%E7%94%A8%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">Trimmomatic 质控用法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%97%86-1-SE-%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">◆ 1. SE 模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%97%86-2-PE%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.2.</span> <span class="nav-text">◆ 2. PE模式</span></a></li></ol></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -342,7 +342,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-11-30 22:57:27" itemprop="dateModified" datetime="2020-11-30T22:57:27+08:00">2020-11-30</time>
+        <time title="Modified: 2020-11-30 23:01:03" itemprop="dateModified" datetime="2020-11-30T23:01:03+08:00">2020-11-30</time>
       </span>
 
   
@@ -404,13 +404,10 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install trimmomatic</span><br></pre></td></tr></table></figure>
 <p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/2_11.webp"></p>
 <p>安装完成</p>
-<p>####Trimmomatic 质控用法</p>
-<p>根据单端测序和双端测序两种模式，Trimmomatic软件也有两种质控用法</p>
-<p>######◆ 1. SE 模式</p>
-<p>SE模式下，只有一个输入文件和一个质控后的输出文件，运行命令如下</p>
+<h4 id="Trimmomatic-质控用法"><a href="#Trimmomatic-质控用法" class="headerlink" title="Trimmomatic 质控用法"></a>Trimmomatic 质控用法</h4><p>根据单端测序和双端测序两种模式，Trimmomatic软件也有两种质控用法</p>
+<h5 id="◆-1-SE-模式"><a href="#◆-1-SE-模式" class="headerlink" title="◆ 1. SE 模式"></a>◆ 1. SE 模式</h5><p>SE模式下，只有一个输入文件和一个质控后的输出文件，运行命令如下</p>
 <pre><code>Java –jar &lt; trimmomatic的安装路径&gt; SE –threads &lt;线程数&gt; &lt;input&gt; &lt;output&gt; &lt;step1&gt; &lt;step2&gt; …&lt;step1&gt;&lt;step2&gt;… 表示每一步的质控参数</code></pre>
-<p>######◆ 2. PE模式</p>
-<p>PE 模式下，有两个输入文件（正向测序reads和反向测序reads）和四个质控后的输出文件（双端序列都保留的paired序列文件和只保留一端序列的unpaired序列文件），运行命令如下：</p>
+<h5 id="◆-2-PE模式"><a href="#◆-2-PE模式" class="headerlink" title="◆ 2. PE模式"></a>◆ 2. PE模式</h5><p>PE 模式下，有两个输入文件（正向测序reads和反向测序reads）和四个质控后的输出文件（双端序列都保留的paired序列文件和只保留一端序列的unpaired序列文件），运行命令如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -jar $trimmomatic PE -threads 12 -phred33 $R1.fq.gz $R2.fq.gz $R1.paired.fq.gz $R1.unpaired.fq.gz $R2.paired.fq.gz $R2.unpaired.fq.gz ILLUMINACLIP:$adapter.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>参数设置说明（同一个命令下的不同参数可以用“：”来界定）：<br>$ 表示软件或文件所在的路径（建议使用绝对路径）<br> 其中<strong>R1.fq.gz</strong>以及 <strong>R2.fq.gz</strong> 为两个输入文件<br><strong>R1.paired.fq.gz</strong> 、<strong>R1.unpaired.fq.gz</strong>、 <strong>R2.paired.fq.gz</strong> 、<strong>R2.unpaired.fq.gz</strong> 为四个对应的输出文件<br>Phred33 设置碱基的质量格式，默认的是-phred64。</p>

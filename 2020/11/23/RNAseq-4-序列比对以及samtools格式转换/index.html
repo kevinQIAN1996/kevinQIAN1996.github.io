@@ -30,18 +30,18 @@
 <meta property="og:site_name" content="WENJU QIAN‘s tech blog">
 <meta property="og:description" content="概况：使用处理后的fastq文件和基因组与转录组比对，确定在转录组或者基因组中的关系。在转录组和基因组的比对采取的方案不同。分别是ungapped alignment to transcriptome和Gapped aligenment to genome。 软件：hisat2和STAR在比对上都有比较好的表现。有文献显示，hisat2在纳伪较少但是弃真较多，但是速度比较快。STAR就比对而言综合">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2013053-61b92d51f37e74ce.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/707/format/webp">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2013053-66bff01df3f00c91.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1146/format/webp">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2013053-b73988da34913dee.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/998/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-2330547b927a9c28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-2bd31a23e5e18ff0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3194654-9b6cbe4639545939.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_1.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_2.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_3.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_4.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_5.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_6.jpg">
 <meta property="article:published_time" content="2020-11-22T16:14:03.000Z">
-<meta property="article:modified_time" content="2020-11-22T16:14:31.772Z">
+<meta property="article:modified_time" content="2020-11-30T15:28:58.025Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta property="article:tag" content="RNAseq">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2013053-61b92d51f37e74ce.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/707/format/webp">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_1.jpg">
 
 
 <link rel="canonical" href="http://example.com/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/">
@@ -327,10 +327,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2020-11-23 00:14:03 / Modified: 00:14:31" itemprop="dateCreated datePublished" datetime="2020-11-23T00:14:03+08:00">2020-11-23</time>
+      <time title="Created: 2020-11-23 00:14:03" itemprop="dateCreated datePublished" datetime="2020-11-23T00:14:03+08:00">2020-11-23</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-11-30 23:28:58" itemprop="dateModified" datetime="2020-11-30T23:28:58+08:00">2020-11-30</time>
+      </span>
 
   
   
@@ -359,16 +365,16 @@
         <p><strong>概况</strong>：使用处理后的fastq文件和基因组与转录组比对，确定在转录组或者基因组中的关系。在转录组和基因组的比对采取的方案不同。分别是<code>ungapped alignment to transcriptome</code>和<code>Gapped aligenment to genome</code>。 <strong>软件</strong>：<code>hisat2</code>和<code>STAR</code>在比对上都有比较好的表现。有文献显示，hisat2在纳伪较少但是弃真较多，但是速度比较快。STAR就比对而言综合质量比较好，在长短reads回帖上都有良好发挥。由于hisat2的速度优势，选择hisat2作为本次比对的软件。 在比对之前首先要先进行索引文件的获取或者制作。</p>
 <h3 id="比对还是不比对"><a href="#比对还是不比对" class="headerlink" title="比对还是不比对"></a>比对还是不比对</h3><p>在比对之前，我们得了解比对的目的是什么？RNA-Seq数据比对和DNA-Seq数据比对有什么差异？<br>RNA-Seq数据分析分为很多种，比如说找差异表达基因或寻找新的可变剪切。如果找差异表达基因单纯只需要确定不同的read计数就行的话，我们可以用bowtie, bwa这类比对工具，或者是salmon这类align-free工具，并且后者的速度更快。</p>
 <p>但是如果你需要找到新的isoform，或者RNA的可变剪切，看看外显子使用差异的话，你就需要TopHat, HISAT2或者是STAR这类工具用于找到剪切位点。因为RNA-Seq不同于DNA-Seq，DNA在转录成mRNA的时候会把内含子部分去掉。所以mRNA反转的cDNA如果比对不到参考序列，会被分开，重新比对一次，判断中间是否有内含子。</p>
-<p><img src="//upload-images.jianshu.io/upload_images/2013053-61b92d51f37e74ce.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/707/format/webp"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_1.jpg"></p>
 <h5 id="比对工具抉择"><a href="#比对工具抉择" class="headerlink" title="比对工具抉择"></a>比对工具抉择</h5><p>在2016年的一篇综述<em>A survey of best practices for RNA-seq data analysis</em>，提到目前有三种RNA数据分析的策略。那个时候的工具也主要用的是<strong>TopHat</strong>,<strong>STAR</strong>和<strong>Bowtie</strong>.其中<strong>TopHat</strong>目前已经被它的作者推荐改用<strong>HISAT</strong>进行替代。</p>
-<p><img src="//upload-images.jianshu.io/upload_images/2013053-66bff01df3f00c91.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1146/format/webp"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_2.jpg"></p>
 <p>最近的Nature Communication发表了一篇题为的<em>Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis</em>的文章–被称之为史上最全RNA-Seq数据分析流程，也是我一直以来想做的事情，只不过他们做的超乎我的想象。文章中在基于参考基因组的转录本分析中所用的工具，是TopHat,HISAT2和STAR，<strong>结论</strong>就是HISAT2<strong>找到junction正确率</strong>最高，但是在总数上却比TopHat和STAR少。从这里可以看出HISAT2的二类错误(<strong>纳伪</strong>）比较少，但是一类错误（<strong>弃真</strong>）就高起来。<br>就<strong>唯一比对</strong>而言，STAR是三者最佳的，主要是因为它不会像TopHat和HISAT2一样在PE比对不上的情况还强行把SE也比对到基因组上。而且在处理较长的read和较短read的不同情况，STAR的稳定性也是最佳的。<br>就<strong>速度</strong>而言，HISAT2比STAR和TopHat2平均快上2.5~100倍。</p>
-<p><img src="//upload-images.jianshu.io/upload_images/2013053-b73988da34913dee.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/998/format/webp" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_3.jpg" alt="image"></p>
 <p>如果学习RNA-Seq数据分析，上面提到的两篇文献是必须要看上3遍以上的，而且建议每隔一段时间回顾一下。但是如果就比对工具而言，基本上就是HISAT2和STAR选一个就行。</p>
 <h5 id="1-索引文件的获取"><a href="#1-索引文件的获取" class="headerlink" title="1. 索引文件的获取"></a>1. 索引文件的获取</h5><p>######下载index</p>
 <p>首先，问自己一个问题，为什么比对的时候需要用到index？这里强烈建议大家去看Jimmy写的<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://www.biotrainee.com/thread-26-1-1.html">bowtie算法原理探究bowtie算法原理探究</a>。但是只是建议，你不需要真的去看，反正你也看不懂。</p>
 <p>高通量测序遇到的第一个问题就是，成千上万甚至上几亿条read如果在合理的时间内比对到参考基因组上，并且保证错误率在接受范围内。为了提高比对速度，就需要根据参考基因组序列，经过BWT算法转换成index，而我们比对的序列其实是index的一个子集。当然转录组比对还要考虑到可变剪切的情况，所以更加复杂。</p>
-<p>因此我门不是直接把read回贴到基因组上，而是把read和index进行比较。人类的index一般都是有现成的，我建议大家下载现成的，我曾经尝试过用服务器自己创建index，花的时间让我怀疑人生。<br>所以一般建议的做法就是直接从网站上下载已经index好的数据<br><img src="https://upload-images.jianshu.io/upload_images/3194654-2330547b927a9c28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="hisat2的index"></p>
+<p>因此我门不是直接把read回贴到基因组上，而是把read和index进行比较。人类的index一般都是有现成的，我建议大家下载现成的，我曾经尝试过用服务器自己创建index，花的时间让我怀疑人生。<br>所以一般建议的做法就是直接从网站上下载已经index好的数据<br><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_4.jpg" alt="hisat2的index"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 下载小鼠基因组的index</span><br><span class="line">mkdir mm10_indexed</span><br><span class="line">cd mm10_indexed&#x2F;</span><br><span class="line"># 从网站上下载安装包</span><br><span class="line">wget ftp:&#x2F;&#x2F;ftp.ccb.jhu.edu&#x2F;pub&#x2F;infphilo&#x2F;hisat2&#x2F;data&#x2F;mm10.tar.gz</span><br><span class="line">#解压</span><br><span class="line">tar zvfx mm10.tar.gz </span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -390,7 +396,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 首先利用conda安装版本为2.1.0的hisat软件</span><br><span class="line">conda install hisat2&#x3D;2.1.0</span><br><span class="line">#因为比对的过程比较长，所以利用nohup命令将程序放在后台执行，并将执行结束的</span><br><span class="line">nohup &#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;bio_soft&#x2F;Hisat2&#x2F;hisat2-2.1.0&#x2F;.&#x2F;hisat2 -p 16 -x ~&#x2F;QWJ&#x2F;sequence_data&#x2F;genome&#x2F;mm10_indexed&#x2F;mm10&#x2F;genome  -1 ~&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;Clean_data&#x2F;19R576_combined_paired_R1.fastq -2 ~&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;Clean_data&#x2F;19R576_combined_paired_R2.fastq -S ~&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;19R576_paired.hisat2_2.sam &gt; program_2.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>&amp;会把任务丢到后台，所以会同时执行这3个比对程序，如果CPU和内存承受不住，去掉&amp;一个个来。比对这一步是非常消耗内存资源的，这是比对工具要将索引数据放入内存引起的。</p>
 <h4 id="HISAT2输出结果"><a href="#HISAT2输出结果" class="headerlink" title="HISAT2输出结果"></a>HISAT2输出结果</h4><p>比对之后会输出如下结果</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-2bd31a23e5e18ff0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_5.jpg"></p>
 <p>根据结果，显示的overall的比对率为97.19%</p>
 <h5 id="3-SAMtools三板斧"><a href="#3-SAMtools三板斧" class="headerlink" title="3. SAMtools三板斧"></a>3. SAMtools三板斧</h5><p>SAM（sequence Alignment/mapping)数据格式是目前高通量测序中存放比对数据的标准格式，当然他可以用于存放未比对的数据。所以，<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://samtools.github.io/hts-specs/SAMv1.pdf">SAM</a>的格式说明</p>
 <p>而目前处理SAM格式的工具主要是SAMTools，这是Heng Li大神写的.除了C语言版本，还有Java的Picard，Python的Pysam，Common lisp的cl-sam等其他版本。SAMTools的主要功能如下：</p>
@@ -407,7 +413,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 利用samtools工具将比对得到的sam文件转换为bam文件</span><br><span class="line">samtools view -S 19R576_paired.hisat2_2.sam -b &gt; 19R576_paired.hisat2_2.bam &amp;</span><br><span class="line"># 将得到的sam文件sort一下</span><br><span class="line">samtools sort 19R576_paired.hisat2_2.bam -o 19R576_paired.hisat2_2_sorted.bam</span><br><span class="line">#将得到的sort之后的bam文件排序</span><br><span class="line">samtools index 19R576_paired.hisat2_2_sorted.bam &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h5 id="4-IGV查看"><a href="#4-IGV查看" class="headerlink" title="4. IGV查看"></a>4. IGV查看</h5><p>这个<code>seq_sourted.bam</code>文件可以通过<code>samtools</code>或者**<a href="https://link.zhihu.com/?target=http://www.igv.org/">IGV( Integrative Genomics Viewer)</a>**独立软件进行查看。在IGV软件中载入<code>seq_sourted.bam</code>文件。 可以很直观清晰地观察到reads在基因组中的回帖情况和外显子与内含子的关系。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-9b6cbe4639545939.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="IGV查看结果"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_6.jpg" alt="IGV查看结果"></p>
 <p>参考文献：<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61847802">https://zhuanlan.zhihu.com/p/61847802</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/681e02e7f9af">https://www.jianshu.com/p/681e02e7f9af</a></p>
 
     </div>
