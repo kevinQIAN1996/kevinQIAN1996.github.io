@@ -2311,23 +2311,24 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
 <p>一路yes，安装成功</p>
 <p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1_1.webp" alt="安装完成"></p>
 <h4 id="激活conda"><a href="#激活conda" class="headerlink" title="激活conda"></a>激活conda</h4><p>找到你刚才安装的miniconda，如果没有更改过安装位置的话应该是在/home下面，cd到miniconda3的bin目录下面，能看到有一个activate</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-3f719b7cac69dff4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-2.webp"></p>
 <p>给activate添加一下权限才能使用</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#添加权限</span><br><span class="line">chmod 777 activate </span><br></pre></td></tr></table></figure>
 <p>接下来启动conda</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">. .&#x2F;active</span><br><span class="line">#这两个点不是连在一起的</span><br></pre></td></tr></table></figure>
 <p>需要注意一下的是/active前面的两个点之间不是连着一起的.<br>需要分开，其实这条命令也相当于source ./active</p>
-<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-2.webp"><br>当命令行前面出现(base)的时候说明现在已经在conda的环境中了。这时候输入conda list 命令就有反应了</p>
+<p>![](conda list](<a href="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-3.webp">https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-3.webp</a>)<br>当命令行前面出现(base)的时候说明现在已经在conda的环境中了。这时候输入conda list 命令就有反应了</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda list</span><br></pre></td></tr></table></figure>
 <p>以下是输入conda list 显示的结果</p>
-<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-3.webp" alt="conda list"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-4.webp"></p>
 <h2 id="利用conda安装生物信息软件"><a href="#利用conda安装生物信息软件" class="headerlink" title="利用conda安装生物信息软件"></a>利用conda安装生物信息软件</h2><h3 id="安装命令"><a href="#安装命令" class="headerlink" title="安装命令:"></a>安装命令:</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install samtools</span><br></pre></td></tr></table></figure>
 
 <h3 id="搜索需要的安装包"><a href="#搜索需要的安装包" class="headerlink" title="搜索需要的安装包:"></a>搜索需要的安装包:</h3><p>提供一个网址,用于事先查找想安装的软件存不存在<br><a href="https://links.jianshu.com/go?to=https://bioconda.github.io/recipes">conda available packages</a></p>
 <p>当然, 也可以用这个命令进行搜索</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda search samtools</span><br></pre></td></tr></table></figure>
 <p>提示错误，PackagesNotFoundError: The following packages are not available from current channels:，主要是没有为conda添加相应的下载软件安装包的channel</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-2bd50709bc07e4a7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><br>添加生物信息分析常用的channel，添加的是清华的镜像channel</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-4.webp"></p>
+<p>添加生物信息分析常用的channel，添加的是清华的镜像channel</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;free&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;main&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;cloud&#x2F;conda-forge&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;cloud&#x2F;bioconda&#x2F;</span><br></pre></td></tr></table></figure>
 <p>另外对channel常用的操作</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">显示安装的频道</span><br><span class="line"> conda config --set show_channel_urls yes </span><br><span class="line"></span><br><span class="line">查看已经添加的channels</span><br><span class="line">conda config --get channels</span><br><span class="line"></span><br><span class="line">已添加的channel在哪里查看</span><br><span class="line">vim ~&#x2F;.condarc</span><br></pre></td></tr></table></figure>
@@ -2338,16 +2339,16 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install samtools</span><br></pre></td></tr></table></figure>
 
 <p>提示安装进程，显示安装完成</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-e948bc90562938d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-5.webp"></p>
 <p>安装完成后，可以用“which 软件名”来查看该软件安装的位置：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">which samtools</span><br></pre></td></tr></table></figure>
 <p>显示samtools的安装路径</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-9ea2152bf864bc9b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-6.webp"></p>
 <p>搜索目前软件包有哪几个版本</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda search samtools</span><br></pre></td></tr></table></figure>
 
 
-<p><img src="https://upload-images.jianshu.io/upload_images/3194654-995dd905543db1f4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p><img src="https://github.com/kevinQIAN1996/Figurebed/blob/main/img/fastaPic.png"></p>
 <p>如需要安装特定的版本:</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install 软件名&#x3D;版本号</span><br><span class="line">conda samtools&#x3D;1.10</span><br></pre></td></tr></table></figure>
 <p>这时conda会先卸载已安装版本，然后重新安装指定版本。</p>
