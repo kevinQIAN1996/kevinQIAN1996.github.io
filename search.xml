@@ -2818,8 +2818,7 @@ Levels: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
 +          scale = &#39;row&#39;, 
 +          color =colorRampPalette(c(&#39;blue&#39;, &#39;white&#39;,&#39;red&#39;))(100))</code></pre>
 <p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/heatmap.png"></p>
-<p>火山图绘制</p>
-<pre><code>&gt; library(ggplot2)
+<h2 id="火山图绘制"><a href="#火山图绘制" class="headerlink" title="火山图绘制"></a>火山图绘制</h2><pre><code>&gt; library(ggplot2)
 &gt; library(ggrepel)
 &gt; library(dplyr)
 &gt; data &lt;- topTable(fit1,adjust=&#39;fdr&#39;,coef=&quot;group_listnormal&quot;,number=Inf)
