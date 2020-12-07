@@ -2552,6 +2552,11 @@ Annotation: GPL19197
 [29] tumor  normal
 Levels: tumor normal
 
+# 通过exprs()函数获取表达矩阵
+&gt; exprSet &lt;- exprs(gset)
+&gt; dim(exprSet)
+[1] 57176    30
+
 #boxplot查看整体样本的表达情况
 &gt; boxplot(exprSet,outline=FALSE,notch=T,col=group_list,las=2)</code></pre>
 <p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/GEOboxplot_before.png" alt="校正前"></p>

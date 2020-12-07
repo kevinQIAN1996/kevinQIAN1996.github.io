@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/heatmap.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/volcanoplot2.png">
 <meta property="article:published_time" content="2020-12-05T10:28:23.000Z">
-<meta property="article:modified_time" content="2020-12-07T16:05:14.288Z">
+<meta property="article:modified_time" content="2020-12-07T16:18:37.775Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta property="article:tag" content="GEO Database">
 <meta name="twitter:card" content="summary">
@@ -334,7 +334,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-12-08 00:05:14" itemprop="dateModified" datetime="2020-12-08T00:05:14+08:00">2020-12-08</time>
+        <time title="Modified: 2020-12-08 00:18:37" itemprop="dateModified" datetime="2020-12-08T00:18:37+08:00">2020-12-08</time>
       </span>
 
   
@@ -442,6 +442,11 @@ Annotation: GPL19197
 [15] tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal
 [29] tumor  normal
 Levels: tumor normal
+
+# 通过exprs()函数获取表达矩阵
+&gt; exprSet &lt;- exprs(gset)
+&gt; dim(exprSet)
+[1] 57176    30
 
 #boxplot查看整体样本的表达情况
 &gt; boxplot(exprSet,outline=FALSE,notch=T,col=group_list,las=2)</code></pre>
