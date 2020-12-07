@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="GEO数据链接：https:&#x2F;&#x2F;www.ncbi.nlm.nih.gov&#x2F;geo&#x2F;query&#x2F;acc.cgi?acc&#x3D;GSE61763 #安装GEOquery package &gt; if (!requireNamespace(&quot;BiocManager&quot;, quietly &#x3D; TRUE))     install.packages(&quot;BiocManager&amp;quot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GEO数据库的使用及数据分析(练习)">
+<meta property="og:url" content="http://example.com/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="GEO数据链接：https:&#x2F;&#x2F;www.ncbi.nlm.nih.gov&#x2F;geo&#x2F;query&#x2F;acc.cgi?acc&#x3D;GSE61763 #安装GEOquery package &gt; if (!requireNamespace(&quot;BiocManager&quot;, quietly &#x3D; TRUE))     install.packages(&quot;BiocManager&amp;quot">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/GEOboxplot_before.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/boxplot_after.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/PCA.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/heatmap.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/volcanoplot2.png">
+<meta property="article:published_time" content="2020-12-05T10:28:23.000Z">
+<meta property="article:modified_time" content="2020-12-07T15:36:51.965Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta property="article:tag" content="GEO Database">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/GEOboxplot_before.png">
+
+
+<link rel="canonical" href="http://example.com/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>GEO数据库的使用及数据分析(练习) | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">越努力，越幸运~</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%B8%8B%E8%BD%BD%E7%9A%84GSE%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text">查看下载的GSE数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%8F%96%E8%A1%A8%E8%BE%BE%E7%9F%A9%E9%98%B5"><span class="nav-number">2.</span> <span class="nav-text">提取表达矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E9%87%8F%E5%BE%88%E5%A4%A7%EF%BC%8Clog%E8%BD%AC%E6%8D%A2-%E9%80%89log2"><span class="nav-number">3.</span> <span class="nav-text">表达量很大，log转换(选log2)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0Annotation"><span class="nav-number">4.</span> <span class="nav-text">添加Annotation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%BB%E9%99%A4%E8%A1%A8%E8%BE%BE%E7%9F%A9%E9%98%B5%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BC%BA%E5%A4%B1%E5%80%BC"><span class="nav-number">5.</span> <span class="nav-text">去除表达矩阵的一些缺失值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCA%E5%88%86%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">PCA分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90"><span class="nav-number">7.</span> <span class="nav-text">差异基因分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8pheatmap-%E7%BB%98%E5%88%B6Heatmap"><span class="nav-number">8.</span> <span class="nav-text">使用pheatmap()绘制Heatmap</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health, CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+ 
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GEO数据库的使用及数据分析(练习)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-12-05 18:28:23" itemprop="dateCreated datePublished" datetime="2020-12-05T18:28:23+08:00">2020-12-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-12-07 23:36:51" itemprop="dateModified" datetime="2020-12-07T23:36:51+08:00">2020-12-07</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>GEO数据链接：</strong><br><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE61763">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE61763</a></p>
+<pre><code>#安装GEOquery package
+&gt; if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
+    install.packages(&quot;BiocManager&quot;)
+
+&gt; BiocManager::install(&quot;GEOquery&quot;)
+
+&gt; library(GEOquery)</code></pre>
+<p>因为GFW的原因，导致部分用户出现网络错误，导致不能下载数据，所以需要修改一下这个option</p>
+<pre><code>&gt; options(&#39;download.file.method.GEOquery&#39;=&#39;libcurl&#39;)
+#开始下载GEO数据
+&gt; gse &lt;- getGEO(&#39;GSE61763&#39;)
+
+## Found 1 file(s)
+GSE61763_series_matrix.txt.gz
+试开URL’https://ftp.ncbi.nlm.nih.gov/geo/series/GSE61nnn/GSE61763/matrix/GSE61763_series_matrix.txt.gz&#39;
+ length 7625052 bytes (7.3 MB)
+downloaded 7.3 MB
+
+
+-- Column specification ------------------------------------------------------------------------------
+cols(
+  .default = col_double(),
+  ID_REF = col_character()
+)
+i Use `spec()` for the full column specifications.
+
+File stored at: 
+C:\Users\lenovo\AppData\Local\Temp\RtmpABSroa/GPL19197.soft</code></pre>
+<h2 id="查看下载的GSE数据"><a href="#查看下载的GSE数据" class="headerlink" title="查看下载的GSE数据"></a>查看下载的GSE数据</h2><pre><code>&gt; head(gse)
+
+$GSE61763_series_matrix.txt.gz
+ExpressionSet (storageMode: lockedEnvironment)
+assayData: 57176 features, 30 samples 
+  element names: exprs 
+protocolData: none
+phenoData
+  sampleNames: GSM1513596 GSM1513597 ... GSM1513625 (30 total)
+  varLabels: title geo_accession ... tnm:ch1 (49 total)
+  varMetadata: labelDescription
+featureData
+  featureNames: A_23_P100001 A_23_P100022 ... CUST_9_PI427704219 (57176 total)
+  fvarLabels: ID GB_ACC ... Sequence (5 total)
+  fvarMetadata: Column Description labelDescription
+experimentData: use &#39;experimentData(object)&#39;
+  pubMedIds: 25685243 
+Annotation: GPL19197 </code></pre>
+<h2 id="提取表达矩阵"><a href="#提取表达矩阵" class="headerlink" title="提取表达矩阵"></a>提取表达矩阵</h2><pre><code>&gt; gset &lt;- gse[[1]]
+&gt; head(gset)
+
+ExpressionSet (storageMode: lockedEnvironment)
+assayData: 1 features, 30 samples 
+  element names: exprs 
+protocolData: none
+phenoData
+  sampleNames: GSM1513596 GSM1513597 ... GSM1513625 (30 total)
+  varLabels: title geo_accession ... tnm:ch1 (49 total)
+  varMetadata: labelDescription
+featureData
+  featureNames: A_23_P100001
+  fvarLabels: ID GB_ACC ... Sequence (5 total)
+  fvarMetadata: Column Description labelDescription
+experimentData: use &#39;experimentData(object)&#39;
+  pubMedIds: 25685243 
+Annotation: GPL19197 
+
+
+#提取表型数据信息
+&gt; pdata &lt;- pData(gset)
+
+# 查看数据的维度，共30个样本数据，也就是15对
+&gt; dim(pdata)
+[1] 30 49
+
+# 强制限定顺序
+&gt; group_list &lt;- relevel(group_list, ref=&#39;tumor&#39;)
+&gt; group_list
+ [1] tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal
+[15] tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal
+[29] tumor  normal
+Levels: tumor normal
+
+#boxplot查看整体样本的表达情况
+&gt; boxplot(exprSet,outline=FALSE,notch=T,col=group_list,las=2)</code></pre>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/GEOboxplot_before.png" alt="校正前"></p>
+<center>校正前的整体样本表达情况</center>
+
+<p>整体表达不整齐，使用limma包内置函数人工校正</p>
+<pre><code>&gt; library(limma)
+
+载入程辑包：&#39;limma&#39;
+
+The following object is masked from &#39;package:BiocGenerics&#39;:
+
+    plotMA
+
+&gt; exprSet &lt;- normalizeBetweenArrays(exprSet)
+&gt; boxplot(exprSet,outline=FALSE,notch=T,col=group_list,las=2)</code></pre>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/boxplot_after.png" alt="校正后"></p>
+<center>校正后就感觉数据整体平整很多</center>
+
+<h2 id="表达量很大，log转换-选log2"><a href="#表达量很大，log转换-选log2" class="headerlink" title="表达量很大，log转换(选log2)"></a>表达量很大，log转换(选log2)</h2><pre><code>&gt; ex &lt;- exprSet
+&gt; qx &lt;- as.numeric(quantile(ex, c(0., 0.25, 0.5, 0.75, 0.99, 1.0), na.rm=T))
+&gt; LogC &lt;- (qx[5] &gt; 100) ||
++ (qx[6]-qx[1] &gt; 50 &amp;&amp; qx[2] &gt; 0) ||
++ (qx[2] &gt; 0 &amp;&amp; qx[2] &lt; 1 &amp;&amp; qx[4] &gt; 1 &amp;&amp; qx[4] &lt; 2)
+
+&gt; if (LogC) &#123; ex[which(ex &lt;= 0)] &lt;- NaN
++ exprSet &lt;- log2(ex) &#125;
+&gt; dim(exprSet)
+[1] 57176    30</code></pre>
+<h2 id="添加Annotation"><a href="#添加Annotation" class="headerlink" title="添加Annotation"></a>添加Annotation</h2><pre><code>&gt; gpl&lt;- getGEO(&#39;GPL19197&#39;,destdir = &#39;./&#39;)
+File stored at: 
+.//GPL19197.soft
+&gt; GPL19197 &lt;- GEOquery::Table(gpl)
+&gt; probeset &lt;- rownames(exprSet)
+&gt; probe2symbol &lt;- data.frame(probeset,symbol=GPL19197$`Gene Symbol`,stringsAsFactors = F)
+&gt; dim(probe2symbol)
+[1] 57176     2
+&gt; head(probe2symbol)
+      probeset  symbol
+1 A_23_P100001 FAM174B
+2 A_23_P100022    SV2B
+3 A_23_P100056  RBPMS2
+4 A_23_P100074    AVEN
+5 A_23_P100127   CASC5
+6 A_23_P100141    UNKL</code></pre>
+<h2 id="去除表达矩阵的一些缺失值"><a href="#去除表达矩阵的一些缺失值" class="headerlink" title="去除表达矩阵的一些缺失值"></a>去除表达矩阵的一些缺失值</h2><pre><code>&gt; library(dplyr)
+
+载入程辑包：&#39;dplyr&#39;
+
+&gt; library(tibble)
+
+载入程辑包：&#39;tibble&#39;
+
+The following object is masked from &#39;package:ShortRead&#39;:
+
+    view
+
+&gt; exprSet &lt;- as.data.frame(exprSet)
+&gt; exprSet &lt;- exprSet %&gt;% 
++     rownames_to_column(var=&#39;probeset&#39;) %&gt;% 
++     #合并探针的信息
++     inner_join(probe2symbol,by=&#39;probeset&#39;) %&gt;% 
++     #去掉多余信息
++     select(-probeset) %&gt;% 
++     #重新排列
++     select(symbol,everything()) %&gt;% 
++     #求出平均数(这边的点号代表上一步产出的数据)
++     mutate(rowMean =rowMeans(.[grep(&#39;GSM&#39;, names(.))])) %&gt;%
++     # #去除symbol中的NA 
++     filter(symbol != &#39;NA&#39;) %&gt;% 
++     #把表达量的平均值按从大到小排序
++     arrange(desc(rowMean)) %&gt;% 
++     # symbol留下第一个
++     distinct(symbol,.keep_all = T) %&gt;%
++     #反向选择去除rowMean这一列 
++     select(-rowMean) %&gt;% 
++     # 列名变成行名
++     column_to_rownames(var = &#39;symbol&#39;)
+&gt; exprSet &lt;- na.omit(exprSet)
+&gt; dim(exprSet)
+[1] 22723    30</code></pre>
+<h2 id="PCA分析"><a href="#PCA分析" class="headerlink" title="PCA分析"></a>PCA分析</h2><pre><code>&gt; pcaData &lt;- exprSet
+&gt; head(pcaData)
+        GSM1513596 GSM1513597 GSM1513598 GSM1513599 GSM1513600
+ZNF865    18.83438   18.74083   18.83438   18.83438   18.83438
+RN28S1    18.74083   18.83438   18.74083   18.74083   18.74083
+PQLC2     18.39928   18.59863   18.59863   18.59863   18.50781
+GPR155    18.59863   18.32740   18.39928   18.32740   18.32740
+          17.83468   18.22174   18.32740   18.22174   18.39928
+FAM74A4   18.32740   17.89507   18.22174   18.05010   18.22174
+        GSM1513601 GSM1513602 GSM1513603 GSM1513604 GSM1513605
+ZNF865    18.74083   18.83438   18.74083   18.74083   18.74083
+RN28S1    18.83438   18.74083   18.83438   18.83438   18.83438
+PQLC2     18.50781   18.50781   18.50781   17.33055   18.59863
+GPR155    18.22174   18.39928   18.22174   18.39928   18.32740
+          18.13508   18.13508   18.32740   18.59863   18.39928
+FAM74A4   17.67673   17.94982   18.00258   18.22174   18.05010
+        GSM1513606 GSM1513607 GSM1513608 GSM1513609 GSM1513610
+ZNF865    18.59863   18.83438   18.50781   18.83438   18.74083
+RN28S1    18.74083   18.50781   18.39928   18.74083   18.83438
+PQLC2     18.50781   18.59863   18.32740   18.22174   18.59863
+GPR155    18.13508   18.39928   18.00258   18.50781   18.22174
+          18.22174   18.32740   18.05010   18.05010   18.39928
+FAM74A4   18.05010   18.00258   17.79035   18.39928   18.05010
+        GSM1513611 GSM1513612 GSM1513613 GSM1513614 GSM1513615
+ZNF865    18.74083   18.83438   18.74083   18.83438   18.83438
+RN28S1    18.83438   18.50781   18.83438   18.74083   18.74083
+PQLC2     18.50781   18.74083   18.05010   18.59863   18.50781
+GPR155    18.32740   18.39928   18.50781   18.32740   18.39928
+          18.39928   18.32740   18.39928   18.39928   18.13508
+FAM74A4   18.13508   18.13508   18.32740   18.13508   18.22174
+        GSM1513616 GSM1513617 GSM1513618 GSM1513619 GSM1513620
+ZNF865    18.83438   18.83438   18.39928   18.83438   18.83438
+RN28S1    18.50781   18.74083   18.59863   18.39928   18.50781
+PQLC2     18.59863   18.59863   18.32740   18.59863   18.59863
+GPR155    18.22174   18.39928   18.05010   18.50781   18.39928
+          18.32740   18.32740   18.22174   18.32740   18.32740
+FAM74A4   18.00258   18.22174   17.83468   18.13508   18.13508
+        GSM1513621 GSM1513622 GSM1513623 GSM1513624 GSM1513625
+ZNF865    18.74083   18.74083   18.74083   18.83438   18.50781
+RN28S1    18.83438   18.83438   18.83438   18.50781   18.83438
+PQLC2     18.13508   18.50781   18.50781   18.74083   18.22174
+GPR155    18.50781   18.32740   18.32740   18.22174   18.32740
+          18.39928   18.39928   18.39928   18.39928   18.59863
+FAM74A4   18.32740   17.83468   18.22174   18.05010   18.00258
+
+#将基因名和样品名进行转置
+&gt; pcaDataT &lt;- as.data.frame(t(pcaData))
+# 查看数据维度
+&gt; dim(pcaDataT)
+[1]    30 22723
+
+&gt; head(pcaDataT)[,1:3]
+             ZNF865   RN28S1    PQLC2
+GSM1513596 18.83438 18.74083 18.39928
+GSM1513597 18.74083 18.83438 18.59863
+GSM1513598 18.83438 18.74083 18.59863
+GSM1513599 18.83438 18.74083 18.59863
+GSM1513600 18.83438 18.74083 18.50781
+GSM1513601 18.74083 18.83438 18.50781
+
+#将分类信息加上，方便后面作图时颜色来区分
+&gt; pcaDataTGroup &lt;- cbind(pcaDataT,as.data.frame(group_list))
+&gt; dim(pcaDataTGroup)
+[1]    30 22724
+&gt; head(pcaDataTGroup)[,22720:22724]
+            GALNTL5 LOC647012 LOC339822     ODF1 group_list
+GSM1513596 2.962558  2.368222  3.321705 3.150202      tumor
+GSM1513597 3.524921  3.030981  3.647162 3.441140     normal
+GSM1513598 2.515347  1.696235  2.649310 2.854849      tumor
+GSM1513599 2.791733  1.647627  2.854849 3.157716     normal
+GSM1513600 1.647627  2.861833  2.064990 2.649310      tumor
+GSM1513601 3.030981  2.233265  2.875022 2.462675     normal
+
+#使用R自带的prcomp()函数进行分析
+&gt; pca &lt;- prcomp(pcaDataT,scale=TRUE)
+# 查看一下汇总情况
+&gt; summary(pca)
+Importance of components:
+                           PC1     PC2      PC3      PC4
+Standard deviation     69.7013 53.6954 41.59722 38.27877
+Proportion of Variance  0.2138  0.1269  0.07615  0.06448
+Cumulative Proportion   0.2138  0.3407  0.41684  0.48132
+                            PC5      PC6      PC7      PC8
+Standard deviation     34.27880 32.53043 29.90406 27.07682
+Proportion of Variance  0.05171  0.04657  0.03935  0.03226
+Cumulative Proportion   0.53303  0.57960  0.61896  0.65122
+                            PC9     PC10     PC11    PC12
+Standard deviation     26.73741 25.63509 24.28643 23.4961
+Proportion of Variance  0.03146  0.02892  0.02596  0.0243
+Cumulative Proportion   0.68268  0.71160  0.73756  0.7619
+                           PC13     PC14     PC15     PC16
+Standard deviation     22.54617 21.24446 20.90725 19.67930
+Proportion of Variance  0.02237  0.01986  0.01924  0.01704
+Cumulative Proportion   0.78423  0.80409  0.82333  0.84037
+                           PC17     PC18     PC19     PC20
+Standard deviation     19.62633 19.39049 18.81680 18.53608
+Proportion of Variance  0.01695  0.01655  0.01558  0.01512
+Cumulative Proportion   0.85732  0.87387  0.88945  0.90457
+                           PC21     PC22     PC23     PC24
+Standard deviation     17.27997 16.62282 16.24557 15.85570
+Proportion of Variance  0.01314  0.01216  0.01161  0.01106
+Cumulative Proportion   0.91771  0.92987  0.94149  0.95255
+                           PC25     PC26     PC27     PC28
+Standard deviation     15.68151 15.07915 14.48868 14.27492
+Proportion of Variance  0.01082  0.01001  0.00924  0.00897
+Cumulative Proportion   0.96337  0.97338  0.98262  0.99159
+                           PC29      PC30
+Standard deviation     13.82776 1.559e-13
+Proportion of Variance  0.00841 0.000e+00
+Cumulative Proportion   1.00000 1.000e+00
+
+
+#查看一下数据结构
+&gt; str(pca)
+List of 5
+ $ sdev    : num [1:30] 69.7 53.7 41.6 38.3 34.3 ...
+ $ rotation: num [1:22723, 1:30] 0.00525 -0.00221 0.00164 -0.00047 0.00375 ...
+  ..- attr(*, &quot;dimnames&quot;)=List of 2
+  .. ..$ : chr [1:22723] &quot;ZNF865&quot; &quot;RN28S1&quot; &quot;PQLC2&quot; &quot;GPR155&quot; ...
+  .. ..$ : chr [1:30] &quot;PC1&quot; &quot;PC2&quot; &quot;PC3&quot; &quot;PC4&quot; ...
+ $ center  : Named num [1:22723] 18.8 18.7 18.5 18.3 18.3 ...
+  ..- attr(*, &quot;names&quot;)= chr [1:22723] &quot;ZNF865&quot; &quot;RN28S1&quot; &quot;PQLC2&quot; &quot;GPR155&quot; ...
+ $ scale   : Named num [1:22723] 0.113 0.144 0.268 0.134 0.159 ...
+  ..- attr(*, &quot;names&quot;)= chr [1:22723] &quot;ZNF865&quot; &quot;RN28S1&quot; &quot;PQLC2&quot; &quot;GPR155&quot; ...
+ $ x       : num [1:30, 1:30] -70.3 68.8 -65.9 86.2 -49.5 ...
+  ..- attr(*, &quot;dimnames&quot;)=List of 2
+  .. ..$ : chr [1:30] &quot;GSM1513596&quot; &quot;GSM1513597&quot; &quot;GSM1513598&quot; &quot;GSM1513599&quot; ...
+  .. ..$ : chr [1:30] &quot;PC1&quot; &quot;PC2&quot; &quot;PC3&quot; &quot;PC4&quot; ...
+ - attr(*, &quot;class&quot;)= chr &quot;prcomp
+
+
+&gt; head(data_pca)[,22720:22726]
+            GALNTL5 LOC647012 LOC339822     ODF1 group_list
+GSM1513596 2.962558  2.368222  3.321705 3.150202      tumor
+GSM1513597 3.524921  3.030981  3.647162 3.441140     normal
+GSM1513598 2.515347  1.696235  2.649310 2.854849      tumor
+GSM1513599 2.791733  1.647627  2.854849 3.157716     normal
+GSM1513600 1.647627  2.861833  2.064990 2.649310      tumor
+GSM1513601 3.030981  2.233265  2.875022 2.462675     normal
+                 PC1        PC2
+GSM1513596 -70.29442 -106.21949
+GSM1513597  68.78575  -50.57325
+GSM1513598 -65.90130  -80.09775
+GSM1513599  86.22612  -76.48759
+GSM1513600 -49.48738  -93.12600
+GSM1513601  56.59620   14.35318
+
+
+&gt; ggplot(data_pca,aes(PC1,PC2,col=group_list,fill=group_list))+
++     stat_ellipse(geom=&quot;polygon&quot;,col=&quot;black&quot;,alpha=0.5)+
++     geom_point(shape=21,col=&quot;black&quot;,size=1.2)+
++     theme(panel.background = element_rect(fill=&quot;transparent&quot;,color=&quot;black&quot;),
++           panel.grid.minor = element_blank(), 
++           panel.grid.major = element_blank())</code></pre>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/PCA.png" alt="PCA"></p>
+<center>PCA(Principal components analysis)</center>
+
+
+<h2 id="差异基因分析"><a href="#差异基因分析" class="headerlink" title="差异基因分析"></a>差异基因分析</h2><pre><code>&gt; pairinfo &lt;- factor(c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,14,15,15))
+&gt; pairinfo
+ [1] 1  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8  9  9  10
+[20] 10 11 11 12 12 13 13 14 14 15 15
+Levels: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+&gt; design &lt;- model.matrix(~ pairinfo+group_list)
+&gt; fit &lt;- lmFit(exprSet,design)
+#使用经验贝叶斯算法计算差异表达基因的显著性
+&gt; fit &lt;- eBayes(fit)
+#使用“FDR校正”
+&gt; allDiff_pair &lt;- topTable(fit,adjust=&#39;fdr&#39;,coef=1,n = Inf,p.value = 0.05)</code></pre>
+<h2 id="使用pheatmap-绘制Heatmap"><a href="#使用pheatmap-绘制Heatmap" class="headerlink" title="使用pheatmap()绘制Heatmap"></a>使用pheatmap()绘制Heatmap</h2><pre><code>&gt; library(pheatmap)
+&gt; allDiff_pair2 &lt;- topTable(fit,adjust=&#39;fdr&#39;,coef=1,number=Inf,p.value=0.05,lfc = 1) 
+&gt; heatdata &lt;- exprSet[rownames(allDiff_pair2),]
+&gt; heat &lt;- na.omit(heatdata)
+&gt; annotation_col &lt;- data.frame(group_list)
+&gt; rownames(annotation_col) &lt;- colnames(heatdata)
+&gt; pheatmap(heat, 
++          cluster_rows = TRUE,
++          cluster_cols = TRUE,
++          annotation_col =annotation_col, 
++          annotation_legend=TRUE, 
++          show_rownames = F,
++          show_colnames = T,
++          scale = &#39;row&#39;, 
++          color =colorRampPalette(c(&#39;blue&#39;, &#39;white&#39;,&#39;red&#39;))(100))</code></pre>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/heatmap.png"></p>
+<p>火山图绘制</p>
+<pre><code>&gt; library(ggplot2)
+&gt; library(ggrepel)
+&gt; library(dplyr)
+
+
+&gt; data &lt;- topTable(fit1,adjust=&#39;fdr&#39;,coef=&quot;group_listnormal&quot;,number=Inf)
+&gt; dim(data)
+[1] 22723     6
+&gt; data$significant &lt;- as.factor(data$adj.P.Val&lt;0.05 &amp; abs(data$logFC) &gt; 1)
+&gt; data$gene &lt;- rownames(data)
+&gt; ggplot(data=data, aes(x=logFC, y =-log10(adj.P.Val),color=significant)) +
++     geom_point(alpha=0.8, size=1.2,col=&#39;black&#39;)+
++     geom_point(data=subset(data, logFC &gt; 1),alpha=0.8, size=1.2,col=&#39;red&#39;)+
++     geom_point(data=subset(data, logFC &lt; -1),alpha=0.6, size=1.2,col=&#39;blue&#39;)+
++     labs(x=&#39;log2 (fold change)&#39;,y=&#39;-log10 (adj.P.Val)&#39;)+
++     theme(plot.title = element_text(hjust = 0.4))+
++     geom_hline(yintercept = -log10(0.05),lty=4,lwd=0.6,alpha=0.8)+
++     geom_vline(xintercept = c(1,-1),lty=4,lwd=0.6,alpha=0.8)+
++     theme_bw()+
++     theme(panel.border = element_blank(),
++           panel.grid.major = element_blank(), 
++           panel.grid.mi
++           nor = element_blank(),   
++           axis.line = element_line(colour = &#39;black&#39;))</code></pre>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/volcanoplot2.png"></p>
+<p>感觉这个火山图变成这个样子有些奇怪，怀疑是数据原因本身造成的</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GEO-Database/" rel="tag"># GEO Database</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/" rel="prev" title="RNAseq_6_无重复差异基因分析">
+                  <i class="fa fa-chevron-left"></i> RNAseq_6_无重复差异基因分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/",
+    }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+
+<!-- <script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script> -->
+
+
+</body>
+</html>
