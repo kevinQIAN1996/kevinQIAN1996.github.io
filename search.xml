@@ -2829,11 +2829,11 @@ Levels: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
 <h2 id="火山图绘制"><a href="#火山图绘制" class="headerlink" title="火山图绘制"></a>火山图绘制</h2><pre><code>&gt; library(ggplot2)
 &gt; library(ggrepel)
 &gt; library(dplyr)
-&gt; data &lt;- topTable(fit1,adjust=&#39;fdr&#39;,coef=&quot;group_listnormal&quot;,number=Inf)
-&gt; dim(data)
-[1] 22723     6
-&gt; data$significant &lt;- as.factor(data$adj.P.Val&lt;0.05 &amp; abs(data$logFC) &gt; 1)
+&gt; data &lt;- topTable(fit,adjust=&#39;fdr&#39;,coef=1,number=Inf) 
+&gt; data$significant &lt;- as.factor(data$adj.P.Val&lt;0.05 &amp; abs(data$logFC) &gt; 0.6) #以logFC=1.5为界
 &gt; data$gene &lt;- rownames(data)
+
+#ggplot画图
 &gt; ggplot(data=data, aes(x=logFC, y =-log10(adj.P.Val),color=significant)) +
 +     geom_point(alpha=0.8, size=1.2,col=&#39;black&#39;)+
 +     geom_point(data=subset(data, logFC &gt; 1),alpha=0.8, size=1.2,col=&#39;red&#39;)+
@@ -2845,14 +2845,18 @@ Levels: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
 +     theme_bw()+
 +     theme(panel.border = element_blank(),
 +           panel.grid.major = element_blank(), 
-+           panel.grid.mi
-+           nor = element_blank(),   
++           panel.grid.minor = element_blank(),   
 +           axis.line = element_line(colour = &#39;black&#39;))</code></pre>
-<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/volcanoplot2.png"></p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/volcanno_plot22.png"></p>
 <p>感觉这个火山图变成这个样子有些奇怪，怀疑是数据原因本身造成的</p>
 ]]></content>
       <tags>
         <tag>GEO Database</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>面试题2</title>
+    <url>/2020/12/09/%E9%9D%A2%E8%AF%95%E9%A2%982/</url>
+    <content><![CDATA[]]></content>
   </entry>
 </search>
