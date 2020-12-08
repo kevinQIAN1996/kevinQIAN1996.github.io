@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/heatmap.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/volcanoplot2.png">
 <meta property="article:published_time" content="2020-12-05T10:28:23.000Z">
-<meta property="article:modified_time" content="2020-12-07T16:18:37.775Z">
+<meta property="article:modified_time" content="2020-12-08T14:17:10.267Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta property="article:tag" content="GEO Database">
 <meta name="twitter:card" content="summary">
@@ -334,7 +334,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-12-08 00:18:37" itemprop="dateModified" datetime="2020-12-08T00:18:37+08:00">2020-12-08</time>
+        <time title="Modified: 2020-12-08 22:17:10" itemprop="dateModified" datetime="2020-12-08T22:17:10+08:00">2020-12-08</time>
       </span>
 
   
@@ -369,7 +369,7 @@
 &gt; BiocManager::install(&quot;GEOquery&quot;)
 
 &gt; library(GEOquery)</code></pre>
-<p>因为GFW的原因，导致部分用户出现网络错误，导致不能下载数据，所以需要修改一下这个option</p>
+<p>因为GFW的原因，导致部分用户出现网络错误，进而导致不能下载数据，所以需要修改一下这个option</p>
 <pre><code>&gt; options(&#39;download.file.method.GEOquery&#39;=&#39;libcurl&#39;)
 #开始下载GEO数据
 &gt; gse &lt;- getGEO(&#39;GSE61763&#39;)
@@ -435,12 +435,15 @@ Annotation: GPL19197
 &gt; dim(pdata)
 [1] 30 49
 
-# 强制限定顺序
+#设定level
+&gt; group_list=c(rep(c(&#39;tumor&#39;,&#39;normal&#39;),15))
+&gt; group_list &lt;-factor(group_list) 
 &gt; group_list &lt;- relevel(group_list, ref=&#39;tumor&#39;)
 &gt; group_list
- [1] tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal
-[15] tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal
-[29] tumor  normal
+ [1] tumor  normal tumor  normal tumor  normal tumor  normal
+ [9] tumor  normal tumor  normal tumor  normal tumor  normal
+[17] tumor  normal tumor  normal tumor  normal tumor  normal
+[25] tumor  normal tumor  normal tumor  normal
 Levels: tumor normal
 
 # 通过exprs()函数获取表达矩阵

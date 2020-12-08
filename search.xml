@@ -2478,7 +2478,7 @@ p + geom_&lt;图形类型&gt;(&lt;...&gt;) +
 &gt; BiocManager::install(&quot;GEOquery&quot;)
 
 &gt; library(GEOquery)</code></pre>
-<p>因为GFW的原因，导致部分用户出现网络错误，导致不能下载数据，所以需要修改一下这个option</p>
+<p>因为GFW的原因，导致部分用户出现网络错误，进而导致不能下载数据，所以需要修改一下这个option</p>
 <pre><code>&gt; options(&#39;download.file.method.GEOquery&#39;=&#39;libcurl&#39;)
 #开始下载GEO数据
 &gt; gse &lt;- getGEO(&#39;GSE61763&#39;)
@@ -2544,12 +2544,15 @@ Annotation: GPL19197
 &gt; dim(pdata)
 [1] 30 49
 
-# 强制限定顺序
+#设定level
+&gt; group_list=c(rep(c(&#39;tumor&#39;,&#39;normal&#39;),15))
+&gt; group_list &lt;-factor(group_list) 
 &gt; group_list &lt;- relevel(group_list, ref=&#39;tumor&#39;)
 &gt; group_list
- [1] tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal
-[15] tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal tumor  normal
-[29] tumor  normal
+ [1] tumor  normal tumor  normal tumor  normal tumor  normal
+ [9] tumor  normal tumor  normal tumor  normal tumor  normal
+[17] tumor  normal tumor  normal tumor  normal tumor  normal
+[25] tumor  normal tumor  normal tumor  normal
 Levels: tumor normal
 
 # 通过exprs()函数获取表达矩阵
