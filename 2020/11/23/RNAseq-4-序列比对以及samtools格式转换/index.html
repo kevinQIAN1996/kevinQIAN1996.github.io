@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_5.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_6.jpg">
 <meta property="article:published_time" content="2020-11-22T16:14:03.000Z">
-<meta property="article:modified_time" content="2020-11-30T15:28:58.025Z">
+<meta property="article:modified_time" content="2020-12-09T18:03:27.196Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta property="article:tag" content="RNAseq">
 <meta name="twitter:card" content="summary">
@@ -335,7 +335,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-11-30 23:28:58" itemprop="dateModified" datetime="2020-11-30T23:28:58+08:00">2020-11-30</time>
+        <time title="Modified: 2020-12-10 02:03:27" itemprop="dateModified" datetime="2020-12-10T02:03:27+08:00">2020-12-10</time>
       </span>
 
   
@@ -363,7 +363,7 @@
     
     <div class="post-body" itemprop="articleBody">
         <p><strong>概况</strong>：使用处理后的fastq文件和基因组与转录组比对，确定在转录组或者基因组中的关系。在转录组和基因组的比对采取的方案不同。分别是<code>ungapped alignment to transcriptome</code>和<code>Gapped aligenment to genome</code>。 <strong>软件</strong>：<code>hisat2</code>和<code>STAR</code>在比对上都有比较好的表现。有文献显示，hisat2在纳伪较少但是弃真较多，但是速度比较快。STAR就比对而言综合质量比较好，在长短reads回帖上都有良好发挥。由于hisat2的速度优势，选择hisat2作为本次比对的软件。 在比对之前首先要先进行索引文件的获取或者制作。</p>
-<h3 id="比对还是不比对"><a href="#比对还是不比对" class="headerlink" title="比对还是不比对"></a>比对还是不比对</h3><p>在比对之前，我们得了解比对的目的是什么？RNA-Seq数据比对和DNA-Seq数据比对有什么差异？<br>RNA-Seq数据分析分为很多种，比如说找差异表达基因或寻找新的可变剪切。如果找差异表达基因单纯只需要确定不同的read计数就行的话，我们可以用bowtie, bwa这类比对工具，或者是salmon这类align-free工具，并且后者的速度更快。</p>
+<h3 id="比对还是不比对"><a href="#比对还是不比对" class="headerlink" title="比对还是不比对"></a>比对还是不比对</h3><p>在比对之前，我们得了解比对的目的是什么？RNA-Seq数据比对和DNA-Seq数据比对有什么差异？<br><strong>RNA-Seq数据分析分为很多种，比如说找差异表达基因或寻找新的可变剪切。如果找差异表达基因单纯只需要确定不同的read计数就行的话，我们可以用bowtie, bwa这类比对工具</strong>，或者是salmon这类align-free工具，并且后者的速度更快。</p>
 <p>但是如果你需要找到新的isoform，或者RNA的可变剪切，看看外显子使用差异的话，你就需要TopHat, HISAT2或者是STAR这类工具用于找到剪切位点。因为RNA-Seq不同于DNA-Seq，DNA在转录成mRNA的时候会把内含子部分去掉。所以mRNA反转的cDNA如果比对不到参考序列，会被分开，重新比对一次，判断中间是否有内含子。</p>
 <p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_1.jpg"></p>
 <h5 id="比对工具抉择"><a href="#比对工具抉择" class="headerlink" title="比对工具抉择"></a>比对工具抉择</h5><p>在2016年的一篇综述<em>A survey of best practices for RNA-seq data analysis</em>，提到目前有三种RNA数据分析的策略。那个时候的工具也主要用的是<strong>TopHat</strong>,<strong>STAR</strong>和<strong>Bowtie</strong>.其中<strong>TopHat</strong>目前已经被它的作者推荐改用<strong>HISAT</strong>进行替代。</p>
