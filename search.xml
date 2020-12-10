@@ -3100,6 +3100,78 @@ x dplyr::lag()    masks stats::lag()</code></pre>
 <td align="right">90.0</td>
 </tr>
 </tbody></table>
+<p>sample_n()中加选项<strong>replace=TRUE可以变成有放回抽样</strong>。 可以用weight选项指定数据框中的一列作为抽样权重， 进行不等概抽样</p>
+<h2 id="用distinct-去除重复行"><a href="#用distinct-去除重复行" class="headerlink" title="用distinct()去除重复行"></a>用distinct()去除重复行</h2><p>有时我们希望得到一个或若干个变量组合的所有不同值。 dplyr包的distinct()函数可以对数据框指定若干变量， 然后筛选出所有不同值， 每组不同值仅保留一行。 指定变量名时不是写成字符串形式而是直接写变量名， 这是dplyr和tidyr包的特点。 例如，筛选出性别与年龄的所有不同组合：</p>
+<pre><code>&gt; d.class %&gt;%
++     distinct(sex,age) %&gt;%
++     knitr::kable()
+
+
+|sex | age|
+|:---|---:|
+|F   |  13|
+|F   |  14|
+|F   |  12|
+|F   |  15|
+|F   |  11|
+|M   |  14|
+|M   |  15|
+|M   |  12|
+|M   |  13|
+|M   |  16|
+|M   |  11|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">sex</th>
+<th align="right">age</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">F</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="right">11</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">16</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">11</td>
+</tr>
+</tbody></table>
 ]]></content>
   </entry>
 </search>
