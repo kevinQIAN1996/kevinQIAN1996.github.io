@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="字符型向量字符型向量是元素为字符串的向量。 如 &gt; s1 &lt;- c(&#39;abc&#39;, &#39;&#39;, &#39;a cat&#39;, NA, &#39;李明&#39;) 注意空字符串并不能自动认为是缺失值， 字符型的缺失值仍用NA表示。 paste()函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符型数据及处理">
+<meta property="og:url" content="http://example.com/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="字符型向量字符型向量是元素为字符串的向量。 如 &gt; s1 &lt;- c(&#39;abc&#39;, &#39;&#39;, &#39;a cat&#39;, NA, &#39;李明&#39;) 注意空字符串并不能自动认为是缺失值， 字符型的缺失值仍用NA表示。 paste()函数">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-01T08:58:10.000Z">
+<meta property="article:modified_time" content="2020-11-05T13:37:52.664Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta property="article:tag" content="R">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>字符型数据及处理 | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">越努力，越幸运~</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%90%91%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">字符型向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#paste-%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">paste()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E5%A4%A7%E5%B0%8F%E5%86%99"><span class="nav-number">3.</span> <span class="nav-text">转换大小写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6"><span class="nav-number">4.</span> <span class="nav-text">字符串长度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%96%E5%AD%90%E4%B8%B2"><span class="nav-number">5.</span> <span class="nav-text">取子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%86%E5%88%86"><span class="nav-number">6.</span> <span class="nav-text">字符串拆分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9B%BF%E6%8D%A2%E5%8A%9F%E8%83%BD"><span class="nav-number">7.</span> <span class="nav-text">字符串替换功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">8.</span> <span class="nav-text">正则表达式</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health, CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+ 
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字符型数据及处理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-01 16:58:10" itemprop="dateCreated datePublished" datetime="2020-11-01T16:58:10+08:00">2020-11-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-11-05 21:37:52" itemprop="dateModified" datetime="2020-11-05T21:37:52+08:00">2020-11-05</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="字符型向量"><a href="#字符型向量" class="headerlink" title="字符型向量"></a>字符型向量</h2><p>字符型向量是元素为字符串的向量。 如</p>
+<pre><code>&gt; s1 &lt;- c(&#39;abc&#39;, &#39;&#39;, &#39;a cat&#39;, NA, &#39;李明&#39;)</code></pre>
+<p>注意空字符串并不能自动认为是缺失值， 字符型的缺失值仍用NA表示。</p>
+<h2 id="paste-函数"><a href="#paste-函数" class="headerlink" title="paste()函数"></a>paste()函数</h2><p>针对字符型数据最常用的R函数是paste()函数。 paste()用来连接两个字符型向量， 元素一一对应连接， 默认用空格连接。 如paste(c(“ab”, “cd”), c(“ef”, “gh”)) 结果相当于c(“ab ef”, “cd gh”)。</p>
+<p>paste()在连接两个字符型向量时采用R的一般向量间运算规则， 而且可以自动把数值型向量转换为字符型向量。 可以作一对多连接， 如paste(“x”, 1:3)结果相当于c(“x 1”, “x 2”, “x 3”)。</p>
+<p>用sep=指定分隔符， 如paste(“x”, 1:3, sep=””)结果相当于c(“x1”, “x2”, “x3”)。</p>
+<p>使用collapse=参数可以把字符型向量的各个元素连接成一个单一的字符串, 如paste(c(“a”, “b”, “c”), collapse=””)结果相当于”abc”。</p>
+<h2 id="转换大小写"><a href="#转换大小写" class="headerlink" title="转换大小写"></a>转换大小写</h2><p>toupper()函数把字符型向量内容转为大写， tolower()函数转为小写。 比如，toupper(‘aB cd’)结果为”AB CD”， tolower(c(‘aB’, ‘cd’))结果相当于c(“ab” “cd”)。 这两个函数可以用于不区分大小写的比较， 比如，不论x的值是’JAN’, ‘Jan’还是’jan’， toupper(x)==’JAN’的结果都为TRUE。</p>
+<h2 id="字符串长度"><a href="#字符串长度" class="headerlink" title="字符串长度"></a>字符串长度</h2><p>用nchar(x, type=’bytes’)计算字符型向量x中每个字符串的以字节为单位的长度，这一点对中英文是有差别的， 中文通常一个汉字占两个字节，英文字母、数字、标点占一个字节。 用nchar(x, type=’chars’)计算字符型向量x中每个字符串的以字符个数为单位的长度，这时一个汉字算一个单位。</p>
+<p>在画图时可以用strwidth()函数计算某个字符串或表达式占用的空间大小。</p>
+<h2 id="取子串"><a href="#取子串" class="headerlink" title="取子串"></a>取子串</h2><p>substr(x, start, stop)从字符串x中取出从第start个到第stop个的子串， 如</p>
+<pre><code>&gt; substr(&#39;JAN07&#39;, 1, 3)
+## [1] &quot;JAN&quot;</code></pre>
+<p>如果x是一个字符型向量，substr将对每个元素取子串。如</p>
+<pre><code>&gt; substr(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 1, 3)
+## [1] &quot;JAN&quot; &quot;MAR&quot;</code></pre>
+<p>用substring(x, start)可以从字符串x中取出从第start个到末尾的子串。如</p>
+<pre><code>&gt; substring(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 4)
+## [1] &quot;07&quot; &quot;66&quot;</code></pre>
+<p>##类型转换##</p>
+<p>用as.numeric()把内容是数字的字符型值转换为数值，如</p>
+<pre><code>&gt; substr(&#39;JAN07&#39;, 4, 5)
+## [1] &quot;07&quot;
+
+&gt; substr(&#39;JAN07&#39;, 4, 5) + 2000
+## Error in substr(&quot;JAN07&quot;, 4, 5) + 2000 : 
+##   non-numeric argument to binary operator
+
+&gt; as.numeric(substr(&#39;JAN07&#39;, 4, 5)) + 2000
+## [1] 2007
+
+&gt; as.numeric(substr(c(&#39;JAN07&#39;, &#39;MAR66&#39;), 4, 5))
+## [1]  7 66</code></pre>
+<p>as.numeric()是向量化的， 可以转换一个向量的每个元素为数值型。</p>
+<p>用as.character()函数把数值型转换为字符型，如</p>
+<pre><code>&gt; as.character((1:5)*5)
+## [1] &quot;5&quot;  &quot;10&quot; &quot;15&quot; &quot;20&quot; &quot;25&quot;</code></pre>
+<p>如果自变量本来已经是字符型则结果不变。</p>
+<p>为了用指定的格式数值型转换成字符型， 可以使用sprintf()函数， 其用法与C语言的sprintf()函数相似， 只不过是向量化的。例如</p>
+<pre><code>&gt; sprintf(&#39;file%03d.txt&#39;, c(1, 99, 100))
+## [1] &quot;file001.txt&quot; &quot;file099.txt&quot; &quot;file100.txt&quot;</code></pre>
+<h2 id="字符串拆分"><a href="#字符串拆分" class="headerlink" title="字符串拆分"></a>字符串拆分</h2><p>用strsplit()函数可以把一个字符串按照某种分隔符拆分开，例如</p>
+<pre><code>&gt; x &lt;- &#39;10,8,7&#39;
+&gt; strsplit(x, &#39;,&#39;, fixed=TRUE)[[1]]
+## [1] &quot;10&quot; &quot;8&quot;  &quot;7&quot;
+
+&gt; sum(as.numeric(strsplit(x, &#39;,&#39;, fixed=TRUE)[[1]]))
+## [1] 25</code></pre>
+<p>因为strsplit()的结果是一个列表， 这个函数延后再详细讲。</p>
+<h2 id="字符串替换功能"><a href="#字符串替换功能" class="headerlink" title="字符串替换功能"></a>字符串替换功能</h2><p>用gsub()可以替换字符串中的子串， 这样的功能经常用在数据清理中。 比如，把数据中的中文标点改为英文标点， 去掉空格，等等。 如</p>
+<pre><code>&gt; x &lt;- &#39;1, 3; 5&#39;
+&gt; gsub(&#39;;&#39;, &#39;,&#39;, x, fixed=TRUE)
+## [1] &quot;1, 3, 5&quot;
+
+&gt; strsplit(gsub(&#39;;&#39;, &#39;,&#39;, x, fixed=TRUE), &#39;,&#39;)[[1]]
+## [1] &quot;1&quot;  &quot; 3&quot; &quot; 5&quot;</code></pre>
+<p>字符串x中分隔符既有逗号又有分号， 上面的程序用gsub()把分号都换成逗号。</p>
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>正则表达式(regular expression)是一种匹配某种字符串模式的方法。 用这样的方法，可以从字符串中查找某种模式的出现位置， 替换某种模式，等等。 这样的技术可以用于文本数据的预处理， 比如用网络爬虫下载的大量网页文本数据。 R中支持perl语言格式的正则表达式， grep()和grepl()函数从字符串中查询某个模式， sub()和gsub()替换某模式。 比如， 下面的程序把多于一个空格替换成一个空格</p>
+<pre><code>&gt; gsub(&#39;[[:space:]]+&#39;, &#39; &#39;, &#39;a   cat  in a box&#39;, perl=TRUE)
+## [1] &quot;a cat in a box&quot;</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/R/" rel="tag"># R</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" rel="prev" title="数值型向量及其运算">
+                  <i class="fa fa-chevron-left"></i> 数值型向量及其运算
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/" rel="next" title="R向量下标和子集">
+                  R向量下标和子集 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/",
+    }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+
+<!-- <script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script> -->
+
+
+</body>
+</html>

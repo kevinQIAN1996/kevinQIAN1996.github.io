@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="有时候一些暂时不需要用到的R包会自动在启动Rstudio的时候加载，比较占据内存，可以使用下面的代码批量detach已经加载的包 lapply(paste(&#39;package:&#39;,names(sessionInfo()$otherPkgs),sep&#x3D;&quot;&quot;),detach,character.only&#x3D;TRUE,unload&#x3D;TRUE） tidyverse系统假设数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据整理与tidyverse系统">
+<meta property="og:url" content="http://example.com/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="有时候一些暂时不需要用到的R包会自动在启动Rstudio的时候加载，比较占据内存，可以使用下面的代码批量detach已经加载的包 lapply(paste(&#39;package:&#39;,names(sessionInfo()$otherPkgs),sep&#x3D;&quot;&quot;),detach,character.only&#x3D;TRUE,unload&#x3D;TRUE） tidyverse系统假设数">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-01T12:27:36.000Z">
+<meta property="article:modified_time" content="2020-12-10T15:58:36.676Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>数据整理与tidyverse系统 | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">越努力，越幸运~</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tidyverse%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">tidyverse系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8filter-%E9%80%89%E6%8B%A9%E8%A1%8C%E5%AD%90%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">用filter()选择行子集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8sample-n-%E5%AF%B9%E8%A7%82%E6%B5%8B%E9%9A%8F%E6%9C%BA%E6%8A%BD%E6%A0%B7"><span class="nav-number">3.</span> <span class="nav-text">用sample_n()对观测随机抽样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8distinct-%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">用distinct()去除重复行</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health, CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+ 
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据整理与tidyverse系统
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-12-01 20:27:36" itemprop="dateCreated datePublished" datetime="2020-12-01T20:27:36+08:00">2020-12-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-12-10 23:58:36" itemprop="dateModified" datetime="2020-12-10T23:58:36+08:00">2020-12-10</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>有时候一些暂时不需要用到的R包会自动在启动Rstudio的时候加载，比较占据内存，可以使用下面的代码批量detach已经加载的包</p>
+<pre><code>lapply(paste(&#39;package:&#39;,names(sessionInfo()$otherPkgs),sep=&quot;&quot;),detach,character.only=TRUE,unload=TRUE）</code></pre>
+<h2 id="tidyverse系统"><a href="#tidyverse系统" class="headerlink" title="tidyverse系统"></a>tidyverse系统</h2><p>假设数据以tibble格式保存。 数据集如果用于统计与绘图， 需要满足一定的格式要求， (Wickham 2014)称之为整洁数据(tidy data)， 基本要求是每行一个观测， 每列一个变量， 每个单元格恰好有一个数据值。 这些变量应该是真正的属性， 而不是同一属性在不同年、月等时间的值分别放到单独的列。</p>
+<p>数据集经常需要选行子集、选列子集、排序、定义新变量、横向合并、长宽转换等操作， 而且经常会用若干个连续的操作分步处理， magrittr包的**管道运算符%&gt;%**特别适用于这种分步处理。</p>
+<p>为了使用这些功能，可以载入tidyverse包， 则magrittr包，readr包，dplyr包和tidyr包都会被自动载入:</p>
+<pre><code>&gt; library(tidyverse)
+-- Attaching packages ---------------------- tidyverse 1.3.0 --
+√ ggplot2 3.3.2     √ purrr   0.3.4
+√ tibble  3.0.4     √ dplyr   1.0.2
+√ tidyr   1.1.2     √ stringr 1.4.0
+√ readr   1.4.0     √ forcats 0.5.0
+-- Conflicts ------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<p>下面的例子中用如下的一个班的学生数据作为例子， 保存在如下<a target="_blank" rel="noopener" href="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/class.csv">class.csv</a>文件中：</p>
+<pre><code>&gt; d.class &lt;- read_csv(
++     &quot;class.csv&quot;, 
++     col_types=cols(
++         .default = col_double(),
++         name=col_character(),
++         sex=col_factor(levels=c(&quot;M&quot;, &quot;F&quot;))
++     ))
+
+
+&gt; head(d.class)
+# A tibble: 6 x 5
+  name  sex     age height weight
+  &lt;chr&gt; &lt;fct&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 Alice F        13   56.5   84  
+2 Becka F        13   65.3   98  
+3 Gail  F        14   64.3   90  
+4 Karen F        12   56.3   77  
+5 Kathy F        12   59.8   84.5
+6 Mary  F        15   66.5  112  </code></pre>
+<p>这个数据框有19个观测， 有如下5个变量：</p>
+<ul>
+<li><p>name</p>
+</li>
+<li><p>sex</p>
+</li>
+<li><p>age</p>
+</li>
+<li><p>height</p>
+</li>
+<li><p>weight</p>
+</li>
+</ul>
+<p>R的<strong>NHANES</strong>扩展包提供了一个规模更大的示例数据框NHANES， 可以看作是美国扣除住院病人以外的人群的一个随机样本， 有10000个观测，有76个变量， 主题是个人的健康与营养方面的信息。 仅作为教学使用而不足以作为严谨的科研用数据。 原始数据的情况详见<a target="_blank" rel="noopener" href="http://www.cdc.gov/nchs/nhanes.htm%E3%80%82">http://www.cdc.gov/nchs/nhanes.htm。</a> 载入NHANES数据框：</p>
+<pre><code>#首先安装&quot;NHANES&quot; packages
+&gt; install.packages(&quot;NHANES&quot;)
+
+#载入数据
+&gt; library(NHANES)
+&gt; data(NHANES)
+&gt; head(NHANES)
+# A tibble: 6 x 76
+     ID SurveyYr Gender   Age AgeDecade AgeMonths Race1 Race3
+  &lt;int&gt; &lt;fct&gt;    &lt;fct&gt;  &lt;int&gt; &lt;fct&gt;         &lt;int&gt; &lt;fct&gt; &lt;fct&gt;
+1 51624 2009_10  male      34 &quot; 30-39&quot;        409 White NA   
+2 51624 2009_10  male      34 &quot; 30-39&quot;        409 White NA   
+3 51624 2009_10  male      34 &quot; 30-39&quot;        409 White NA   
+4 51625 2009_10  male       4 &quot; 0-9&quot;           49 Other NA   
+5 51630 2009_10  female    49 &quot; 40-49&quot;        596 White NA   
+6 51638 2009_10  male       9 &quot; 0-9&quot;          115 White NA   
+# ... with 68 more variables: Education &lt;fct&gt;,
+#   MaritalStatus &lt;fct&gt;, HHIncome &lt;fct&gt;, HHIncomeMid &lt;int&gt;,
+#   Poverty &lt;dbl&gt;, HomeRooms &lt;int&gt;, HomeOwn &lt;fct&gt;, Work &lt;fct&gt;,
+#   Weight &lt;dbl&gt;, Length &lt;dbl&gt;, HeadCirc &lt;dbl&gt;, Height &lt;dbl&gt;,
+#   BMI &lt;dbl&gt;, BMICatUnder20yrs &lt;fct&gt;, BMI_WHO &lt;fct&gt;,
+#   Pulse &lt;int&gt;, BPSysAve &lt;int&gt;, BPDiaAve &lt;int&gt;, BPSys1 &lt;int&gt;,
+#   BPDia1 &lt;int&gt;, BPSys2 &lt;int&gt;, BPDia2 &lt;int&gt;, BPSys3 &lt;int&gt;,
+#   BPDia3 &lt;int&gt;, Testosterone &lt;dbl&gt;, DirectChol &lt;dbl&gt;,
+#   TotChol &lt;dbl&gt;, UrineVol1 &lt;int&gt;, UrineFlow1 &lt;dbl&gt;,
+#   UrineVol2 &lt;int&gt;, UrineFlow2 &lt;dbl&gt;, Diabetes &lt;fct&gt;,
+#   DiabetesAge &lt;int&gt;, HealthGen &lt;fct&gt;, DaysPhysHlthBad &lt;int&gt;,
+#   DaysMentHlthBad &lt;int&gt;, LittleInterest &lt;fct&gt;,
+#   Depressed &lt;fct&gt;, nPregnancies &lt;int&gt;, nBabies &lt;int&gt;,
+#   Age1stBaby &lt;int&gt;, SleepHrsNight &lt;int&gt;, SleepTrouble &lt;fct&gt;,
+#   PhysActive &lt;fct&gt;, PhysActiveDays &lt;int&gt;, TVHrsDay &lt;fct&gt;,
+#   CompHrsDay &lt;fct&gt;, TVHrsDayChild &lt;int&gt;,
+#   CompHrsDayChild &lt;int&gt;, Alcohol12PlusYr &lt;fct&gt;,
+#   AlcoholDay &lt;int&gt;, AlcoholYear &lt;int&gt;, SmokeNow &lt;fct&gt;,
+#   Smoke100 &lt;fct&gt;, Smoke100n &lt;fct&gt;, SmokeAge &lt;int&gt;,
+#   Marijuana &lt;fct&gt;, AgeFirstMarij &lt;int&gt;, RegularMarij &lt;fct&gt;,
+#   AgeRegMarij &lt;int&gt;, HardDrugs &lt;fct&gt;, SexEver &lt;fct&gt;,
+#   SexAge &lt;int&gt;, SexNumPartnLife &lt;int&gt;, SexNumPartYear &lt;int&gt;,
+#   SameSex &lt;fct&gt;, SexOrientation &lt;fct&gt;, PregnantNow &lt;fct&gt;
+
+# 查看数据集的维度
+&gt; dim(NHANES)
+[1] 10000    76</code></pre>
+<p>变量ID是受试者编号， SurveyYr是调查年份， 同一受试者可能在多个调查年份中有数据。 变量中包括性别、年龄、种族、收入等人口学数据， 包括体重、身高、脉搏、血压等基本体检数据， 以及是否糖尿病、是否抑郁、是否怀孕、已生产子女数等更详细的健康数据， 运动习惯、饮酒、性生活等行为方面的数据。 这个教学用数据集最初的使用者是Cashmere高中的Michelle Dalrymple 和新西兰奥克兰大学的Chris Wild。</p>
+<h2 id="用filter-选择行子集"><a href="#用filter-选择行子集" class="headerlink" title="用filter()选择行子集"></a>用filter()选择行子集</h2><p>数据框的任何行子集仍为数据框，即使只有一行而且都是数值也是如此。 行子集可以用行下标选取， 如d.class[8:12,]。 函数head()取出数据框的前面若干行， tail()取出数据框的最后若干行。</p>
+<p>dplyr包的filter()函数可以按条件选出符合条件的行组成的子集。 下例从d.class中选出年龄在13岁和13岁以下的女生：</p>
+<pre><code>&gt; d.class %&gt;%
++     filter(sex==&quot;F&quot;, age&lt;=13) %&gt;%
++     knitr::kable()
+
+
+|name  |sex | age| height| weight|
+|:-----|:---|---:|------:|------:|
+|Alice |F   |  13|   56.5|   84.0|
+|Becka |F   |  13|   65.3|   98.0|
+|Karen |F   |  12|   56.3|   77.0|
+|Kathy |F   |  12|   59.8|   84.5|
+|Sandy |F   |  11|   51.3|   50.5|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Alice</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">56.5</td>
+<td align="right">84.0</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">65.3</td>
+<td align="right">98.0</td>
+</tr>
+<tr>
+<td align="left">Karen</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">56.3</td>
+<td align="right">77.0</td>
+</tr>
+<tr>
+<td align="left">Kathy</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">59.8</td>
+<td align="right">84.5</td>
+</tr>
+<tr>
+<td align="left">Sandy</td>
+<td align="left">F</td>
+<td align="right">11</td>
+<td align="right">51.3</td>
+<td align="right">50.5</td>
+</tr>
+</tbody></table>
+<p><strong>filter()函数第一个参数是要选择的数据框， 后续的参数是条件</strong>， 这些条件是需要<strong>同时满足</strong>的， 另外， <strong>条件中取缺失值的观测自动放弃</strong>， 这一点与直接在数据框的行下标中用逻辑下标有所不同， 逻辑下标中有缺失值会在结果中产生缺失值。</p>
+<p><strong>filter()会自动舍弃行名， 如果需要行名只能将其转换成数据框的一列。</strong></p>
+<p>filter()的结果为行子集数据框。 用在管道操作当中的时候第一自变量省略（是管道传递下来的）。</p>
+<p>dplyr包的函数**<code>slice(.data, ...)</code>**可以用来选择指定序号的行子集， 正的序号表示保留，负的序号表示排除。如：</p>
+<pre><code>&gt; d.class %&gt;%
++     slice(3:5) %&gt;%
++     knitr::kable()
+
+
+|name  |sex | age| height| weight|
+|:-----|:---|---:|------:|------:|
+|Gail  |F   |  14|   64.3|   90.0|
+|Karen |F   |  12|   56.3|   77.0|
+|Kathy |F   |  12|   59.8|   84.5|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+<td align="right">14</td>
+<td align="right">64.3</td>
+<td align="right">90.0</td>
+</tr>
+<tr>
+<td align="left">Karen</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">56.3</td>
+<td align="right">77.0</td>
+</tr>
+<tr>
+<td align="left">Kathy</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">59.8</td>
+<td align="right">84.5</td>
+</tr>
+</tbody></table>
+<h2 id="用sample-n-对观测随机抽样"><a href="#用sample-n-对观测随机抽样" class="headerlink" title="用sample_n()对观测随机抽样"></a>用sample_n()对观测随机抽样</h2><p>dplyr包的sample_n(tbl, size)函数可以从数据集tbl中随机无放回抽取size行，如：</p>
+<pre><code>&gt; d.class %&gt;%
++     sample_n(size = 3) %&gt;%
++     knitr::kable()
+
+
+|name  |sex | age| height| weight|
+|:-----|:---|---:|------:|------:|
+|Karen |F   |  12|   56.3|   77.0|
+|Kathy |F   |  12|   59.8|   84.5|
+|Gail  |F   |  14|   64.3|   90.0|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Karen</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">56.3</td>
+<td align="right">77.0</td>
+</tr>
+<tr>
+<td align="left">Kathy</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">59.8</td>
+<td align="right">84.5</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+<td align="right">14</td>
+<td align="right">64.3</td>
+<td align="right">90.0</td>
+</tr>
+</tbody></table>
+<p>sample_n()中加选项<strong>replace=TRUE可以变成有放回抽样</strong>。 可以用weight选项指定数据框中的一列作为抽样权重， 进行不等概抽样</p>
+<h2 id="用distinct-去除重复行"><a href="#用distinct-去除重复行" class="headerlink" title="用distinct()去除重复行"></a>用distinct()去除重复行</h2><p>有时我们希望得到一个或若干个变量组合的所有不同值。 dplyr包的distinct()函数可以对数据框指定若干变量， 然后筛选出所有不同值， 每组不同值仅保留一行。 指定变量名时不是写成字符串形式而是直接写变量名， 这是dplyr和tidyr包的特点。 例如，筛选出性别与年龄的所有不同组合：</p>
+<pre><code>&gt; d.class %&gt;%
++     distinct(sex,age) %&gt;%
++     knitr::kable()
+
+
+|sex | age|
+|:---|---:|
+|F   |  13|
+|F   |  14|
+|F   |  12|
+|F   |  15|
+|F   |  11|
+|M   |  14|
+|M   |  15|
+|M   |  12|
+|M   |  13|
+|M   |  16|
+|M   |  11|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">sex</th>
+<th align="right">age</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">F</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="right">11</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">16</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="right">11</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/" rel="prev" title="RNAseq_6_无重复差异基因分析">
+                  <i class="fa fa-chevron-left"></i> RNAseq_6_无重复差异基因分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="next" title="GEO数据库的使用及数据分析(练习)">
+                  GEO数据库的使用及数据分析(练习) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/",
+    }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+
+<!-- <script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script> -->
+
+
+</body>
+</html>

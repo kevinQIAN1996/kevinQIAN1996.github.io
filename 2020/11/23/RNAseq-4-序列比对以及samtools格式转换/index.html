@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="概况：使用处理后的fastq文件和基因组与转录组比对，确定在转录组或者基因组中的关系。在转录组和基因组的比对采取的方案不同。分别是ungapped alignment to transcriptome和Gapped aligenment to genome。 软件：hisat2和STAR在比对上都有比较好的表现。有文献显示，hisat2在纳伪较少但是弃真较多，但是速度比较快。STAR就比对而言综合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RNAseq_4_序列比对以及samtools格式转换">
+<meta property="og:url" content="http://example.com/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="概况：使用处理后的fastq文件和基因组与转录组比对，确定在转录组或者基因组中的关系。在转录组和基因组的比对采取的方案不同。分别是ungapped alignment to transcriptome和Gapped aligenment to genome。 软件：hisat2和STAR在比对上都有比较好的表现。有文献显示，hisat2在纳伪较少但是弃真较多，但是速度比较快。STAR就比对而言综合">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_1.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_2.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_3.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_4.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_5.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_6.jpg">
+<meta property="article:published_time" content="2020-11-22T16:14:03.000Z">
+<meta property="article:modified_time" content="2020-12-09T18:03:27.196Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta property="article:tag" content="RNAseq">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_1.jpg">
+
+
+<link rel="canonical" href="http://example.com/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>RNAseq_4_序列比对以及samtools格式转换 | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">越努力，越幸运~</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E5%AF%B9%E8%BF%98%E6%98%AF%E4%B8%8D%E6%AF%94%E5%AF%B9"><span class="nav-number">1.</span> <span class="nav-text">比对还是不比对</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%AF%94%E5%AF%B9%E5%B7%A5%E5%85%B7%E6%8A%89%E6%8B%A9"><span class="nav-number">1.0.1.</span> <span class="nav-text">比对工具抉择</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E7%B4%A2%E5%BC%95%E6%96%87%E4%BB%B6%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-number">1.0.2.</span> <span class="nav-text">1. 索引文件的获取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-hisat2%E7%9A%84%E6%AF%94%E5%AF%B9"><span class="nav-number">1.0.3.</span> <span class="nav-text">2. hisat2的比对</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HISAT2%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C"><span class="nav-number">1.1.</span> <span class="nav-text">HISAT2输出结果</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-SAMtools%E4%B8%89%E6%9D%BF%E6%96%A7"><span class="nav-number">1.1.1.</span> <span class="nav-text">3. SAMtools三板斧</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-IGV%E6%9F%A5%E7%9C%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">4. IGV查看</span></a></li></ol></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health, CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+ 
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RNAseq_4_序列比对以及samtools格式转换
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-23 00:14:03" itemprop="dateCreated datePublished" datetime="2020-11-23T00:14:03+08:00">2020-11-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-12-10 02:03:27" itemprop="dateModified" datetime="2020-12-10T02:03:27+08:00">2020-12-10</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>概况</strong>：使用处理后的fastq文件和基因组与转录组比对，确定在转录组或者基因组中的关系。在转录组和基因组的比对采取的方案不同。分别是<code>ungapped alignment to transcriptome</code>和<code>Gapped aligenment to genome</code>。 <strong>软件</strong>：<code>hisat2</code>和<code>STAR</code>在比对上都有比较好的表现。有文献显示，hisat2在纳伪较少但是弃真较多，但是速度比较快。STAR就比对而言综合质量比较好，在长短reads回帖上都有良好发挥。由于hisat2的速度优势，选择hisat2作为本次比对的软件。 在比对之前首先要先进行索引文件的获取或者制作。</p>
+<h3 id="比对还是不比对"><a href="#比对还是不比对" class="headerlink" title="比对还是不比对"></a>比对还是不比对</h3><p>在比对之前，我们得了解比对的目的是什么？RNA-Seq数据比对和DNA-Seq数据比对有什么差异？<br><strong>RNA-Seq数据分析分为很多种，比如说找差异表达基因或寻找新的可变剪切。如果找差异表达基因单纯只需要确定不同的read计数就行的话，我们可以用bowtie, bwa这类比对工具</strong>，或者是salmon这类align-free工具，并且后者的速度更快。</p>
+<p>但是如果你需要找到新的isoform，或者RNA的可变剪切，看看外显子使用差异的话，你就需要TopHat, HISAT2或者是STAR这类工具用于找到剪切位点。因为RNA-Seq不同于DNA-Seq，DNA在转录成mRNA的时候会把内含子部分去掉。所以mRNA反转的cDNA如果比对不到参考序列，会被分开，重新比对一次，判断中间是否有内含子。</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_1.jpg"></p>
+<h5 id="比对工具抉择"><a href="#比对工具抉择" class="headerlink" title="比对工具抉择"></a>比对工具抉择</h5><p>在2016年的一篇综述<em>A survey of best practices for RNA-seq data analysis</em>，提到目前有三种RNA数据分析的策略。那个时候的工具也主要用的是<strong>TopHat</strong>,<strong>STAR</strong>和<strong>Bowtie</strong>.其中<strong>TopHat</strong>目前已经被它的作者推荐改用<strong>HISAT</strong>进行替代。</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_2.jpg"></p>
+<p>最近的Nature Communication发表了一篇题为的<em>Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis</em>的文章–被称之为史上最全RNA-Seq数据分析流程，也是我一直以来想做的事情，只不过他们做的超乎我的想象。文章中在基于参考基因组的转录本分析中所用的工具，是TopHat,HISAT2和STAR，<strong>结论</strong>就是HISAT2<strong>找到junction正确率</strong>最高，但是在总数上却比TopHat和STAR少。从这里可以看出HISAT2的二类错误(<strong>纳伪</strong>）比较少，但是一类错误（<strong>弃真</strong>）就高起来。<br>就<strong>唯一比对</strong>而言，STAR是三者最佳的，主要是因为它不会像TopHat和HISAT2一样在PE比对不上的情况还强行把SE也比对到基因组上。而且在处理较长的read和较短read的不同情况，STAR的稳定性也是最佳的。<br>就<strong>速度</strong>而言，HISAT2比STAR和TopHat2平均快上2.5~100倍。</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_3.jpg" alt="image"></p>
+<p>如果学习RNA-Seq数据分析，上面提到的两篇文献是必须要看上3遍以上的，而且建议每隔一段时间回顾一下。但是如果就比对工具而言，基本上就是HISAT2和STAR选一个就行。</p>
+<h5 id="1-索引文件的获取"><a href="#1-索引文件的获取" class="headerlink" title="1. 索引文件的获取"></a>1. 索引文件的获取</h5><p>######下载index</p>
+<p>首先，问自己一个问题，为什么比对的时候需要用到index？这里强烈建议大家去看Jimmy写的<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://www.biotrainee.com/thread-26-1-1.html">bowtie算法原理探究bowtie算法原理探究</a>。但是只是建议，你不需要真的去看，反正你也看不懂。</p>
+<p>高通量测序遇到的第一个问题就是，成千上万甚至上几亿条read如果在合理的时间内比对到参考基因组上，并且保证错误率在接受范围内。为了提高比对速度，就需要根据参考基因组序列，经过BWT算法转换成index，而我们比对的序列其实是index的一个子集。当然转录组比对还要考虑到可变剪切的情况，所以更加复杂。</p>
+<p>因此我门不是直接把read回贴到基因组上，而是把read和index进行比较。人类的index一般都是有现成的，我建议大家下载现成的，我曾经尝试过用服务器自己创建index，花的时间让我怀疑人生。<br>所以一般建议的做法就是直接从网站上下载已经index好的数据<br><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_4.jpg" alt="hisat2的index"></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 下载小鼠基因组的index</span><br><span class="line">mkdir mm10_indexed</span><br><span class="line">cd mm10_indexed&#x2F;</span><br><span class="line"># 从网站上下载安装包</span><br><span class="line">wget ftp:&#x2F;&#x2F;ftp.ccb.jhu.edu&#x2F;pub&#x2F;infphilo&#x2F;hisat2&#x2F;data&#x2F;mm10.tar.gz</span><br><span class="line">#解压</span><br><span class="line">tar zvfx mm10.tar.gz </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>  不同的比对软件构建索引方式不同，所用的索引也不尽相同</li>
+<li>  索引文件可以去网站下载也可以自己构建。但是索引构建会比较费时间。<a href="https://link.zhihu.com/?target=https://www.jianshu.com/p/250607bd401f">建立索引文件需要大约一个小时（MAC: 2.6 GHz Intel Core i5/ 8 GB 1600 MHz DDR3）</a> 。</li>
+<li>  网站下载hisat2基因组索引：<a href="https://link.zhihu.com/?target=http://ccb.jhu.edu/software/hisat2/index.shtml">http://ccb.jhu.edu/software/hisat2/index.shtml</a></li>
+<li>  本地索引文件构建参考了CSDN<a href="https://link.zhihu.com/?target=https://me.csdn.net/qq_40280759">@ Richard_Jolin</a>的<a href="https://link.zhihu.com/?target=https://blog.csdn.net/qq_40280759/article/details/80552193">构建过程</a></li>
+<li>  索引文件的格式如下，是由多个文件构成，要保证索引文件的格式和名称部分一致。</li>
+</ul>
+</blockquote>
+<h5 id="2-hisat2的比对"><a href="#2-hisat2的比对" class="headerlink" title="2. hisat2的比对"></a>2. hisat2的比对</h5><p>使用hisat2<br>公式构建根据hisat2 的使用说明书构建了以下公式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hisat2  -p 6    -x &lt;dir of index of genome&gt;  -1  seq_val_1.fq.gz   -2  seq_val_2.fq.gz  -S  tem.hisat2.sam</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参数说明：<br>-p #多线程数 -x #参考基因组索引文件目录和前缀 -1 #双端测序中一端测序文件 -2 #同上 -S #输出的sam文件</p>
+</blockquote>
+<p><strong>说明</strong>：在比对过程中，hisat会自动将双端测序匹配同一reads并在基因组中比对，最后两个双端测序生成一个sam文件。比对回帖过程需要消耗大量时间和电脑运行速度和硬盘存储空间。5G左右fastq文件比对回帖过程消耗大概一个小时，生成了17G的sam格式文件。回帖完成会生成一个回帖报告。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 首先利用conda安装版本为2.1.0的hisat软件</span><br><span class="line">conda install hisat2&#x3D;2.1.0</span><br><span class="line">#因为比对的过程比较长，所以利用nohup命令将程序放在后台执行，并将执行结束的</span><br><span class="line">nohup &#x2F;home&#x2F;cenhui2018&#x2F;QWJ&#x2F;sequence_data&#x2F;bio_soft&#x2F;Hisat2&#x2F;hisat2-2.1.0&#x2F;.&#x2F;hisat2 -p 16 -x ~&#x2F;QWJ&#x2F;sequence_data&#x2F;genome&#x2F;mm10_indexed&#x2F;mm10&#x2F;genome  -1 ~&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;Clean_data&#x2F;19R576_combined_paired_R1.fastq -2 ~&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;Clean_data&#x2F;19R576_combined_paired_R2.fastq -S ~&#x2F;QWJ&#x2F;sequence_data&#x2F;20191030_NGS_DATA&#x2F;19R576_paired.hisat2_2.sam &gt; program_2.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>&amp;会把任务丢到后台，所以会同时执行这3个比对程序，如果CPU和内存承受不住，去掉&amp;一个个来。比对这一步是非常消耗内存资源的，这是比对工具要将索引数据放入内存引起的。</p>
+<h4 id="HISAT2输出结果"><a href="#HISAT2输出结果" class="headerlink" title="HISAT2输出结果"></a>HISAT2输出结果</h4><p>比对之后会输出如下结果</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_5.jpg"></p>
+<p>根据结果，显示的overall的比对率为97.19%</p>
+<h5 id="3-SAMtools三板斧"><a href="#3-SAMtools三板斧" class="headerlink" title="3. SAMtools三板斧"></a>3. SAMtools三板斧</h5><p>SAM（sequence Alignment/mapping)数据格式是目前高通量测序中存放比对数据的标准格式，当然他可以用于存放未比对的数据。所以，<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://samtools.github.io/hts-specs/SAMv1.pdf">SAM</a>的格式说明</p>
+<p>而目前处理SAM格式的工具主要是SAMTools，这是Heng Li大神写的.除了C语言版本，还有Java的Picard，Python的Pysam，Common lisp的cl-sam等其他版本。SAMTools的主要功能如下：</p>
+<ul>
+<li>  <strong>view</strong>: BAM-SAM/SAM-BAM 转换和提取部分比对</li>
+<li>  <strong>sort</strong>: 比对排序</li>
+<li>  <strong>merge</strong>: 聚合多个排序比对</li>
+<li>  <strong>index</strong>: 索引排序比对</li>
+<li>  <strong>faidx</strong>: 建立FASTA索引，提取部分序列</li>
+<li>  <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://samtools.sourceforge.net/tview.shtml"><strong>tview</strong></a>: 文本格式查看序列</li>
+<li>  <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://samtools.sourceforge.net/pileup.shtml"><strong>pileup</strong></a>: 产生基于位置的结果和 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://samtools.sourceforge.net/cns0.shtml">consensus/indel calling</a></li>
+</ul>
+<p>最常用的三板斧就是格式转换，排序，索引。而进阶教程就是看文档提高。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 利用samtools工具将比对得到的sam文件转换为bam文件</span><br><span class="line">samtools view -S 19R576_paired.hisat2_2.sam -b &gt; 19R576_paired.hisat2_2.bam &amp;</span><br><span class="line"># 将得到的sam文件sort一下</span><br><span class="line">samtools sort 19R576_paired.hisat2_2.bam -o 19R576_paired.hisat2_2_sorted.bam</span><br><span class="line">#将得到的sort之后的bam文件排序</span><br><span class="line">samtools index 19R576_paired.hisat2_2_sorted.bam &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="4-IGV查看"><a href="#4-IGV查看" class="headerlink" title="4. IGV查看"></a>4. IGV查看</h5><p>这个<code>seq_sourted.bam</code>文件可以通过<code>samtools</code>或者**<a href="https://link.zhihu.com/?target=http://www.igv.org/">IGV( Integrative Genomics Viewer)</a>**独立软件进行查看。在IGV软件中载入<code>seq_sourted.bam</code>文件。 可以很直观清晰地观察到reads在基因组中的回帖情况和外显子与内含子的关系。</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/4_6.jpg" alt="IGV查看结果"></p>
+<p>参考文献：<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61847802">https://zhuanlan.zhihu.com/p/61847802</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/681e02e7f9af">https://www.jianshu.com/p/681e02e7f9af</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RNAseq/" rel="tag"># RNAseq</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/23/RNAseq-3-%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%8E%A7/" rel="prev" title="RNAseq_3_测序数据质控">
+                  <i class="fa fa-chevron-left"></i> RNAseq_3_测序数据质控
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/23/RNAseq-5-count%E4%B8%8E%E5%9F%BA%E5%9B%A0%E6%B3%A8%E9%87%8A/" rel="next" title="RNAseq_5_count与基因注释">
+                  RNAseq_5_count与基因注释 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/",
+    }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+
+<!-- <script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script> -->
+
+
+</body>
+</html>
