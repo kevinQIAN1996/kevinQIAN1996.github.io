@@ -31,7 +31,7 @@
 <meta property="og:description" content="有时候一些暂时不需要用到的R包会自动在启动Rstudio的时候加载，比较占据内存，可以使用下面的代码批量detach已经加载的包 lapply(paste(&#39;package:&#39;,names(sessionInfo()$otherPkgs),sep&#x3D;&quot;&quot;),detach,character.only&#x3D;TRUE,unload&#x3D;TRUE） tidyverse系统假设数">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-01T12:27:36.000Z">
-<meta property="article:modified_time" content="2020-12-10T15:58:36.676Z">
+<meta property="article:modified_time" content="2020-12-12T09:27:04.231Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta name="twitter:card" content="summary">
 
@@ -225,7 +225,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tidyverse%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">tidyverse系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8filter-%E9%80%89%E6%8B%A9%E8%A1%8C%E5%AD%90%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">用filter()选择行子集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8sample-n-%E5%AF%B9%E8%A7%82%E6%B5%8B%E9%9A%8F%E6%9C%BA%E6%8A%BD%E6%A0%B7"><span class="nav-number">3.</span> <span class="nav-text">用sample_n()对观测随机抽样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8distinct-%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">用distinct()去除重复行</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tidyverse%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">tidyverse系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8filter-%E9%80%89%E6%8B%A9%E8%A1%8C%E5%AD%90%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">用filter()选择行子集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8sample-n-%E5%AF%B9%E8%A7%82%E6%B5%8B%E9%9A%8F%E6%9C%BA%E6%8A%BD%E6%A0%B7"><span class="nav-number">3.</span> <span class="nav-text">用sample_n()对观测随机抽样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8distinct-%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">用distinct()去除重复行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8drop-na-%E5%8E%BB%E9%99%A4%E6%8C%87%E5%AE%9A%E7%9A%84%E5%8F%98%E9%87%8F%E6%9C%89%E7%BC%BA%E5%A4%B1%E5%80%BC%E7%9A%84%E8%A1%8C"><span class="nav-number">5.</span> <span class="nav-text">用drop_na()去除指定的变量有缺失值的行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8select-%E9%80%89%E6%8B%A9%E5%88%97%E5%AD%90%E9%9B%86"><span class="nav-number">6.</span> <span class="nav-text">用select()选择列子集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%96%E5%87%BA%E5%8D%95%E4%B8%AA%E5%8F%98%E9%87%8F%E4%B8%BA%E5%90%91%E9%87%8F"><span class="nav-number">7.</span> <span class="nav-text">取出单个变量为向量</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -327,7 +327,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-12-10 23:58:36" itemprop="dateModified" datetime="2020-12-10T23:58:36+08:00">2020-12-10</time>
+        <time title="Modified: 2020-12-12 17:27:04" itemprop="dateModified" datetime="2020-12-12T17:27:04+08:00">2020-12-12</time>
       </span>
 
   
@@ -665,6 +665,654 @@ x dplyr::lag()    masks stats::lag()</code></pre>
 <tr>
 <td align="left">M</td>
 <td align="right">11</td>
+</tr>
+</tbody></table>
+<h2 id="用drop-na-去除指定的变量有缺失值的行"><a href="#用drop-na-去除指定的变量有缺失值的行" class="headerlink" title="用drop_na()去除指定的变量有缺失值的行"></a>用drop_na()去除指定的变量有缺失值的行</h2><p>在进行统计建模时， 通常需要用到的因变量和自变量都不包含缺失值。 tidyr包的drop_na()函数可以对数据框指定一到多个变量， 删去指定的变量有缺失值的行。 不指定变量时有任何变量缺失的行都会被删去。</p>
+<p>例如，将NHANES中所有存在缺失值的行删去后数出保留的行数， 原来有10000行：</p>
+<pre><code>&gt; dim(NHANES)
+[1] 10000    76
+
+&gt; data(NHANES)
+&gt; NHANES %&gt;%
++     drop_na() %&gt;%
++     dim()
+[1]  0 76</code></pre>
+<p>可见所有行都有缺失值。下面仅剔除AlcoholDay缺失的观测并计数：</p>
+<pre><code>&gt; NHANES %&gt;%
++     drop_na(AlcoholDay) %&gt;%
++     dim()
+[1] 4914   76</code></pre>
+<p>基本stats包的complete.cases函数返回是否无缺失值的逻辑向量， na.omit函数则返回无缺失值的观测的子集。</p>
+<h2 id="用select-选择列子集"><a href="#用select-选择列子集" class="headerlink" title="用select()选择列子集"></a>用select()选择列子集</h2><p>dplyr包的select()选择列子集，并返回列子集结果。</p>
+<p>可以指定变量名，如</p>
+<pre><code>&gt; d.class %&gt;%
++     select(name,age) %&gt;%
++     head(n=3) %&gt;%
++     knitr::kable()
+
+
+|name  | age|
+|:-----|---:|
+|Alice |  13|
+|Becka |  13|
+|Gail  |  14|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="right">age</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Alice</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="right">14</td>
+</tr>
+</tbody></table>
+<p>可以用冒号表示列范围，如</p>
+<pre><code>&gt; d.class %&gt;%
++     select(name:age)%&gt;%
++     head(n=3) %&gt;%
++     knitr::kable()
+
+
+|name  |sex | age|
+|:-----|:---|---:|
+|Alice |F   |  13|
+|Becka |F   |  13|
+|Gail  |F   |  14|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Alice</td>
+<td align="left">F</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="left">F</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+<td align="right">14</td>
+</tr>
+</tbody></table>
+<p>可以用数字序号表示列范围，如</p>
+<pre><code>&gt; d.class %&gt;%
++     select(3:5) %&gt;%
++     head(n=3) %&gt;%
++     knitr::kable()
+
+
+| age| height| weight|
+|---:|------:|------:|
+|  13|   56.5|     84|
+|  13|   65.3|     98|
+|  14|   64.3|     90|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="right">age</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">13</td>
+<td align="right">56.5</td>
+<td align="right">84</td>
+</tr>
+<tr>
+<td align="right">13</td>
+<td align="right">65.3</td>
+<td align="right">98</td>
+</tr>
+<tr>
+<td align="right">14</td>
+<td align="right">64.3</td>
+<td align="right">90</td>
+</tr>
+</tbody></table>
+<p>参数中前面写负号表示扣除，如</p>
+<pre><code>&gt; d.class %&gt;%
++     select(-name,-age) %&gt;%
++     head(3) %&gt;%
++     knitr::kable()
+
+
+|sex | height| weight|
+|:---|------:|------:|
+|F   |   56.5|     84|
+|F   |   65.3|     98|
+|F   |   64.3|     90|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">sex</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">F</td>
+<td align="right">56.5</td>
+<td align="right">84</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="right">65.3</td>
+<td align="right">98</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="right">64.3</td>
+<td align="right">90</td>
+</tr>
+</tbody></table>
+<p>如果要选择的变量名已经保存为一个字符型向量， 可以用one_of()或者all_of()函数引入，如</p>
+<pre><code># one_of() 和 all_of()都试了，发现结果是一样的
+&gt; vars &lt;- c(&quot;name&quot;, &quot;sex&quot;)
+
+&gt; d.class %&gt;%
++     select(all_of(vars)) %&gt;%
++     head(n=3) %&gt;%
++     knitr::kable()
+
+|name  |sex |
+|:-----|:---|
+|Alice |F   |
+|Becka |F   |
+|Gail  |F   |
+
+
+&gt; d.class %&gt;%
++     select(one_of(vars)) %&gt;%
++     head(n=3) %&gt;%
++     knitr::kable()
+
+|name  |sex |
+|:-----|:---|
+|Alice |F   |
+|Becka |F   |
+|Gail  |F   |</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Alice</td>
+<td align="left">F</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="left">F</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+</tr>
+</tbody></table>
+<p>R的字符串函数（如paste()）和正则表达式函数可以用来生成变量名子集， 然后在select中配合one_of()使用。</p>
+<p><strong>select()有若干个配套函数</strong>可以按名字的模式选择变量列， 如</p>
+<hr>
+<ul>
+<li>starts_with(“se”): 选择名字以“se”`开头的变量列；</li>
+<li>ends_with(“ght”): 选择名字以“ght”`结尾的变量列；</li>
+<li>contains(“no”): 选择名字中含有子串“no”`的变量列；</li>
+<li>matches(“^[[:alpha:]]+[[:digit:]]+$”)， 选择列名匹配某个正则表达式模式的变量列， 这里匹配前一部分是字母，后一部分是数字的变量名，如abc12。</li>
+<li>num_range(“x”, 1:3)，选择x1, x2, x3。</li>
+<li>everything(): 代指所有选中的变量， 这可以用来将指定的变量次序提前， 其它变量排在后面。</li>
+</ul>
+<hr>
+<pre><code># 示例选择名字以“se”`开头的变量列
+
+&gt; vars &lt;- c(&quot;name&quot;, &quot;sex&quot;)
+&gt; d.class %&gt;%
++     select(starts_with(&quot;se&quot;)) %&gt;%
++     head(n=3) %&gt;%
++     knitr::kable()
+
+
+|sex |
+|:---|
+|F   |
+|F   |
+|F   |</code></pre>
+<p>R函数subset也能对数据框选取列子集和行子集</p>
+<h2 id="取出单个变量为向量"><a href="#取出单个变量为向量" class="headerlink" title="取出单个变量为向量"></a>取出单个变量为向量</h2><p>如果需要选择单个变量并使得结果为普通向量， 可以用dplyr包的pull()函数，如：</p>
+<pre><code>&gt; d.class %&gt;% 
++     head(n=3) %&gt;%
++     pull(name) %&gt;%
++     paste(collapse=&quot;:&quot;)
+[1] &quot;Alice:Becka:Gail&quot;</code></pre>
+<p>pull()可以指定单个变量名， 也可以指定变量序号， 负的变量序号从最后一个变量数起。 缺省变量名和序号时取出最后一个变量。</p>
+<p>当然也可以先选择仅有一个变量的子数据框再用pull()，如：</p>
+<pre><code>&gt; var_name &lt;- &quot;name&quot;
+&gt; d.class %&gt;%
++     select(one_of(var_name)) %&gt;%
++     head(3) %&gt;%
++     pull() %&gt;%
++     paste(collapse = &quot;:&quot;)
+[1] &quot;Alice:Becka:Gail&quot;</code></pre>
+<p>基于基本R， 也可以用d.class[[“name”]]这种格式取出一列为普通变量， 如果varname保存了变量名， 可以用d.class[[varname]]这种格式。</p>
+<pre><code>&gt; d.class[[&quot;name&quot;]]
+ [1] &quot;Alice&quot;   &quot;Becka&quot;   &quot;Gail&quot;    &quot;Karen&quot;   &quot;Kathy&quot;  
+ [6] &quot;Mary&quot;    &quot;Sandy&quot;   &quot;Sharon&quot;  &quot;Tammy&quot;   &quot;Alfred&quot; 
+[11] &quot;Duke&quot;    &quot;Guido&quot;   &quot;James&quot;   &quot;Jeffrey&quot; &quot;John&quot;   
+[16] &quot;Philip&quot;  &quot;Robert&quot;  &quot;Thomas&quot;  &quot;William&quot;
+
+&gt; d.class[[var_name]]
+ [1] &quot;Alice&quot;   &quot;Becka&quot;   &quot;Gail&quot;    &quot;Karen&quot;   &quot;Kathy&quot;  
+ [6] &quot;Mary&quot;    &quot;Sandy&quot;   &quot;Sharon&quot;  &quot;Tammy&quot;   &quot;Alfred&quot; 
+[11] &quot;Duke&quot;    &quot;Guido&quot;   &quot;James&quot;   &quot;Jeffrey&quot; &quot;John&quot;   
+[16] &quot;Philip&quot;  &quot;Robert&quot;  &quot;Thomas&quot;  &quot;William&quot;</code></pre>
+<p>不能用d.class[,”name”]这种方法， 对于tibble类型， 其结果仍是一个子数据框； 用d.class[“name”]这种格式， 结果也是一个子数据框。</p>
+<pre><code>&gt; d.class[,&quot;name&quot;]
+# A tibble: 19 x 1
+   name   
+   &lt;chr&gt;  
+ 1 Alice  
+ 2 Becka  
+ 3 Gail   
+ 4 Karen  
+ 5 Kathy  
+ 6 Mary   
+ 7 Sandy  
+ 8 Sharon 
+ 9 Tammy  
+10 Alfred 
+11 Duke   
+12 Guido  
+13 James  
+14 Jeffrey
+15 John   
+16 Philip 
+17 Robert 
+18 Thomas 
+19 William
+
+&gt; d.class[&quot;name&quot;]
+# A tibble: 19 x 1
+   name   
+   &lt;chr&gt;  
+ 1 Alice  
+ 2 Becka  
+ 3 Gail   
+ 4 Karen  
+ 5 Kathy  
+ 6 Mary   
+ 7 Sandy  
+ 8 Sharon 
+ 9 Tammy  
+10 Alfred 
+11 Duke   
+12 Guido  
+13 James  
+14 Jeffrey
+15 John   
+16 Philip 
+17 Robert 
+18 Thomas 
+19 William</code></pre>
+<p>用arrange()排序</p>
+<p>dplyr包的arrange()按照数据框的某一列或某几列排序， 返回排序后的结果，如</p>
+<pre><code>&gt; d.class %&gt;%
++     arrange(sex,age) %&gt;%
++     knitr::kable()
+
+
+|name    |sex | age| height| weight|
+|:-------|:---|---:|------:|------:|
+|Thomas  |M   |  11|   57.5|   85.0|
+|James   |M   |  12|   57.3|   83.0|
+|John    |M   |  12|   59.0|   99.5|
+|Robert  |M   |  12|   64.8|  128.0|
+|Jeffrey |M   |  13|   62.5|   84.0|
+|Alfred  |M   |  14|   69.0|  112.5|
+|Duke    |M   |  14|   63.5|  102.5|
+|Guido   |M   |  15|   67.0|  133.0|
+|William |M   |  15|   66.5|  112.0|
+|Philip  |M   |  16|   72.0|  150.0|
+|Sandy   |F   |  11|   51.3|   50.5|
+|Karen   |F   |  12|   56.3|   77.0|
+|Kathy   |F   |  12|   59.8|   84.5|
+|Alice   |F   |  13|   56.5|   84.0|
+|Becka   |F   |  13|   65.3|   98.0|
+|Gail    |F   |  14|   64.3|   90.0|
+|Tammy   |F   |  14|   62.8|  102.5|
+|Mary    |F   |  15|   66.5|  112.0|
+|Sharon  |F   |  15|   62.5|  112.5|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Thomas</td>
+<td align="left">M</td>
+<td align="right">11</td>
+<td align="right">57.5</td>
+<td align="right">85.0</td>
+</tr>
+<tr>
+<td align="left">James</td>
+<td align="left">M</td>
+<td align="right">12</td>
+<td align="right">57.3</td>
+<td align="right">83.0</td>
+</tr>
+<tr>
+<td align="left">John</td>
+<td align="left">M</td>
+<td align="right">12</td>
+<td align="right">59.0</td>
+<td align="right">99.5</td>
+</tr>
+<tr>
+<td align="left">Robert</td>
+<td align="left">M</td>
+<td align="right">12</td>
+<td align="right">64.8</td>
+<td align="right">128.0</td>
+</tr>
+<tr>
+<td align="left">Jeffrey</td>
+<td align="left">M</td>
+<td align="right">13</td>
+<td align="right">62.5</td>
+<td align="right">84.0</td>
+</tr>
+<tr>
+<td align="left">Alfred</td>
+<td align="left">M</td>
+<td align="right">14</td>
+<td align="right">69.0</td>
+<td align="right">112.5</td>
+</tr>
+<tr>
+<td align="left">Duke</td>
+<td align="left">M</td>
+<td align="right">14</td>
+<td align="right">63.5</td>
+<td align="right">102.5</td>
+</tr>
+<tr>
+<td align="left">Guido</td>
+<td align="left">M</td>
+<td align="right">15</td>
+<td align="right">67.0</td>
+<td align="right">133.0</td>
+</tr>
+<tr>
+<td align="left">William</td>
+<td align="left">M</td>
+<td align="right">15</td>
+<td align="right">66.5</td>
+<td align="right">112.0</td>
+</tr>
+<tr>
+<td align="left">Philip</td>
+<td align="left">M</td>
+<td align="right">16</td>
+<td align="right">72.0</td>
+<td align="right">150.0</td>
+</tr>
+<tr>
+<td align="left">Sandy</td>
+<td align="left">F</td>
+<td align="right">11</td>
+<td align="right">51.3</td>
+<td align="right">50.5</td>
+</tr>
+<tr>
+<td align="left">Karen</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">56.3</td>
+<td align="right">77.0</td>
+</tr>
+<tr>
+<td align="left">Kathy</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">59.8</td>
+<td align="right">84.5</td>
+</tr>
+<tr>
+<td align="left">Alice</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">56.5</td>
+<td align="right">84.0</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">65.3</td>
+<td align="right">98.0</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+<td align="right">14</td>
+<td align="right">64.3</td>
+<td align="right">90.0</td>
+</tr>
+<tr>
+<td align="left">Tammy</td>
+<td align="left">F</td>
+<td align="right">14</td>
+<td align="right">62.8</td>
+<td align="right">102.5</td>
+</tr>
+<tr>
+<td align="left">Mary</td>
+<td align="left">F</td>
+<td align="right">15</td>
+<td align="right">66.5</td>
+<td align="right">112.0</td>
+</tr>
+<tr>
+<td align="left">Sharon</td>
+<td align="left">F</td>
+<td align="right">15</td>
+<td align="right">62.5</td>
+<td align="right">112.5</td>
+</tr>
+</tbody></table>
+<p>用desc()包裹想要降序排列的变量，如</p>
+<pre><code>&gt; d.class %&gt;%
++     arrange(sex,desc(age)) %&gt;%
++     knitr::kable()
+
+
+|name    |sex | age| height| weight|
+|:-------|:---|---:|------:|------:|
+|Philip  |M   |  16|   72.0|  150.0|
+|Guido   |M   |  15|   67.0|  133.0|
+|William |M   |  15|   66.5|  112.0|
+|Alfred  |M   |  14|   69.0|  112.5|
+|Duke    |M   |  14|   63.5|  102.5|
+|Jeffrey |M   |  13|   62.5|   84.0|
+|James   |M   |  12|   57.3|   83.0|
+|John    |M   |  12|   59.0|   99.5|
+|Robert  |M   |  12|   64.8|  128.0|
+|Thomas  |M   |  11|   57.5|   85.0|
+|Mary    |F   |  15|   66.5|  112.0|
+|Sharon  |F   |  15|   62.5|  112.5|
+|Gail    |F   |  14|   64.3|   90.0|
+|Tammy   |F   |  14|   62.8|  102.5|
+|Alice   |F   |  13|   56.5|   84.0|
+|Becka   |F   |  13|   65.3|   98.0|
+|Karen   |F   |  12|   56.3|   77.0|
+|Kathy   |F   |  12|   59.8|   84.5|
+|Sandy   |F   |  11|   51.3|   50.5|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Philip</td>
+<td align="left">M</td>
+<td align="right">16</td>
+<td align="right">72.0</td>
+<td align="right">150.0</td>
+</tr>
+<tr>
+<td align="left">Guido</td>
+<td align="left">M</td>
+<td align="right">15</td>
+<td align="right">67.0</td>
+<td align="right">133.0</td>
+</tr>
+<tr>
+<td align="left">William</td>
+<td align="left">M</td>
+<td align="right">15</td>
+<td align="right">66.5</td>
+<td align="right">112.0</td>
+</tr>
+<tr>
+<td align="left">Alfred</td>
+<td align="left">M</td>
+<td align="right">14</td>
+<td align="right">69.0</td>
+<td align="right">112.5</td>
+</tr>
+<tr>
+<td align="left">Duke</td>
+<td align="left">M</td>
+<td align="right">14</td>
+<td align="right">63.5</td>
+<td align="right">102.5</td>
+</tr>
+<tr>
+<td align="left">Jeffrey</td>
+<td align="left">M</td>
+<td align="right">13</td>
+<td align="right">62.5</td>
+<td align="right">84.0</td>
+</tr>
+<tr>
+<td align="left">James</td>
+<td align="left">M</td>
+<td align="right">12</td>
+<td align="right">57.3</td>
+<td align="right">83.0</td>
+</tr>
+<tr>
+<td align="left">John</td>
+<td align="left">M</td>
+<td align="right">12</td>
+<td align="right">59.0</td>
+<td align="right">99.5</td>
+</tr>
+<tr>
+<td align="left">Robert</td>
+<td align="left">M</td>
+<td align="right">12</td>
+<td align="right">64.8</td>
+<td align="right">128.0</td>
+</tr>
+<tr>
+<td align="left">Thomas</td>
+<td align="left">M</td>
+<td align="right">11</td>
+<td align="right">57.5</td>
+<td align="right">85.0</td>
+</tr>
+<tr>
+<td align="left">Mary</td>
+<td align="left">F</td>
+<td align="right">15</td>
+<td align="right">66.5</td>
+<td align="right">112.0</td>
+</tr>
+<tr>
+<td align="left">Sharon</td>
+<td align="left">F</td>
+<td align="right">15</td>
+<td align="right">62.5</td>
+<td align="right">112.5</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+<td align="right">14</td>
+<td align="right">64.3</td>
+<td align="right">90.0</td>
+</tr>
+<tr>
+<td align="left">Tammy</td>
+<td align="left">F</td>
+<td align="right">14</td>
+<td align="right">62.8</td>
+<td align="right">102.5</td>
+</tr>
+<tr>
+<td align="left">Alice</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">56.5</td>
+<td align="right">84.0</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">65.3</td>
+<td align="right">98.0</td>
+</tr>
+<tr>
+<td align="left">Karen</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">56.3</td>
+<td align="right">77.0</td>
+</tr>
+<tr>
+<td align="left">Kathy</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">59.8</td>
+<td align="right">84.5</td>
+</tr>
+<tr>
+<td align="left">Sandy</td>
+<td align="left">F</td>
+<td align="right">11</td>
+<td align="right">51.3</td>
+<td align="right">50.5</td>
 </tr>
 </tbody></table>
 
