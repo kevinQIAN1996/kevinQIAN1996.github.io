@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="用rename()修改变量名 在dplyr包的rename()中用“新名字&#x3D;旧名字”格式修改变量名， 如 &gt; d2.class &lt;- d.class %&gt;% +     dplyr::rename(h&#x3D;height,w&#x3D;weight)   &gt; d2.class # A tibble: 19 x 5    name    sex     age     h     w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据整理与tidyverse系统（二）">
+<meta property="og:url" content="http://example.com/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="用rename()修改变量名 在dplyr包的rename()中用“新名字&#x3D;旧名字”格式修改变量名， 如 &gt; d2.class &lt;- d.class %&gt;% +     dplyr::rename(h&#x3D;height,w&#x3D;weight)   &gt; d2.class # A tibble: 19 x 5    name    sex     age     h     w">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-22T09:51:37.000Z">
+<meta property="article:modified_time" content="2020-12-30T09:30:16.310Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta property="article:tag" content="R">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>数据整理与tidyverse系统（二） | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">越努力，越幸运~</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8mutate-%E8%AE%A1%E7%AE%97%E6%96%B0%E5%8F%98%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">用mutate()计算新变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8tranmute-%E7%94%9F%E6%88%90%E6%96%B0%E5%8F%98%E9%87%8F%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A1%86"><span class="nav-number">2.</span> <span class="nav-text">用tranmute()生成新变量的数据框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E7%AE%A1%E9%81%93%E8%BF%9E%E6%8E%A5%E5%A4%9A%E6%AC%A1%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">用管道连接多次操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%86%E5%88%86%E6%95%B0%E6%8D%AE%E5%88%97"><span class="nav-number">4.</span> <span class="nav-text">拆分数据列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%A1%86%E7%BA%B5%E5%90%91%E5%90%88%E5%B9%B6"><span class="nav-number">5.</span> <span class="nav-text">数据框纵向合并</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%AA%E5%90%91%E5%90%88%E5%B9%B6"><span class="nav-number">6.</span> <span class="nav-text">横向合并</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health, CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+ 
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据整理与tidyverse系统（二）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-12-22 17:51:37" itemprop="dateCreated datePublished" datetime="2020-12-22T17:51:37+08:00">2020-12-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-12-30 17:30:16" itemprop="dateModified" datetime="2020-12-30T17:30:16+08:00">2020-12-30</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>用rename()修改变量名</p>
+<p>在dplyr包的rename()中用“新名字=旧名字”格式修改变量名， 如</p>
+<pre><code>&gt; d2.class &lt;- d.class %&gt;%
++     dplyr::rename(h=height,w=weight) 
+
+&gt; d2.class
+# A tibble: 19 x 5
+   name    sex     age     h     w
+   &lt;chr&gt;   &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 Alice   F        13  56.5  84  
+ 2 Becka   F        13  65.3  98  
+ 3 Gail    F        14  64.3  90  
+ 4 Karen   F        12  56.3  77  
+ 5 Kathy   F        12  59.8  84.5
+ 6 Mary    F        15  66.5 112  
+ 7 Sandy   F        11  51.3  50.5
+ 8 Sharon  F        15  62.5 112. 
+ 9 Tammy   F        14  62.8 102. 
+10 Alfred  M        14  69   112. 
+11 Duke    M        14  63.5 102. 
+12 Guido   M        15  67   133  
+13 James   M        12  57.3  83  
+14 Jeffrey M        13  62.5  84  
+15 John    M        12  59    99.5
+16 Philip  M        16  72   150  
+17 Robert  M        12  64.8 128  
+18 Thomas  M        11  57.5  85  
+19 William M        15  66.5 112 </code></pre>
+<p>注意这样改名字不是对原始数据框修改而是<strong>返回改了名字后的新数据框</strong>。</p>
+<p>rename()这个函数可能出现在其它包中， 保险起见写成<strong>dplyr::rename()</strong></p>
+<h2 id="用mutate-计算新变量"><a href="#用mutate-计算新变量" class="headerlink" title="用mutate()计算新变量"></a>用mutate()计算新变量</h2><p>dplyr包的mutate()可以为数据框计算新变量， 返回含有新变量以及原变量的新数据框。 如</p>
+<pre><code>&gt; d.class %&gt;%
++     mutate(
++         rwh=weight/height, 
++         sexc=ifelse(sex==&quot;F&quot;, &quot;女&quot;, &quot;男&quot;)) %&gt;%
++     head(n=3) %&gt;%
++     knitr::kable()
+
+
+|name  |sex | age| height| weight|      rwh|sexc |
+|:-----|:---|---:|------:|------:|--------:|:----|
+|Alice |F   |  13|   56.5|     84| 1.486726|女   |
+|Becka |F   |  13|   65.3|     98| 1.500766|女   |
+|Gail  |F   |  14|   64.3|     90| 1.399689|女   |</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+<th align="right">rwh</th>
+<th align="left">sexc</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Alice</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">56.5</td>
+<td align="right">84</td>
+<td align="right">1.486726</td>
+<td align="left">女</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">65.3</td>
+<td align="right">98</td>
+<td align="right">1.500766</td>
+<td align="left">女</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+<td align="right">14</td>
+<td align="right">64.3</td>
+<td align="right">90</td>
+<td align="right">1.399689</td>
+<td align="left">女</td>
+</tr>
+</tbody></table>
+<p>用mutate()计算新变量时如果计算比较复杂， 也可以用多个语句组成复合语句，如：</p>
+<pre><code>&gt; d.class %&gt;%
++     mutate(
++         sexc = &#123;
++             x &lt;- rep(&quot;男&quot;, length(sex))
++             x[sex == &quot;F&quot;] &lt;- &quot;女&quot;
++             x
++         &#125;  ) %&gt;%
++     head(n=3) %&gt;%
++     knitr::kable()
+
+
+|name  |sex | age| height| weight|sexc |
+|:-----|:---|---:|------:|------:|:----|
+|Alice |F   |  13|   56.5|     84|女   |
+|Becka |F   |  13|   65.3|     98|女   |
+|Gail  |F   |  14|   64.3|     90|女   |</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+<th align="left">sexc</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Alice</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">56.5</td>
+<td align="right">84</td>
+<td align="left">女</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">65.3</td>
+<td align="right">98</td>
+<td align="left">女</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+<td align="right">14</td>
+<td align="right">64.3</td>
+<td align="right">90</td>
+<td align="left">女</td>
+</tr>
+</tbody></table>
+<p>注意这样生成新变量不是在原来的数据框中添加， 原来的数据框没有被修改， 而是返回添加了新变量的新数据框。 R软件的巧妙设计保证了这样虽然是生成了新数据框， 但是与原来数据框重复的列并不会重复保存。</p>
+<p>计算公式中可以包含对数据框中变量的统计函数结果，如</p>
+<pre><code>&gt; d.class %&gt;%
++     mutate(
++         cheight = height - mean(height)) %&gt;%
++     knitr::kable()
+
+
+|name    |sex | age| height| weight|     cheight|
+|:-------|:---|---:|------:|------:|-----------:|
+|Alice   |F   |  13|   56.5|   84.0|  -5.8368421|
+|Becka   |F   |  13|   65.3|   98.0|   2.9631579|
+|Gail    |F   |  14|   64.3|   90.0|   1.9631579|
+|Karen   |F   |  12|   56.3|   77.0|  -6.0368421|
+|Kathy   |F   |  12|   59.8|   84.5|  -2.5368421|
+|Mary    |F   |  15|   66.5|  112.0|   4.1631579|
+|Sandy   |F   |  11|   51.3|   50.5| -11.0368421|
+|Sharon  |F   |  15|   62.5|  112.5|   0.1631579|
+|Tammy   |F   |  14|   62.8|  102.5|   0.4631579|
+|Alfred  |M   |  14|   69.0|  112.5|   6.6631579|
+|Duke    |M   |  14|   63.5|  102.5|   1.1631579|
+|Guido   |M   |  15|   67.0|  133.0|   4.6631579|
+|James   |M   |  12|   57.3|   83.0|  -5.0368421|
+|Jeffrey |M   |  13|   62.5|   84.0|   0.1631579|
+|John    |M   |  12|   59.0|   99.5|  -3.3368421|
+|Philip  |M   |  16|   72.0|  150.0|   9.6631579|
+|Robert  |M   |  12|   64.8|  128.0|   2.4631579|
+|Thomas  |M   |  11|   57.5|   85.0|  -4.8368421|
+|William |M   |  15|   66.5|  112.0|   4.1631579|</code></pre>
+<h2 id="用tranmute-生成新变量的数据框"><a href="#用tranmute-生成新变量的数据框" class="headerlink" title="用tranmute()生成新变量的数据框"></a>用tranmute()生成新变量的数据框</h2><p>函数transmute()用法与mutate()类似， 但是仅保留新定义的变量， 不保留原来的所有变量。 如：</p>
+<pre><code>&gt; d.class %&gt;%
++     transmute(
++         height_cm = round(height*2.54),  #round函数是求四舍五入后的值
++         weight_kg = round(weight*0.4535924),
++         bmi =  weight_kg / (height_cm / 100)^2) %&gt;%
++     head(n=3) %&gt;%
++     knitr::kable()
+
+
+| height_cm| weight_kg|      bmi|
+|---------:|---------:|--------:|
+|       144|        38| 18.32562|
+|       166|        44| 15.96748|
+|       163|        41| 15.43152|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="right">height_cm</th>
+<th align="right">weight_kg</th>
+<th align="right">bmi</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">144</td>
+<td align="right">38</td>
+<td align="right">18.32562</td>
+</tr>
+<tr>
+<td align="right">166</td>
+<td align="right">44</td>
+<td align="right">15.96748</td>
+</tr>
+<tr>
+<td align="right">163</td>
+<td align="right">41</td>
+<td align="right">15.43152</td>
+</tr>
+</tbody></table>
+<p>可见结果中仅保留了新定义的变量。</p>
+<p>定义新变量也可以直接为数据框的新变量赋值：</p>
+<pre><code>&gt; d.class[[&quot;rwh&quot;]] &lt;- d.class[[&quot;weight&quot;]] / d.class[[&quot;height&quot;]]
+&gt; d.class
+# A tibble: 19 x 6
+   name    sex     age height weight   rwh
+   &lt;chr&gt;   &lt;fct&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1 Alice   F        13   56.5   84   1.49 
+ 2 Becka   F        13   65.3   98   1.50 
+ 3 Gail    F        14   64.3   90   1.40 
+ 4 Karen   F        12   56.3   77   1.37 
+ 5 Kathy   F        12   59.8   84.5 1.41 
+ 6 Mary    F        15   66.5  112   1.68 
+ 7 Sandy   F        11   51.3   50.5 0.984
+ 8 Sharon  F        15   62.5  112.  1.8  
+ 9 Tammy   F        14   62.8  102.  1.63 
+10 Alfred  M        14   69    112.  1.63 
+11 Duke    M        14   63.5  102.  1.61 
+12 Guido   M        15   67    133   1.99 
+13 James   M        12   57.3   83   1.45 
+14 Jeffrey M        13   62.5   84   1.34 
+15 John    M        12   59     99.5 1.69 
+16 Philip  M        16   72    150   2.08 
+17 Robert  M        12   64.8  128   1.98 
+18 Thomas  M        11   57.5   85   1.48 
+19 William M        15   66.5  112   1.68</code></pre>
+<p>这样的做法与mutate()的区别是这样<strong>不会生成新数据框</strong>， 新变量是在原数据框中增加的。</p>
+<p>给数据框中某个变量赋值为NULL可以修改数据框， 从数据框中删去该变量。</p>
+<h2 id="用管道连接多次操作"><a href="#用管道连接多次操作" class="headerlink" title="用管道连接多次操作"></a>用管道连接多次操作</h2><p>管道运算符特别适用于对同一数据集进行多次操作。 例如，对d.class数据，先选出所有女生， 再去掉性别和age变量：</p>
+<pre><code>&gt; d.class %&gt;%
++     filter(sex==&quot;F&quot;) %&gt;%
++     select(-sex, -age) %&gt;%
++     knitr::kable()
+
+
+|name   | height| weight|       rwh|
+|:------|------:|------:|---------:|
+|Alice  |   56.5|   84.0| 1.4867257|
+|Becka  |   65.3|   98.0| 1.5007657|
+|Gail   |   64.3|   90.0| 1.3996890|
+|Karen  |   56.3|   77.0| 1.3676732|
+|Kathy  |   59.8|   84.5| 1.4130435|
+|Mary   |   66.5|  112.0| 1.6842105|
+|Sandy  |   51.3|   50.5| 0.9844055|
+|Sharon |   62.5|  112.5| 1.8000000|
+|Tammy  |   62.8|  102.5| 1.6321656|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+<th align="right">rwh</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Alice</td>
+<td align="right">56.5</td>
+<td align="right">84.0</td>
+<td align="right">1.4867257</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="right">65.3</td>
+<td align="right">98.0</td>
+<td align="right">1.5007657</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="right">64.3</td>
+<td align="right">90.0</td>
+<td align="right">1.3996890</td>
+</tr>
+<tr>
+<td align="left">Karen</td>
+<td align="right">56.3</td>
+<td align="right">77.0</td>
+<td align="right">1.3676732</td>
+</tr>
+<tr>
+<td align="left">Kathy</td>
+<td align="right">59.8</td>
+<td align="right">84.5</td>
+<td align="right">1.4130435</td>
+</tr>
+<tr>
+<td align="left">Mary</td>
+<td align="right">66.5</td>
+<td align="right">112.0</td>
+<td align="right">1.6842105</td>
+</tr>
+<tr>
+<td align="left">Sandy</td>
+<td align="right">51.3</td>
+<td align="right">50.5</td>
+<td align="right">0.9844055</td>
+</tr>
+<tr>
+<td align="left">Sharon</td>
+<td align="right">62.5</td>
+<td align="right">112.5</td>
+<td align="right">1.8000000</td>
+</tr>
+<tr>
+<td align="left">Tammy</td>
+<td align="right">62.8</td>
+<td align="right">102.5</td>
+<td align="right">1.6321656</td>
+</tr>
+</tbody></table>
+<p>管道操作的结果可以保存为新的tibble，如:</p>
+<pre><code>&gt; class_F &lt;- d.class %&gt;%
++     filter(sex==&quot;F&quot;) %&gt;%
++     select(-sex, -age)
+
+
+&gt; class_F
+# A tibble: 9 x 4
+  name   height weight   rwh
+  &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 Alice    56.5   84   1.49 
+2 Becka    65.3   98   1.50 
+3 Gail     64.3   90   1.40 
+4 Karen    56.3   77   1.37 
+5 Kathy    59.8   84.5 1.41 
+6 Mary     66.5  112   1.68 
+7 Sandy    51.3   50.5 0.984
+8 Sharon   62.5  112.  1.8  
+9 Tammy    62.8  102.  1.63 </code></pre>
+<p>也可以将赋值用-&gt;写在最后，如：</p>
+<pre><code>&gt; d.class %&gt;%
++     filter(sex==&quot;F&quot;) %&gt;%
++     select(-sex, -age) -&gt; class_F</code></pre>
+<p><strong>如果管道传递的变量在下一层调用中不是第一自变量， 可以用<code>.</code>代表，如</strong></p>
+<pre><code>&gt; d.class %&gt;%
++     lm(weight ~ height, data=.) %&gt;%
++     coef()
+
+(Intercept)      height 
+ -143.02692     3.89903 </code></pre>
+<h2 id="拆分数据列"><a href="#拆分数据列" class="headerlink" title="拆分数据列"></a>拆分数据列</h2><p>有时应该放在不同列的数据用分隔符分隔后放在同一列中了。 比如，下面数据集中“succ/total”列存放了用“/”分隔开的成功数与试验数：</p>
+<pre><code>&gt; d.sep &lt;- read_csv(
++ &quot;testid, succ/total
++ 1, 1/10
++ 2, 3/5
++ 3, 2/8
++ &quot;)
+&gt; knitr::kable(d.sep)
+
+
+| testid|succ/total |
+|------:|:----------|
+|      1|1/10       |
+|      2|3/5        |
+|      3|2/8        |</code></pre>
+<table>
+<thead>
+<tr>
+<th align="right">testid</th>
+<th align="left">succ/total</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td align="left">1/10</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="left">3/5</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="left">2/8</td>
+</tr>
+</tbody></table>
+<p>用tidyr::separate()可以将这样的列拆分为各自的变量列，如</p>
+<pre><code>&gt; d.sep %&gt;%
++     separate(`succ/total`, into=c(&quot;succ&quot;, &quot;total&quot;), 
++              sep=&quot;/&quot;, convert=TRUE) %&gt;% knitr::kable()
+
+
+| testid| succ| total|
+|------:|----:|-----:|
+|      1|    1|    10|
+|      2|    3|     5|
+|      3|    2|     8|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="right">testid</th>
+<th align="right">succ</th>
+<th align="right">total</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">8</td>
+</tr>
+</tbody></table>
+<p>其中into指定拆分后新变量名， sep指定分隔符， convert=TRUE要求自动将分割后的值转换为适当的类型。 sep还可以指定取子串的字符位置， 按位置拆分各个子串。</p>
+<pre><code>&gt; d.sep %&gt;%
++     separate(`succ/total`, into=c(&quot;succ&quot;, &quot;total&quot;), 
++              sep=&quot;/&quot;, convert=TRUE) %&gt;%
++     unite(ratio, succ, total, sep=&quot;:&quot;) %&gt;%
++     knitr::kable()
+
+
+| testid|ratio |
+|------:|:-----|
+|      1|1:10  |
+|      2|3:5   |
+|      3|2:8   |</code></pre>
+<table>
+<thead>
+<tr>
+<th align="right">testid</th>
+<th align="left">ratio</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td align="left">1:10</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="left">3:5</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="left">2:8</td>
+</tr>
+</tbody></table>
+<p>unite()的第一个参数是要修改的数据框， 这里用管道%&gt;%传递进来， 第二个参数是合并后的变量名（ratio变量）， 其它参数是要合并的变量名，sep指定分隔符。 实际上用mutate()、paste()或者sprintf()也能完成合并。</p>
+<h2 id="数据框纵向合并"><a href="#数据框纵向合并" class="headerlink" title="数据框纵向合并"></a>数据框纵向合并</h2><p>矩阵或数据框要纵向合并，使用rbind函数即可。 dplyr包的bind_rows()函数也可以对两个或多个数据框纵向合并。 要求变量集合是相同的，变量次序可以不同。</p>
+<p>比如，有如下两个分开男生、女生的数据框：</p>
+<pre><code>&gt; d3.class &lt;- d.class %&gt;%
++     select(name, sex, age) %&gt;%
++     filter(sex==&quot;M&quot;)
+&gt; d4.class &lt;- d.class %&gt;%
++     select(name, sex, age) %&gt;%
++     filter(sex==&quot;F&quot;)</code></pre>
+<p>合并行如下:</p>
+<blockquote>
+<p>d3.class %&gt;%</p>
+</blockquote>
+<ul>
+<li><pre><code>bind_rows(d4.class) %&gt;%</code></pre>
+</li>
+<li><p>  knitr::kable()</p>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Alfred</td>
+<td align="left">M</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">Duke</td>
+<td align="left">M</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">Guido</td>
+<td align="left">M</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">James</td>
+<td align="left">M</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Jeffrey</td>
+<td align="left">M</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">John</td>
+<td align="left">M</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Philip</td>
+<td align="left">M</td>
+<td align="right">16</td>
+</tr>
+<tr>
+<td align="left">Robert</td>
+<td align="left">M</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Thomas</td>
+<td align="left">M</td>
+<td align="right">11</td>
+</tr>
+<tr>
+<td align="left">William</td>
+<td align="left">M</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">Alice</td>
+<td align="left">F</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="left">F</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">Karen</td>
+<td align="left">F</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Kathy</td>
+<td align="left">F</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Mary</td>
+<td align="left">F</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">Sandy</td>
+<td align="left">F</td>
+<td align="right">11</td>
+</tr>
+<tr>
+<td align="left">Sharon</td>
+<td align="left">F</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">Tammy</td>
+<td align="left">F</td>
+<td align="right">14</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Alfred</td>
+<td align="left">M</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">Duke</td>
+<td align="left">M</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">Guido</td>
+<td align="left">M</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">James</td>
+<td align="left">M</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Jeffrey</td>
+<td align="left">M</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">John</td>
+<td align="left">M</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Philip</td>
+<td align="left">M</td>
+<td align="right">16</td>
+</tr>
+<tr>
+<td align="left">Robert</td>
+<td align="left">M</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Thomas</td>
+<td align="left">M</td>
+<td align="right">11</td>
+</tr>
+<tr>
+<td align="left">William</td>
+<td align="left">M</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">Alice</td>
+<td align="left">F</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Becka</td>
+<td align="left">F</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">Karen</td>
+<td align="left">F</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Kathy</td>
+<td align="left">F</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Mary</td>
+<td align="left">F</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">Sandy</td>
+<td align="left">F</td>
+<td align="right">11</td>
+</tr>
+<tr>
+<td align="left">Sharon</td>
+<td align="left">F</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td align="left">Tammy</td>
+<td align="left">F</td>
+<td align="right">14</td>
+</tr>
+</tbody></table>
+<p>将下面的数据框的变量列次序打乱， 合并不受影响：</p>
+<pre><code>&gt; d3.class %&gt;%
++     select(age, name, sex) %&gt;%
++     bind_rows(d4.class) %&gt;%
++     knitr::kable()
+
+| age|name    |sex |
+|---:|:-------|:---|
+|  14|Alfred  |M   |
+|  14|Duke    |M   |
+|  15|Guido   |M   |
+|  12|James   |M   |
+|  13|Jeffrey |M   |
+|  12|John    |M   |
+|  16|Philip  |M   |
+|  12|Robert  |M   |
+|  11|Thomas  |M   |
+|  15|William |M   |
+|  13|Alice   |F   |
+|  13|Becka   |F   |
+|  14|Gail    |F   |
+|  12|Karen   |F   |
+|  12|Kathy   |F   |
+|  15|Mary    |F   |
+|  11|Sandy   |F   |
+|  15|Sharon  |F   |
+|  14|Tammy   |F   |</code></pre>
+<table>
+<thead>
+<tr>
+<th align="right">age</th>
+<th align="left">name</th>
+<th align="left">sex</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">14</td>
+<td align="left">Alfred</td>
+<td align="left">M</td>
+</tr>
+<tr>
+<td align="right">14</td>
+<td align="left">Duke</td>
+<td align="left">M</td>
+</tr>
+<tr>
+<td align="right">15</td>
+<td align="left">Guido</td>
+<td align="left">M</td>
+</tr>
+<tr>
+<td align="right">12</td>
+<td align="left">James</td>
+<td align="left">M</td>
+</tr>
+<tr>
+<td align="right">13</td>
+<td align="left">Jeffrey</td>
+<td align="left">M</td>
+</tr>
+<tr>
+<td align="right">12</td>
+<td align="left">John</td>
+<td align="left">M</td>
+</tr>
+<tr>
+<td align="right">16</td>
+<td align="left">Philip</td>
+<td align="left">M</td>
+</tr>
+<tr>
+<td align="right">12</td>
+<td align="left">Robert</td>
+<td align="left">M</td>
+</tr>
+<tr>
+<td align="right">11</td>
+<td align="left">Thomas</td>
+<td align="left">M</td>
+</tr>
+<tr>
+<td align="right">15</td>
+<td align="left">William</td>
+<td align="left">M</td>
+</tr>
+<tr>
+<td align="right">13</td>
+<td align="left">Alice</td>
+<td align="left">F</td>
+</tr>
+<tr>
+<td align="right">13</td>
+<td align="left">Becka</td>
+<td align="left">F</td>
+</tr>
+<tr>
+<td align="right">14</td>
+<td align="left">Gail</td>
+<td align="left">F</td>
+</tr>
+<tr>
+<td align="right">12</td>
+<td align="left">Karen</td>
+<td align="left">F</td>
+</tr>
+<tr>
+<td align="right">12</td>
+<td align="left">Kathy</td>
+<td align="left">F</td>
+</tr>
+<tr>
+<td align="right">15</td>
+<td align="left">Mary</td>
+<td align="left">F</td>
+</tr>
+<tr>
+<td align="right">11</td>
+<td align="left">Sandy</td>
+<td align="left">F</td>
+</tr>
+<tr>
+<td align="right">15</td>
+<td align="left">Sharon</td>
+<td align="left">F</td>
+</tr>
+<tr>
+<td align="right">14</td>
+<td align="left">Tammy</td>
+<td align="left">F</td>
+</tr>
+</tbody></table>
+<h2 id="横向合并"><a href="#横向合并" class="headerlink" title="横向合并"></a>横向合并</h2><p>为了将两个行数相同的数据框按行号对齐合并， 可以用基本R的cbind()函数或者dplyr包的bind_cols()函数。</p>
+<p>实际数据往往没有存放在单一的表中， 需要从多个表查找数据。 多个表之间的连接， 一般靠关键列（key）对准来连接。 连接可以是一对一的， 一对多的。 多对多连接应用较少， 因为多对多连接是所有两两组合。</p>
+<p>在规范的数据库中，每个表都应该有主键， 这可以是一列，也可以是多列的组合。 为了确定某列是主键， 可以用count()和filter()，如</p>
+<pre><code>&gt; d.class %&gt;%
++     count(name) %&gt;%
++     filter(n&gt;1)
+
+
+# A tibble: 0 x 2
+# ... with 2 variables: name &lt;chr&gt;, n &lt;int&gt;</code></pre>
+<p>没有发现重复出现的name， 说明d.class中name可以作为主键。</p>
+<p>为了演示一对一的横向连接， 我们将d.class拆分为两个数据集d1.class和d2.class, 两个数据集都有主键name， d1.class包含变量name, sex, d2.class包含变量name, age, height, weight, 并删去某些观测：</p>
+<pre><code>&gt; d1.class &lt;- d.class %&gt;%
++     select(name, sex) %&gt;%
++     filter(!(name %in%  &quot;Becka&quot;))
+
+&gt; d2.class &lt;- d.class %&gt;%
++     select(name, age, height, weight)</code></pre>
+<p>用dplyr包的inner_join()函数将两个数据框按键值横向合并， 仅保留能匹配的观测。因为d1.class中丢失了Becka的观测， 所以合并后的数据框中也没有Becka的观测：</p>
+<pre><code>&gt; d1.class %&gt;%
++   inner_join(d2.class) %&gt;%
++   knitr::kable()
+
+
+Joining, by = &quot;name&quot;
+
+
+|name    |sex | age| height| weight|
+|:-------|:---|---:|------:|------:|
+|Alice   |F   |  13|   56.5|   84.0|
+|Gail    |F   |  14|   64.3|   90.0|
+|Karen   |F   |  12|   56.3|   77.0|
+|Kathy   |F   |  12|   59.8|   84.5|
+|Mary    |F   |  15|   66.5|  112.0|
+|Sandy   |F   |  11|   51.3|   50.5|
+|Sharon  |F   |  15|   62.5|  112.5|
+|Tammy   |F   |  14|   62.8|  102.5|
+|Alfred  |M   |  14|   69.0|  112.5|
+|Duke    |M   |  14|   63.5|  102.5|
+|Guido   |M   |  15|   67.0|  133.0|
+|James   |M   |  12|   57.3|   83.0|
+|Jeffrey |M   |  13|   62.5|   84.0|
+|John    |M   |  12|   59.0|   99.5|
+|Philip  |M   |  16|   72.0|  150.0|
+|Robert  |M   |  12|   64.8|  128.0|
+|Thomas  |M   |  11|   57.5|   85.0|
+|William |M   |  15|   66.5|  112.0|</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">name</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+<th align="right">height</th>
+<th align="right">weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Alice</td>
+<td align="left">F</td>
+<td align="right">13</td>
+<td align="right">56.5</td>
+<td align="right">84.0</td>
+</tr>
+<tr>
+<td align="left">Gail</td>
+<td align="left">F</td>
+<td align="right">14</td>
+<td align="right">64.3</td>
+<td align="right">90.0</td>
+</tr>
+<tr>
+<td align="left">Karen</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">56.3</td>
+<td align="right">77.0</td>
+</tr>
+<tr>
+<td align="left">Kathy</td>
+<td align="left">F</td>
+<td align="right">12</td>
+<td align="right">59.8</td>
+<td align="right">84.5</td>
+</tr>
+<tr>
+<td align="left">Mary</td>
+<td align="left">F</td>
+<td align="right">15</td>
+<td align="right">66.5</td>
+<td align="right">112.0</td>
+</tr>
+<tr>
+<td align="left">Sandy</td>
+<td align="left">F</td>
+<td align="right">11</td>
+<td align="right">51.3</td>
+<td align="right">50.5</td>
+</tr>
+<tr>
+<td align="left">Sharon</td>
+<td align="left">F</td>
+<td align="right">15</td>
+<td align="right">62.5</td>
+<td align="right">112.5</td>
+</tr>
+<tr>
+<td align="left">Tammy</td>
+<td align="left">F</td>
+<td align="right">14</td>
+<td align="right">62.8</td>
+<td align="right">102.5</td>
+</tr>
+<tr>
+<td align="left">Alfred</td>
+<td align="left">M</td>
+<td align="right">14</td>
+<td align="right">69.0</td>
+<td align="right">112.5</td>
+</tr>
+<tr>
+<td align="left">Duke</td>
+<td align="left">M</td>
+<td align="right">14</td>
+<td align="right">63.5</td>
+<td align="right">102.5</td>
+</tr>
+<tr>
+<td align="left">Guido</td>
+<td align="left">M</td>
+<td align="right">15</td>
+<td align="right">67.0</td>
+<td align="right">133.0</td>
+</tr>
+<tr>
+<td align="left">James</td>
+<td align="left">M</td>
+<td align="right">12</td>
+<td align="right">57.3</td>
+<td align="right">83.0</td>
+</tr>
+<tr>
+<td align="left">Jeffrey</td>
+<td align="left">M</td>
+<td align="right">13</td>
+<td align="right">62.5</td>
+<td align="right">84.0</td>
+</tr>
+<tr>
+<td align="left">John</td>
+<td align="left">M</td>
+<td align="right">12</td>
+<td align="right">59.0</td>
+<td align="right">99.5</td>
+</tr>
+<tr>
+<td align="left">Philip</td>
+<td align="left">M</td>
+<td align="right">16</td>
+<td align="right">72.0</td>
+<td align="right">150.0</td>
+</tr>
+<tr>
+<td align="left">Robert</td>
+<td align="left">M</td>
+<td align="right">12</td>
+<td align="right">64.8</td>
+<td align="right">128.0</td>
+</tr>
+<tr>
+<td align="left">Thomas</td>
+<td align="left">M</td>
+<td align="right">11</td>
+<td align="right">57.5</td>
+<td align="right">85.0</td>
+</tr>
+<tr>
+<td align="left">William</td>
+<td align="left">M</td>
+<td align="right">15</td>
+<td align="right">66.5</td>
+<td align="right">112.0</td>
+</tr>
+</tbody></table>
+<p>横向连接自动找到了共同的变量name作为连接的键值， 可以在inner_join()中用by=指定键值变量名</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/R/" rel="tag"># R</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="prev" title="GEO数据库的使用及数据分析(练习)">
+                  <i class="fa fa-chevron-left"></i> GEO数据库的使用及数据分析(练习)
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/",
+    }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+
+<!-- <script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script> -->
+
+
+</body>
+</html>

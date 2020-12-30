@@ -25,18 +25,18 @@
 
   <meta name="description" content="有时候一些暂时不需要用到的R包会自动在启动Rstudio的时候加载，比较占据内存，可以使用下面的代码批量detach已经加载的包 lapply(paste(&#39;package:&#39;,names(sessionInfo()$otherPkgs),sep&#x3D;&quot;&quot;),detach,character.only&#x3D;TRUE,unload&#x3D;TRUE） tidyverse系统假设数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据整理与tidyverse系统">
-<meta property="og:url" content="http://example.com/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:title" content="数据整理与tidyverse系统(一)">
+<meta property="og:url" content="http://example.com/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/index.html">
 <meta property="og:site_name" content="WENJU QIAN‘s tech blog">
 <meta property="og:description" content="有时候一些暂时不需要用到的R包会自动在启动Rstudio的时候加载，比较占据内存，可以使用下面的代码批量detach已经加载的包 lapply(paste(&#39;package:&#39;,names(sessionInfo()$otherPkgs),sep&#x3D;&quot;&quot;),detach,character.only&#x3D;TRUE,unload&#x3D;TRUE） tidyverse系统假设数">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-01T12:27:36.000Z">
-<meta property="article:modified_time" content="2020-12-12T09:27:04.231Z">
+<meta property="article:modified_time" content="2020-12-12T10:01:48.971Z">
 <meta property="article:author" content="WENJU QIAN">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/">
+<link rel="canonical" href="http://example.com/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/">
 
 
 <script class="page-configurations">
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>数据整理与tidyverse系统 | WENJU QIAN‘s tech blog</title>
+  <title>数据整理与tidyverse系统(一) | WENJU QIAN‘s tech blog</title>
   
 
 
@@ -225,7 +225,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tidyverse%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">tidyverse系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8filter-%E9%80%89%E6%8B%A9%E8%A1%8C%E5%AD%90%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">用filter()选择行子集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8sample-n-%E5%AF%B9%E8%A7%82%E6%B5%8B%E9%9A%8F%E6%9C%BA%E6%8A%BD%E6%A0%B7"><span class="nav-number">3.</span> <span class="nav-text">用sample_n()对观测随机抽样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8distinct-%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">用distinct()去除重复行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8drop-na-%E5%8E%BB%E9%99%A4%E6%8C%87%E5%AE%9A%E7%9A%84%E5%8F%98%E9%87%8F%E6%9C%89%E7%BC%BA%E5%A4%B1%E5%80%BC%E7%9A%84%E8%A1%8C"><span class="nav-number">5.</span> <span class="nav-text">用drop_na()去除指定的变量有缺失值的行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8select-%E9%80%89%E6%8B%A9%E5%88%97%E5%AD%90%E9%9B%86"><span class="nav-number">6.</span> <span class="nav-text">用select()选择列子集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%96%E5%87%BA%E5%8D%95%E4%B8%AA%E5%8F%98%E9%87%8F%E4%B8%BA%E5%90%91%E9%87%8F"><span class="nav-number">7.</span> <span class="nav-text">取出单个变量为向量</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tidyverse%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">tidyverse系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8filter-%E9%80%89%E6%8B%A9%E8%A1%8C%E5%AD%90%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">用filter()选择行子集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8sample-n-%E5%AF%B9%E8%A7%82%E6%B5%8B%E9%9A%8F%E6%9C%BA%E6%8A%BD%E6%A0%B7"><span class="nav-number">3.</span> <span class="nav-text">用sample_n()对观测随机抽样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8distinct-%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">用distinct()去除重复行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8drop-na-%E5%8E%BB%E9%99%A4%E6%8C%87%E5%AE%9A%E7%9A%84%E5%8F%98%E9%87%8F%E6%9C%89%E7%BC%BA%E5%A4%B1%E5%80%BC%E7%9A%84%E8%A1%8C"><span class="nav-number">5.</span> <span class="nav-text">用drop_na()去除指定的变量有缺失值的行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8select-%E9%80%89%E6%8B%A9%E5%88%97%E5%AD%90%E9%9B%86"><span class="nav-number">6.</span> <span class="nav-text">用select()选择列子集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%96%E5%87%BA%E5%8D%95%E4%B8%AA%E5%8F%98%E9%87%8F%E4%B8%BA%E5%90%91%E9%87%8F"><span class="nav-number">7.</span> <span class="nav-text">取出单个变量为向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8arrange-%E6%8E%92%E5%BA%8F"><span class="nav-number">8.</span> <span class="nav-text">用arrange()排序</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -241,7 +241,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -293,7 +293,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -309,7 +309,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          数据整理与tidyverse系统
+          数据整理与tidyverse系统(一)
         </h1>
 
         <div class="post-meta-container">
@@ -327,7 +327,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-12-12 17:27:04" itemprop="dateModified" datetime="2020-12-12T17:27:04+08:00">2020-12-12</time>
+        <time title="Modified: 2020-12-12 18:01:48" itemprop="dateModified" datetime="2020-12-12T18:01:48+08:00">2020-12-12</time>
       </span>
 
   
@@ -339,8 +339,8 @@
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -972,8 +972,7 @@ x dplyr::lag()    masks stats::lag()</code></pre>
 17 Robert 
 18 Thomas 
 19 William</code></pre>
-<p>用arrange()排序</p>
-<p>dplyr包的arrange()按照数据框的某一列或某几列排序， 返回排序后的结果，如</p>
+<h2 id="用arrange-排序"><a href="#用arrange-排序" class="headerlink" title="用arrange()排序"></a>用arrange()排序</h2><p>dplyr包的arrange()按照数据框的某一列或某几列排序， 返回排序后的结果，如</p>
 <pre><code>&gt; d.class %&gt;%
 +     arrange(sex,age) %&gt;%
 +     knitr::kable()
@@ -1453,7 +1452,7 @@ NexT.utils.loadComments('#valine-comments', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
     new Valine(Object.assign({
       el  : '#valine-comments',
-      path: "/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F/",
+      path: "/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/",
     }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
     ));
   }, window.Valine);
