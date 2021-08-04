@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="1234567891011#!&#x2F;usr&#x2F;bin&#x2F;env python3# os 模块提供了非常丰富的方法用来处理文件和目录import os# argsparse是python的命令行解析的标准模块，内置于python，不需要安装。这个库可以让我们直接在命令行中就可以向程序中传入参数并让程序运行。import argparse# 模块允许你生成新的进程，连接它们的输入、输出、错误管道，并且获取它们">
+<meta property="og:type" content="article">
+<meta property="og:title" content="批量合并fq文件的python脚本">
+<meta property="og:url" content="http://example.com/2021/08/04/%E6%89%B9%E9%87%8F%E5%90%88%E5%B9%B6fq%E6%96%87%E4%BB%B6%E7%9A%84python%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="1234567891011#!&#x2F;usr&#x2F;bin&#x2F;env python3# os 模块提供了非常丰富的方法用来处理文件和目录import os# argsparse是python的命令行解析的标准模块，内置于python，不需要安装。这个库可以让我们直接在命令行中就可以向程序中传入参数并让程序运行。import argparse# 模块允许你生成新的进程，连接它们的输入、输出、错误管道，并且获取它们">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-04T06:56:24.000Z">
+<meta property="article:modified_time" content="2021-08-04T06:58:43.453Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/08/04/%E6%89%B9%E9%87%8F%E5%90%88%E5%B9%B6fq%E6%96%87%E4%BB%B6%E7%9A%84python%E8%84%9A%E6%9C%AC/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>批量合并fq文件的python脚本 | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">时光匆匆独白，将颠沛磨成卡带</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health(SINH), CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+ 
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/04/%E6%89%B9%E9%87%8F%E5%90%88%E5%B9%B6fq%E6%96%87%E4%BB%B6%E7%9A%84python%E8%84%9A%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health(SINH), CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          批量合并fq文件的python脚本
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-08-04 14:56:24 / Modified: 14:58:43" itemprop="dateCreated datePublished" datetime="2021-08-04T14:56:24+08:00">2021-08-04</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2021/08/04/%E6%89%B9%E9%87%8F%E5%90%88%E5%B9%B6fq%E6%96%87%E4%BB%B6%E7%9A%84python%E8%84%9A%E6%9C%AC/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/04/%E6%89%B9%E9%87%8F%E5%90%88%E5%B9%B6fq%E6%96%87%E4%BB%B6%E7%9A%84python%E8%84%9A%E6%9C%AC/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># os 模块提供了非常丰富的方法用来处理文件和目录</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="meta"># argsparse是python的命令行解析的标准模块，内置于python，不需要安装。这个库可以让我们直接在命令行中就可以向程序中传入参数并让程序运行。</span></span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line"><span class="meta"># 模块允许你生成新的进程，连接它们的输入、输出、错误管道，并且获取它们的返回码。此模块打算代替一些老旧的模块与功能</span></span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这个模块的作用是什么？？？运行系统命令，比如（在python里面用Linux）</span></span><br><span class="line">def run_cmd(cmd, logfile=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">    <span class="keyword">if</span> logfile:</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(logfile, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> <span class="built_in">log</span>:</span><br><span class="line">            <span class="built_in">log</span>.<span class="built_in">write</span>(cmd + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">            cmd_run = subprocess.Popen(cmd, <span class="built_in">shell</span>=True, <span class="keyword">stdout</span>=<span class="built_in">log</span>, <span class="keyword">stderr</span>=<span class="built_in">log</span>)</span><br><span class="line">            cmd_run.<span class="built_in">wait</span>()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cmd_run = subprocess.Popen(cmd, <span class="built_in">shell</span>=True)</span><br><span class="line">        cmd_run.<span class="built_in">wait</span>()</span><br></pre></td></tr></table></figure>
+<p>上面的这个模块的作用是方便系统从python脚本中调用Linux系统命令。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    args = argparse.ArgumentParser()  <span class="comment">#创建实例对象</span></span><br><span class="line">    <span class="comment">#下面的就是通过argparse库来添加参数</span></span><br><span class="line">    args.add_argument(<span class="string">&quot;-d&quot;</span>, <span class="string">&quot;--data&quot;</span>, <span class="built_in">help</span>=<span class="string">&quot;sample data dir&quot;</span>) <span class="comment">#添加样品输入目录</span></span><br><span class="line">    args.add_argument(<span class="string">&quot;-s&quot;</span>, <span class="string">&quot;--sample&quot;</span>, <span class="built_in">help</span>=<span class="string">&quot;sample info file&quot;</span>) <span class="comment">#添加样本信息表</span></span><br><span class="line">    <span class="comment"># args.add_argument(&quot;-t&quot;, &quot;--seqtype&quot;, help=&quot;seq type&quot;, choices=[&quot;seq200&quot;, &quot;seq2000&quot;])</span></span><br><span class="line">    args.add_argument(<span class="string">&quot;-o&quot;</span>, <span class="string">&quot;--outdir&quot;</span>, <span class="built_in">help</span>=<span class="string">&quot;output dir&quot;</span>) <span class="comment">#添加输出目录</span></span><br><span class="line">    args = args.parse_args() <span class="comment"># 解析</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">#获取绝对输入输出文件的绝对路径</span></span><br><span class="line">    data_dir = os.path.abspath(args.data)</span><br><span class="line">    out_dir = os.path.abspath(args.outdir)</span><br><span class="line">    <span class="comment">#用with语句的好处，就是到达语句末尾时，会自动关闭文件，即便出现异常</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(args.sample, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> sample_f:</span><br><span class="line">        <span class="keyword">for</span> index, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(sample_f): <span class="comment">#enumerate() #函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中.</span></span><br><span class="line">			<span class="comment">#写入一个固定化输出的文件,format 函数可以接受不限个参数，位置可以不按顺序;</span></span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;&#123;0&#125;/cat_&#123;1&#125;.sh&#x27;</span>.<span class="built_in">format</span>(args.outdir, index), <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> cmd_f:</span><br><span class="line">                chip, lib, sample, tag, indexes = line.rstrip().split(<span class="string">&#x27;\t&#x27;</span>) <span class="comment">#rstrip()的目的是什么？？ #去除末端的空字符</span></span><br><span class="line">                </span><br><span class="line">                <span class="comment">#将cat这个字符赋值给”cat_cmd“</span></span><br><span class="line">                cat_cmd = <span class="string">&#x27;cat &#x27;</span></span><br><span class="line">				</span><br><span class="line">				<span class="comment"># 构建一个for循环，将indexes中的数据按照，分割成多个数据</span></span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> indexes.split(<span class="string">&#x27;,&#x27;</span>):</span><br><span class="line">                </span><br><span class="line">                <span class="comment">#1.对于可变类型： + ： 代表连接操作，其结果会创建一个新的对象。+=： 代表追加操作，即in-place 操作，在原地把另一个对象的内容追加到对象中。</span></span><br><span class="line">                <span class="comment">#将cat 以及后面跟着的文件写入到cat_index.sh的脚本中</span></span><br><span class="line">                    cat_cmd += <span class="string">&#x27;&#123;0&#125;/&#123;1&#125;/L01/&#123;1&#125;_L01_&#123;2&#125;.fq.gz &#x27;</span>.<span class="built_in">format</span>(data_dir, chip, i)</span><br><span class="line">                cat_cmd += <span class="string">&#x27;&gt; &#123;0&#125;/&#123;1&#125;.fq.gz&#x27;</span>.<span class="built_in">format</span>(out_dir, sample)</span><br><span class="line">                </span><br><span class="line">                <span class="comment">#脚本结束之后需要</span></span><br><span class="line">                cmd_f.write(cat_cmd + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#__name__ 是当前模块名，当模块被直接运行时模块名为 __main__ 。这句话的意思就是，当模块被直接运行时，以下代码块将被运行，当模块是被导入时，代码块不被运行。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>所以综上，这个脚本的基本思路是通过python将要执行的.sh程序编辑好之后，再通过qsub批量投递，并没有在python中直接调用Linux语法。</p>
+<p>以下是生成的脚本之一</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat <span class="regexp">/mnt/</span>GenePlus003<span class="regexp">/zhizao/</span>RNA_analysis<span class="regexp">/data/u</span>sb3<span class="regexp">/S200012291/</span>L01<span class="regexp">/S200012291_L01_57.fq.gz /m</span>nt<span class="regexp">/GenePlus003/</span>zhizao<span class="regexp">/RNA_analysis/</span>data<span class="regexp">/usb3/</span>S200012291<span class="regexp">/L01/</span>S200012291_L01_58.fq.gz <span class="regexp">/mnt/</span>GenePlus003<span class="regexp">/zhizao/</span>RNA_analysis<span class="regexp">/data/u</span>sb3<span class="regexp">/S200012291/</span>L01<span class="regexp">/S200012291_L01_59.fq.gz /m</span>nt<span class="regexp">/GenePlus003/</span>zhizao<span class="regexp">/RNA_analysis/</span>data<span class="regexp">/usb3/</span>S200012291<span class="regexp">/L01/</span>S200012291_L01_60.fq.gz <span class="regexp">/mnt/</span>GenePlus003<span class="regexp">/zhizao/</span>RNA_analysis<span class="regexp">/data/u</span>sb3<span class="regexp">/S200012291/</span>L01<span class="regexp">/S200012291_L01_61.fq.gz /m</span>nt<span class="regexp">/GenePlus003/</span>zhizao<span class="regexp">/RNA_analysis/</span>data<span class="regexp">/usb3/</span>S200012291<span class="regexp">/L01/</span>S200012291_L01_62.fq.gz <span class="regexp">/mnt/</span>GenePlus003<span class="regexp">/zhizao/</span>RNA_analysis<span class="regexp">/data/u</span>sb3<span class="regexp">/S200012291/</span>L01<span class="regexp">/S200012291_L01_63.fq.gz /m</span>nt<span class="regexp">/GenePlus003/</span>zhizao<span class="regexp">/RNA_analysis/</span>data<span class="regexp">/usb3/</span>S200012291<span class="regexp">/L01/</span>S200012291_L01_64.fq.gz &gt; <span class="regexp">/mnt/</span>GenePlus003<span class="regexp">/zhizao/</span>RNA_analysis<span class="regexp">/200/</span>data/Li-CV-<span class="number">1</span>-<span class="number">2</span>-M-<span class="number">2</span>.fq.gz</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/04/STAR%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/2021/08/04/%E6%89%B9%E9%87%8F%E5%90%88%E5%B9%B6fq%E6%96%87%E4%BB%B6%E7%9A%84python%E8%84%9A%E6%9C%AC/",
+    }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+
+<!-- <script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script> -->
+
+
+</body>
+</html>

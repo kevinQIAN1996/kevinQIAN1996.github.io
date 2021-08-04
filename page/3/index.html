@@ -238,7 +238,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -285,6 +285,194 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/16/TCGA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health(SINH), CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/16/TCGA/" class="post-title-link" itemprop="url">TCGA</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-16 12:08:46" itemprop="dateCreated datePublished" datetime="2020-11-16T12:08:46+08:00">2020-11-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-04 10:12:35" itemprop="dateModified" datetime="2021-08-04T10:12:35+08:00">2021-08-04</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/11/16/TCGA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/16/TCGA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <pre><code>&gt; library(TCGAbiolinks)
+Warning message:
+程辑包&#39;TCGAbiolinks&#39;是用R版本4.0.2 来建造的 
+
+&gt; x&lt;-getGDCprojects()$project_id
+&gt; x
+ [1] &quot;HCMI-CMDC&quot;             &quot;GENIE-MSK&quot;            
+ [3] &quot;TCGA-UCEC&quot;             &quot;TCGA-LGG&quot;             
+ [5] &quot;TCGA-SARC&quot;             &quot;TCGA-PAAD&quot;            
+ [7] &quot;TCGA-ESCA&quot;             &quot;TCGA-PRAD&quot;            
+ [9] &quot;GENIE-VICC&quot;            &quot;TCGA-LAML&quot;            
+[11] &quot;TCGA-KIRC&quot;             &quot;TCGA-PCPG&quot;            
+[13] &quot;TCGA-HNSC&quot;             &quot;GENIE-JHU&quot;            
+[15] &quot;TCGA-OV&quot;               &quot;TCGA-GBM&quot;             
+[17] &quot;TCGA-UCS&quot;              &quot;TCGA-MESO&quot;            
+[19] &quot;TCGA-TGCT&quot;             &quot;TCGA-KICH&quot;            
+[21] &quot;TCGA-READ&quot;             &quot;TCGA-UVM&quot;             
+[23] &quot;TCGA-THCA&quot;             &quot;OHSU-CNL&quot;             
+[25] &quot;GENIE-DFCI&quot;            &quot;GENIE-NKI&quot;            
+[27] &quot;GENIE-GRCC&quot;            &quot;FM-AD&quot;                
+[29] &quot;GENIE-UHN&quot;             &quot;GENIE-MDA&quot;            
+[31] &quot;TCGA-LIHC&quot;             &quot;TCGA-THYM&quot;            
+[33] &quot;TCGA-CHOL&quot;             &quot;TARGET-ALL-P1&quot;        
+[35] &quot;ORGANOID-PANCREATIC&quot;   &quot;TCGA-DLBC&quot;            
+[37] &quot;TCGA-KIRP&quot;             &quot;TCGA-BLCA&quot;            
+[39] &quot;CPTAC-2&quot;               &quot;TARGET-ALL-P3&quot;        
+[41] &quot;TARGET-CCSK&quot;           &quot;TARGET-NBL&quot;           
+[43] &quot;TARGET-AML&quot;            &quot;TARGET-ALL-P2&quot;        
+[45] &quot;NCICCR-DLBCL&quot;          &quot;CTSP-DLBCL1&quot;          
+[47] &quot;TARGET-RT&quot;             &quot;TARGET-OS&quot;            
+[49] &quot;TCGA-BRCA&quot;             &quot;TCGA-COAD&quot;            
+[51] &quot;TCGA-CESC&quot;             &quot;TCGA-LUSC&quot;            
+[53] &quot;TCGA-STAD&quot;             &quot;TCGA-SKCM&quot;            
+[55] &quot;CMI-MBC&quot;               &quot;CMI-ASC&quot;              
+[57] &quot;TCGA-LUAD&quot;             &quot;TARGET-WT&quot;            
+[59] &quot;TCGA-ACC&quot;              &quot;BEATAML1.0-CRENOLANIB&quot;
+[61] &quot;BEATAML1.0-COHORT&quot;     &quot;VAREPOP-APOLLO&quot;       
+[63] &quot;MMRF-COMMPASS&quot;         &quot;WCDT-MCRPC&quot;           
+[65] &quot;CPTAC-3&quot;               &quot;CGCI-BLGSP&quot;           
+[67] &quot;CGCI-HTMCP-CC&quot;        
+
+
+&gt; TCGAbiolinks:::getProjectSummary(&quot;TCGA-COAD&quot;)
+$case_count
+[1] 461
+
+$data_categories
+  case_count file_count               data_category
+1        460       2000            Sequencing Reads
+2        461        531                    Clinical
+3        460       2971       Copy Number Variation
+4        461       2835                 Biospecimen
+5        458        556             DNA Methylation
+6        459       2493     Transcriptome Profiling
+7        433       3952 Simple Nucleotide Variation
+
+$file_count
+[1] 15338
+
+$file_size
+[1] 2.747226e+13
+
+
+&gt; query&lt;-GDCquery(project = &quot;TCGA-COAD&quot;,
++                 legacy=F,
++                 experimental.strategy =&quot;RNA-Seq&quot;,
++                 data.category = &quot;Transcriptome Profiling&quot;,
++                 data.type=&quot;Gene Expression Quantification&quot;,
++                 workflow.type=&quot;HTSeq - Counts&quot;)
+--------------------------------------
+o GDCquery: Searching in GDC database
+--------------------------------------
+Genome of reference: hg38
+--------------------------------------------
+oo Accessing GDC. This might take a while...
+--------------------------------------------
+ooo Project: TCGA-COAD
+--------------------
+oo Filtering results
+--------------------
+ooo By experimental.strategy
+ooo By data.type
+ooo By workflow.type
+----------------
+oo Checking data
+----------------
+ooo Check if there are duplicated cases
+ooo Check if there results for the query
+-------------------
+o Preparing output
+-------------------
+
+&gt; GDCdownload(query)
+Downloading data for project TCGA-COAD
+GDCdownload will download 521 files. A total of 129.173849 MB
+Downloading as: Mon_Nov_16_12_01_47_2020.tar.gz
+Downloading: 130 MB </code></pre>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/16/TCGA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1190,89 +1378,6 @@ Levels: 男 女</code></pre>
             </div>
           <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/31/R/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="WENJU QIAN">
-      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health(SINH), CAS">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/31/R/" class="post-title-link" itemprop="url">R</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2020-10-31 11:35:57" itemprop="dateCreated datePublished" datetime="2020-10-31T11:35:57+08:00">2020-10-31</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-04 10:12:35" itemprop="dateModified" datetime="2021-08-04T10:12:35+08:00">2021-08-04</time>
-      </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2020/10/31/R/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/31/R/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
       
     </div>
 
