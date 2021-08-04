@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="&gt; library(TCGAbiolinks) Warning message: 程辑包&#39;TCGAbiolinks&#39;是用R版本4.0.2 来建造的   &gt; x&lt;-getGDCprojects()$project_id &gt; x  [1] &quot;HCMI-CMDC&quot;             &quot;GENIE-MSK&quot;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCGA">
+<meta property="og:url" content="http://example.com/2020/11/16/TCGA/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="&gt; library(TCGAbiolinks) Warning message: 程辑包&#39;TCGAbiolinks&#39;是用R版本4.0.2 来建造的   &gt; x&lt;-getGDCprojects()$project_id &gt; x  [1] &quot;HCMI-CMDC&quot;             &quot;GENIE-MSK&quot;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-16T04:08:46.000Z">
+<meta property="article:modified_time" content="2021-08-04T02:12:35.152Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/11/16/TCGA/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>TCGA | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">时光匆匆独白，将颠沛磨成卡带</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health(SINH), CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+ 
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/16/TCGA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health(SINH), CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TCGA
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-16 12:08:46" itemprop="dateCreated datePublished" datetime="2020-11-16T12:08:46+08:00">2020-11-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-04 10:12:35" itemprop="dateModified" datetime="2021-08-04T10:12:35+08:00">2021-08-04</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/11/16/TCGA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/16/TCGA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <pre><code>&gt; library(TCGAbiolinks)
+Warning message:
+程辑包&#39;TCGAbiolinks&#39;是用R版本4.0.2 来建造的 
+
+&gt; x&lt;-getGDCprojects()$project_id
+&gt; x
+ [1] &quot;HCMI-CMDC&quot;             &quot;GENIE-MSK&quot;            
+ [3] &quot;TCGA-UCEC&quot;             &quot;TCGA-LGG&quot;             
+ [5] &quot;TCGA-SARC&quot;             &quot;TCGA-PAAD&quot;            
+ [7] &quot;TCGA-ESCA&quot;             &quot;TCGA-PRAD&quot;            
+ [9] &quot;GENIE-VICC&quot;            &quot;TCGA-LAML&quot;            
+[11] &quot;TCGA-KIRC&quot;             &quot;TCGA-PCPG&quot;            
+[13] &quot;TCGA-HNSC&quot;             &quot;GENIE-JHU&quot;            
+[15] &quot;TCGA-OV&quot;               &quot;TCGA-GBM&quot;             
+[17] &quot;TCGA-UCS&quot;              &quot;TCGA-MESO&quot;            
+[19] &quot;TCGA-TGCT&quot;             &quot;TCGA-KICH&quot;            
+[21] &quot;TCGA-READ&quot;             &quot;TCGA-UVM&quot;             
+[23] &quot;TCGA-THCA&quot;             &quot;OHSU-CNL&quot;             
+[25] &quot;GENIE-DFCI&quot;            &quot;GENIE-NKI&quot;            
+[27] &quot;GENIE-GRCC&quot;            &quot;FM-AD&quot;                
+[29] &quot;GENIE-UHN&quot;             &quot;GENIE-MDA&quot;            
+[31] &quot;TCGA-LIHC&quot;             &quot;TCGA-THYM&quot;            
+[33] &quot;TCGA-CHOL&quot;             &quot;TARGET-ALL-P1&quot;        
+[35] &quot;ORGANOID-PANCREATIC&quot;   &quot;TCGA-DLBC&quot;            
+[37] &quot;TCGA-KIRP&quot;             &quot;TCGA-BLCA&quot;            
+[39] &quot;CPTAC-2&quot;               &quot;TARGET-ALL-P3&quot;        
+[41] &quot;TARGET-CCSK&quot;           &quot;TARGET-NBL&quot;           
+[43] &quot;TARGET-AML&quot;            &quot;TARGET-ALL-P2&quot;        
+[45] &quot;NCICCR-DLBCL&quot;          &quot;CTSP-DLBCL1&quot;          
+[47] &quot;TARGET-RT&quot;             &quot;TARGET-OS&quot;            
+[49] &quot;TCGA-BRCA&quot;             &quot;TCGA-COAD&quot;            
+[51] &quot;TCGA-CESC&quot;             &quot;TCGA-LUSC&quot;            
+[53] &quot;TCGA-STAD&quot;             &quot;TCGA-SKCM&quot;            
+[55] &quot;CMI-MBC&quot;               &quot;CMI-ASC&quot;              
+[57] &quot;TCGA-LUAD&quot;             &quot;TARGET-WT&quot;            
+[59] &quot;TCGA-ACC&quot;              &quot;BEATAML1.0-CRENOLANIB&quot;
+[61] &quot;BEATAML1.0-COHORT&quot;     &quot;VAREPOP-APOLLO&quot;       
+[63] &quot;MMRF-COMMPASS&quot;         &quot;WCDT-MCRPC&quot;           
+[65] &quot;CPTAC-3&quot;               &quot;CGCI-BLGSP&quot;           
+[67] &quot;CGCI-HTMCP-CC&quot;        
+
+
+&gt; TCGAbiolinks:::getProjectSummary(&quot;TCGA-COAD&quot;)
+$case_count
+[1] 461
+
+$data_categories
+  case_count file_count               data_category
+1        460       2000            Sequencing Reads
+2        461        531                    Clinical
+3        460       2971       Copy Number Variation
+4        461       2835                 Biospecimen
+5        458        556             DNA Methylation
+6        459       2493     Transcriptome Profiling
+7        433       3952 Simple Nucleotide Variation
+
+$file_count
+[1] 15338
+
+$file_size
+[1] 2.747226e+13
+
+
+&gt; query&lt;-GDCquery(project = &quot;TCGA-COAD&quot;,
++                 legacy=F,
++                 experimental.strategy =&quot;RNA-Seq&quot;,
++                 data.category = &quot;Transcriptome Profiling&quot;,
++                 data.type=&quot;Gene Expression Quantification&quot;,
++                 workflow.type=&quot;HTSeq - Counts&quot;)
+--------------------------------------
+o GDCquery: Searching in GDC database
+--------------------------------------
+Genome of reference: hg38
+--------------------------------------------
+oo Accessing GDC. This might take a while...
+--------------------------------------------
+ooo Project: TCGA-COAD
+--------------------
+oo Filtering results
+--------------------
+ooo By experimental.strategy
+ooo By data.type
+ooo By workflow.type
+----------------
+oo Checking data
+----------------
+ooo Check if there are duplicated cases
+ooo Check if there results for the query
+-------------------
+o Preparing output
+-------------------
+
+&gt; GDCdownload(query)
+Downloading data for project TCGA-COAD
+GDCdownload will download 521 files. A total of 129.173849 MB
+Downloading as: Mon_Nov_16_12_01_47_2020.tar.gz
+Downloading: 130 MB </code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/15/%E6%95%B0%E6%8D%AE%E6%A1%86/" rel="prev" title="数据框">
+                  <i class="fa fa-chevron-left"></i> 数据框
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/" rel="next" title="R输入输出">
+                  R输入输出 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/2020/11/16/TCGA/",
+    }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+
+<!-- <script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script> -->
+
+
+</body>
+</html>

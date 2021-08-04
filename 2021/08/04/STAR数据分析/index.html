@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="STAR数据分析1、首先将目标文件通过软链接加载到自己的目录中  1234$ ln -s &#x2F;mnt&#x2F;X500&#x2F;farmers&#x2F;panxiao&#x2F;rna&#x2F;Suzhou_2020_11_16&#x2F;2000&#x2F;last_1_2020_12_18&#x2F;input&#x2F;201023_Q100020005_V300077787A-V19116-1023_L004_200007575FRR1_HUM_C_GC1A_4085_Z">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WENJU QIAN‘s tech blog">
+<meta property="og:url" content="http://example.com/2021/08/04/STAR%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="WENJU QIAN‘s tech blog">
+<meta property="og:description" content="STAR数据分析1、首先将目标文件通过软链接加载到自己的目录中  1234$ ln -s &#x2F;mnt&#x2F;X500&#x2F;farmers&#x2F;panxiao&#x2F;rna&#x2F;Suzhou_2020_11_16&#x2F;2000&#x2F;last_1_2020_12_18&#x2F;input&#x2F;201023_Q100020005_V300077787A-V19116-1023_L004_200007575FRR1_HUM_C_GC1A_4085_Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-04T02:12:35.152Z">
+<meta property="article:modified_time" content="2021-08-04T02:12:35.152Z">
+<meta property="article:author" content="WENJU QIAN">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/08/04/STAR%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title> | WENJU QIAN‘s tech blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">WENJU QIAN‘s tech blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">时光匆匆独白，将颠沛磨成卡带</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#STAR%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">STAR数据分析</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WENJU QIAN"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">WENJU QIAN</p>
+  <div class="site-description" itemprop="description">Student From Shanghai Institute of Nutrition and Health(SINH), CAS</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qianwenju" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+ 
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/04/STAR%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health(SINH), CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-08-04 10:12:35" itemprop="dateCreated datePublished" datetime="2021-08-04T10:12:35+08:00">2021-08-04</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2021/08/04/STAR%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/04/STAR%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="STAR数据分析"><a href="#STAR数据分析" class="headerlink" title="STAR数据分析"></a>STAR数据分析</h1><p><strong>1、首先将目标文件通过软链接加载到自己的目录中</strong> </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ln -s <span class="regexp">/mnt/</span>X500<span class="regexp">/farmers/</span>panxiao<span class="regexp">/rna/</span>Suzhou_2020_11_16<span class="regexp">/2000/</span>last_1_2020_12_18<span class="regexp">/input/</span><span class="number">201023</span>_Q100020005_V300077787A-V19116-<span class="number">1023</span>_L004_200007575FRR1_HUM_C_GC1A_4085_Z_0_A  <span class="regexp">/mnt/</span>X500<span class="regexp">/farmers/</span>qinwj<span class="regexp">/RNAseq_re/</span><span class="number">201023</span>_Q100020005_V300077787A-V19116-<span class="number">1023</span>_L004_200007575FRR1_HUM_C_GC1A_4085_Z_0_A</span><br><span class="line"></span><br><span class="line">$ ln -s <span class="regexp">/mnt/</span>X500<span class="regexp">/farmers/</span>panxiao<span class="regexp">/rna/</span>Suzhou_2020_11_16<span class="regexp">/2000/</span>last_1_2020_12_18<span class="regexp">/input/</span><span class="number">201023</span>_Q100020005_V300077787A-V19116-<span class="number">1023</span>_L003_200007575FRR1_HUM_C_GC1A_4085_Z_0_A <span class="regexp">/mnt/</span>X500<span class="regexp">/farmers/</span>qinwj<span class="regexp">/RNAseq_re/</span><span class="number">201023</span>_Q100020005_V300077787A-V19116-<span class="number">1023</span>_L003_200007575FRR1_HUM_C_GC1A_4085_Z_0_A</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">qinwj <span class="number">12</span>:<span class="number">02</span>:<span class="number">08</span> R290<span class="number">-1</span>: /mnt/X500/farmers/qinwj/RNAseq_re</span><br><span class="line">$ ll</span><br><span class="line">total <span class="number">1</span></span><br><span class="line">lrwxrwxrwx. <span class="number">1</span> qinwj qinwj <span class="number">159</span> Jul  <span class="number">6</span> <span class="number">12</span>:<span class="number">02</span> <span class="number">201023</span>_Q100020005_V300077787A-V19116<span class="number">-1023</span>_L003_200007575FRR1_HUM_C_GC1A_4085_Z_0_A -&gt; /mnt/X500/farmers/panxiao/rna/Suzhou_2020_11_16/<span class="number">2000</span>/last_1_2020_12_18/input/<span class="number">201023</span>_Q100020005_V300077787A-V19116<span class="number">-1023</span>_L003_200007575FRR1_HUM_C_GC1A_4085_Z_0_A</span><br><span class="line">lrwxrwxrwx. <span class="number">1</span> qinwj qinwj <span class="number">159</span> Jul  <span class="number">6</span> <span class="number">11</span>:<span class="number">50</span> <span class="number">201023</span>_Q100020005_V300077787A-V19116<span class="number">-1023</span>_L004_200007575FRR1_HUM_C_GC1A_4085_Z_0_A -&gt; /mnt/X500/farmers/panxiao/rna/Suzhou_2020_11_16/<span class="number">2000</span>/last_1_2020_12_18/input/<span class="number">201023</span>_Q100020005_V300077787A-V19116<span class="number">-1023</span>_L004_200007575FRR1_HUM_C_GC1A_4085_Z_0_A</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>2、将Line3和Lin4文件夹中的fastq1和fastq2分别合并</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">cat</span> /mnt/X<span class="number">500</span>/farmers/qinwj/RNAseq_re/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_L<span class="number">003</span>_<span class="number">200007575</span>FRR<span class="number">1</span>_HUM_C_GC<span class="number">1</span>A_<span class="number">4085</span>_Z_<span class="number">0</span>_A/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_L<span class="number">003</span>_<span class="number">200007575</span>FRR<span class="number">1</span>_HUM_C_GC<span class="number">1</span>A_<span class="number">4085</span>_Z_<span class="number">0</span>_A_<span class="number">1</span>.fq.gz /mnt/X<span class="number">500</span>/farmers/qinwj/RNAseq_re/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_L<span class="number">004</span>_<span class="number">200007575</span>FRR<span class="number">1</span>_HUM_C_GC<span class="number">1</span>A_<span class="number">4085</span>_Z_<span class="number">0</span>_A/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_L<span class="number">004</span>_<span class="number">200007575</span>FRR<span class="number">1</span>_HUM_C_GC<span class="number">1</span>A_<span class="number">4085</span>_Z_<span class="number">0</span>_A_<span class="number">1</span>.fq.gz &gt; <span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_<span class="number">1</span>.fq.gz</span><br><span class="line"></span><br><span class="line"><span class="attribute">cat</span> /mnt/X<span class="number">500</span>/farmers/qinwj/RNAseq_re/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_L<span class="number">003</span>_<span class="number">200007575</span>FRR<span class="number">1</span>_HUM_C_GC<span class="number">1</span>A_<span class="number">4085</span>_Z_<span class="number">0</span>_A/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_L<span class="number">003</span>_<span class="number">200007575</span>FRR<span class="number">1</span>_HUM_C_GC<span class="number">1</span>A_<span class="number">4085</span>_Z_<span class="number">0</span>_A_<span class="number">2</span>.fq.gz /mnt/X<span class="number">500</span>/farmers/qinwj/RNAseq_re/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_L<span class="number">004</span>_<span class="number">200007575</span>FRR<span class="number">1</span>_HUM_C_GC<span class="number">1</span>A_<span class="number">4085</span>_Z_<span class="number">0</span>_A/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_L<span class="number">004</span>_<span class="number">200007575</span>FRR<span class="number">1</span>_HUM_C_GC<span class="number">1</span>A_<span class="number">4085</span>_Z_<span class="number">0</span>_A_<span class="number">2</span>.fq.gz &gt; <span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_<span class="number">2</span>.fq.gz</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>3、合并完成之后用FastP对合并之后的新的fq文件进行质控</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/products/</span>repos<span class="regexp">/prod/</span>Akso<span class="regexp">/OncoFusion/</span>bin<span class="regexp">/RNAseq/</span>rnaseq-fqqc<span class="regexp">/fastp -i /m</span>nt<span class="regexp">/X500/</span>farmers<span class="regexp">/qinwj/</span>RNAseq_re<span class="regexp">/201023_Q100020005_V300077787A-V19116-1023_1.fq.gz -o /m</span>nt<span class="regexp">/X500/</span>farmers<span class="regexp">/qinwj/</span>RNAseq_re<span class="regexp">/201023_Q100020005_V300077787A-V19116-1023_1_clean.fq.gz -I /m</span>nt<span class="regexp">/X500/</span>farmers<span class="regexp">/qinwj/</span>RNAseq_re<span class="regexp">/201023_Q100020005_V300077787A-V19116-1023_2.fq.gz -O /m</span>nt<span class="regexp">/X500/</span>farmers<span class="regexp">/qinwj/</span>RNAseq_re<span class="regexp">/201023_Q100020005_V300077787A-V19116-1023_2_clean.fq.gz -h /m</span>nt<span class="regexp">/X500/</span>farmers<span class="regexp">/qinwj/</span>RNAseq_re<span class="regexp">/01023_Q100020005_V300077787A-V19116-1023.html -j /m</span>nt<span class="regexp">/X500/</span>farmers<span class="regexp">/qinwj/</span>RNAseq_re/<span class="number">201023</span>_Q100020005_V300077787A-V19116-<span class="number">1023</span>.json </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>FastP是一款快速全功能的FASTQ文件自动化质控、过滤、校正和预处理的软件。fastp软件的功能如下：对数据自动进行全方位质控，生成人性化的报告； 过滤功能(低质量,太短,太多N……)； 对每一个序列的头部或尾部，计算滑动窗内的质量均值，并将均值较低的子序列进行切除(类似 Trimmomatic 的做法,但是快非常多)； 全局剪裁 (在头/尾部，不影响去重)，对于 Illumina 下机数据往往最后一到两个 cycle 需要这样处理； 去除接头污染。厉害的是，你不用输入接头序列，因为算法会自动识别接头序列并进行剪裁； 对于双端测序(PE)的数据，软件会自动查找每一对read的重叠区域，并对该重叠区域中不匹配的碱基对进行校正； 去除尾部的 polyG。对于NextSeq/NovaSeq 的测序数据，因为是两色法发光，polyG 是常有的事，所以该特性对该两类测序平台默认打开； 对于PE数据中的overlap区间中不一致的碱基对，依据质量值进行校正； 可以对带分子标签(UMI)的数据进行预处理，不管UMI在插入片段还是在index 上，都可以轻松处理； 可以将输出进行分拆，而且支持两种模式，分别是指定分拆的个数，或者分拆后每个文件的行数。</p>
+<blockquote>
+<p>fastp参数介绍 （上例中使用的是默认参数）<br>参数    说明<br>**-i**    –in1 read1 input file name (string)<br><strong>-o</strong>    –out1 read1 output file name (string [=])<br><strong>-I</strong>    –in2 read2 input file name (string [=])<br><strong>-O</strong>    –out2 read2 output file name (string [=])<br><strong>-h</strong>    –html html格式报告文件名（string [ = fastp.html]）<br>**-j**    –json json格式报告文件名 （string [ = fastp.json]）<br>**-w**    –thread worker thread number</p>
+</blockquote>
+<p><strong>输入文件</strong><br>双端或单端read的fq/fq.gz文件<br>3.3.输出文件<br>3.3.1 质控过滤后的fq/fq.gz文件<br>3.3.2 html格式的报告<br>3.3.3 json格式的报告<br>3.4.应用实例</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastp -w <span class="number">8</span> -<span class="class">i </span>&#123;raw.fq1&#125; -<span class="class">I </span>&#123;raw.fq2&#125; -<span class="class">o </span>&#123;new.fq1&#125; -<span class="class">O </span>&#123;new.fq2&#125; -<span class="class">h </span>&#123;html&#125; -<span class="class">j </span>&#123;json&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>4、通过STAR软件比对到参考基因组</strong> </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/products/</span>repos<span class="regexp">/prod/</span>Akso<span class="regexp">/OncoFusion/</span>bin<span class="regexp">/RNAseq/</span>rnaseq-align<span class="regexp">/STAR --outSAMtype BAM Unsorted --genomeDir /</span>products<span class="regexp">/repos/</span>prod<span class="regexp">/Akso/</span>OncoFusion<span class="regexp">/RNADB/</span>ref --readFilesIn <span class="regexp">/mnt/</span>X500<span class="regexp">/farmers/</span>qinwj<span class="regexp">/RNAseq_re/</span><span class="number">201023</span>_Q100020005_V300077787A-V19116-<span class="number">1023</span>_1_clean.fq.gz <span class="regexp">/mnt/</span>X500<span class="regexp">/farmers/</span>qinwj<span class="regexp">/RNAseq_re/</span><span class="number">201023</span>_Q100020005_V300077787A-V19116-<span class="number">1023</span>_2_clean.fq.gz --outFileNamePrefix <span class="regexp">/mnt/</span>X500<span class="regexp">/farmers/</span>qinwj<span class="regexp">/RNAseq_re/</span><span class="number">201023</span>_Q100020005_V300077787A-V19116-<span class="number">1023</span> --runThreadN <span class="number">8</span></span><br></pre></td></tr></table></figure>
+<p>注：–genomeDir 这个参数后面是跟的参考基因组的目录，而不是直接是参考基因组，不然容易报错</p>
+<p><strong>5、通过samtools对比对之后得到的bam文件用默认参数进行sort以及建立index</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># samtools sort 有时候在不同的电脑环境中可能会报错，建议可以加上&quot;&gt;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">samtools</span> sort -@ <span class="number">4</span> /mnt/X<span class="number">500</span>/farmers/qinwj/RNAseq_re/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>Aligned.out.bam &gt; /mnt/X<span class="number">500</span>/farmers/qinwj/RNAseq_re/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_sort.bam </span><br><span class="line"></span><br><span class="line"><span class="attribute">samtools</span> index -@ <span class="number">4</span> /mnt/X<span class="number">500</span>/farmers/qinwj/RNAseq_re/<span class="number">201023</span>_Q<span class="number">100020005</span>_V<span class="number">300077787</span>A-V<span class="number">19116</span>-<span class="number">1023</span>_sort.bam</span><br></pre></td></tr></table></figure>
+
+<p><strong>6、 通过GATK工具包里面的CollectAlignmentSummaryMetrics对测序的准确率进行统计</strong></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar <span class="regexp">/mnt/</span>X500<span class="regexp">/farmers/</span>hesheng<span class="regexp">/pipline/</span>software<span class="regexp">/gatk-4.1.8.1/g</span>atk-<span class="keyword">package</span>-<span class="number">4.1</span>.<span class="number">8.1</span>-local.jar CollectAlignmentSummaryMetrics -I <span class="regexp">/mnt/</span>X500<span class="regexp">/farmers/</span>qinwj<span class="regexp">/RNAseq_re/</span><span class="number">201023</span>_Q100020005_V300077787A-V19116-<span class="number">1023</span>_sort.bam -O <span class="regexp">/mnt/</span>X500<span class="regexp">/farmers/</span>qinwj<span class="regexp">/RNAseq_re/</span><span class="number">201023</span>_Q100020005_V300077787A-V19116-<span class="number">1023</span>.metrics -R <span class="regexp">/products/</span>repos<span class="regexp">/prod/</span>Akso<span class="regexp">/OncoFusion/</span>RNADB<span class="regexp">/ref/</span>hs37d5.fa </span><br></pre></td></tr></table></figure>
+
+
+<p>最后查看metrics文件中的错配率情况</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ cat R10_200007646FRR1_4086.metrics</span><br><span class="line">## htsjdk.samtools.metrics.StringHeader</span><br><span class="line"># CollectAlignmentSummaryMetrics --INPUT /mnt/X500/farmers/qinwj/RNAseq1/analysis/bam/R10_200007646FRR1_4086.Aligned.sortedByCoord.<span class="keyword">out</span>.addGroup.bam --OUTPUT /mnt/X500/farmers/qinwj/RNAseq1/analysis/R10_200007646FRR1_4086.metrics --REFERENCE_SEQUENCE /products/repos/prod/Akso/OncoFusion/RNADB/<span class="built_in">ref</span>/hs37d5.fa --MAX_INSERT_SIZE <span class="number">100000</span> --EXPECTED_PAIR_ORIENTATIONS FR --ADAPTER_SEQUENCE AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT --ADAPTER_SEQUENCE AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG --ADAPTER_SEQUENCE AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT --ADAPTER_SEQUENCE AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG --ADAPTER_SEQUENCE AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT --ADAPTER_SEQUENCE AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG --METRIC_ACCUMULATION_LEVEL ALL_READS --IS_BISULFITE_SEQUENCED <span class="literal">false</span> --COLLECT_ALIGNMENT_INFORMATION <span class="literal">true</span> --ASSUME_SORTED <span class="literal">true</span> --STOP_AFTER <span class="number">0</span> --VERBOSITY INFO --QUIET <span class="literal">false</span> --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL <span class="number">2</span> --MAX_RECORDS_IN_RAM <span class="number">500000</span> --CREATE_INDEX <span class="literal">false</span> --CREATE_MD5_FILE <span class="literal">false</span> --GA4GH_CLIENT_SECRETS client_secrets.json --help <span class="literal">false</span> --version <span class="literal">false</span> --showHidden <span class="literal">false</span> --USE_JDK_DEFLATER <span class="literal">false</span> --USE_JDK_INFLATER <span class="literal">false</span></span><br><span class="line">## htsjdk.samtools.metrics.StringHeader</span><br><span class="line"># Started on: Tue Jul <span class="number">06</span> <span class="number">15</span>:<span class="number">51</span>:<span class="number">06</span> CST <span class="number">2021</span></span><br><span class="line"></span><br><span class="line">## METRICS CLASS	picard.analysis.AlignmentSummaryMetrics</span><br><span class="line">CATEGORY	TOTAL_READS	PF_READS	PCT_PF_READS	PF_NOISE_READS	PF_READS_ALIGNED	PCT_PF_READS_ALIGNED	PF_ALIGNED_BASES	PF_HQ_ALIGNED_READS	PF_HQ_ALIGNED_BASES	PF_HQ_ALIGNED_Q20_BASES	PF_HQ_MEDIAN_MISMATCHES	PF_MISMATCH_RATE	PF_HQ_ERROR_RATE	PF_INDEL_RATE	MEAN_READ_LENGTH	READS_ALIGNED_IN_PAIRS	PCT_READS_ALIGNED_IN_PAIRS	PF_READS_IMPROPER_PAIRS	PCT_PF_READS_IMPROPER_PAIRS	BAD_CYCLES	STRAND_BALANCE	PCT_CHIMERAS	PCT_ADAPTER	SAMPLE	LIBRARY	READ_GROUP</span><br><span class="line">FIRST_OF_PAIR	<span class="number">68215317</span>	<span class="number">68215317</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">59167958</span>	<span class="number">0.867371</span>	<span class="number">5501622876</span>	<span class="number">59167958</span>	<span class="number">5501622876</span>	<span class="number">5369228182</span>	<span class="number">0</span>	<span class="number">0.006504</span>	<span class="number">0.006504</span>	<span class="number">0.000316</span>	<span class="number">97.993401</span>	<span class="number">59167958122606</span>	<span class="number">0.002072</span>	<span class="number">0</span>	<span class="number">0.498024</span>	<span class="number">0.012711</span>	<span class="number">0</span>			</span><br><span class="line">SECOND_OF_PAIR	<span class="number">68215317</span>	<span class="number">68215317</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">59167958</span>	<span class="number">0.867371</span>	<span class="number">5512467037</span>	<span class="number">59167958</span>	<span class="number">5512467037</span>	<span class="number">5473728519</span>	<span class="number">0</span>	<span class="number">0.004728</span>	<span class="number">0.004728</span>	<span class="number">0.000291</span>	<span class="number">97.993401</span>	<span class="number">59167958122606</span>	<span class="number">0.002072</span>	<span class="number">0</span>	<span class="number">0.501913</span>	<span class="number">0.012403</span>	<span class="number">0</span>			</span><br><span class="line">PAIR	<span class="number">136430634</span>	<span class="number">136430634</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">118335916</span>	<span class="number">0.867371</span>	<span class="number">11014089913</span>	<span class="number">118335916</span>	<span class="number">11014089913</span>	<span class="number">10842956701</span>	<span class="number">0</span>	<span class="number">0.005615</span>	<span class="number">0.005615</span>	<span class="number">0.000303</span>	<span class="number">97.993401</span>	<span class="number">118335916</span>	<span class="number">245212</span>	<span class="number">0.002072</span>	<span class="number">0</span>	<span class="number">0.499968</span>	<span class="number">0.012557</span>	<span class="number">0</span>		  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在本例中，metrics的错配率为0.005615，且比对率为0.867371</p>
+<p>如果要统计所有样本中的错配率以及比对率的话</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat sample | <span class="keyword">while</span> <span class="built_in">read</span> i; <span class="keyword">do</span> sed -n <span class="string">&#x27;10p&#x27;</span> <span class="string">&quot;<span class="variable">$i</span>&quot;</span>.metrics | cut -f7,13  &gt;&gt; result.xls; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/29/STAR%E6%95%B0%E6%8D%AE%E6%AF%94%E5%AF%B9%E4%BB%BB%E5%8A%A1/" rel="prev" title="STAR数据比对任务">
+                  <i class="fa fa-chevron-left"></i> STAR数据比对任务
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WENJU QIAN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/2021/08/04/STAR%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/",
+    }, {"enable":true,"appId":"0uYeC1X5ME3X6vtooIJoYito-gzGzoHsz","appKey":"7u586HL29S9uVvurXaAzOhfn","placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+
+<!-- <script type="text/javascript" color="0,0,0" opacity='0.5' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script> -->
+
+
+</body>
+</html>
