@@ -238,7 +238,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -285,6 +285,132 @@
       
 
       
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/" class="post-title-link" itemprop="url">ggplot2散点图</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-20 11:18:47" itemprop="dateCreated datePublished" datetime="2020-11-20T11:18:47+08:00">2020-11-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-11-22 10:30:44" itemprop="dateModified" datetime="2020-11-22T10:30:44+08:00">2020-11-22</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="基本的散点图"><a href="#基本的散点图" class="headerlink" title="基本的散点图"></a>基本的散点图</h2><p>以gapminder数据集作为输入数据， 做出简单的散点图， 并逐步进行改善。 这个数据集有多个国家在多个年份的期望寿命与人均GDP值， 作期望寿命对人均GDP的散点图， 每个国家的每个年份作为一个点。 散点图最重要的映射是x轴与y轴两个维度。</p>
+<p>首先调用ggplot()函数， 指定数据集， 将人均GDP映射到x轴， 将期望寿命映射到y轴， 结果保存为一个R变量：</p>
+<pre><code>&gt; install.packages(&quot;gapminder&quot;)
+
+&gt; library(gapminder)
+
+&gt; head(gapminder,20)
+# A tibble: 20 x 6
+   country     continent  year lifeExp     pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8.43e6      779.
+ 2 Afghanistan Asia       1957    30.3  9.24e6      821.
+ 3 Afghanistan Asia       1962    32.0  1.03e7      853.
+ 4 Afghanistan Asia       1967    34.0  1.15e7      836.
+ 5 Afghanistan Asia       1972    36.1  1.31e7      740.
+ 6 Afghanistan Asia       1977    38.4  1.49e7      786.
+ 7 Afghanistan Asia       1982    39.9  1.29e7      978.
+ 8 Afghanistan Asia       1987    40.8  1.39e7      852.
+ 9 Afghanistan Asia       1992    41.7  1.63e7      649.
+10 Afghanistan Asia       1997    41.8  2.22e7      635.
+11 Afghanistan Asia       2002    42.1  2.53e7      727.
+12 Afghanistan Asia       2007    43.8  3.19e7      975.
+13 Albania     Europe     1952    55.2  1.28e6     1601.
+14 Albania     Europe     1957    59.3  1.48e6     1942.
+15 Albania     Europe     1962    64.8  1.73e6     2313.
+16 Albania     Europe     1967    66.2  1.98e6     2760.
+17 Albania     Europe     1972    67.7  2.26e6     3313.
+18 Albania     Europe     1977    68.9  2.51e6     3533.
+19 Albania     Europe     1982    70.4  2.78e6     3631.
+20 Albania     Europe     1987    72    3.08e6     3739.
+
+&gt; p &lt;- ggplot(data = gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp))</code></pre>
+<p>ggplot()的调用中， 可以省略data =, mapping =, x =, y =， 写成：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1185,108 +1311,6 @@ Levels: 男 女</code></pre>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="WENJU QIAN">
-      <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" class="post-title-link" itemprop="url">数值型向量及其运算</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2020-10-31 18:21:24" itemprop="dateCreated datePublished" datetime="2020-10-31T18:21:24+08:00">2020-10-31</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-11-04 20:07:29" itemprop="dateModified" datetime="2020-11-04T20:07:29+08:00">2020-11-04</time>
-      </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="数值型向量"><a href="#数值型向量" class="headerlink" title="数值型向量"></a>数值型向量</h2><p><strong>向量</strong>是将若干个基础类型相同的值存储在一起， 各个元素可以按序号访问。 如果将若干个数值存储在一起可以用序号访问， 就叫做一个数值型向量。</p>
-<p>用c()函数把多个元素或向量组合成一个向量。如</p>
-<pre><code>&gt; marks &lt;- c(10, 6, 4, 7, 8)
-&gt; x &lt;- c(1:3, 10:13)
-&gt; x1 &lt;- c(1, 2)
-&gt; x2 &lt;- c(3, 4)
-&gt; x &lt;- c(x1, x2)
-&gt; x
-
-运行结果
-## [1] 1 2 3 4</code></pre>
-<p>10:13这样的写法表示从10到13的整数组成的向量。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1331,7 +1355,7 @@ Levels: 男 女</code></pre>
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
