@@ -4873,40 +4873,40 @@ x dplyr::lag()    masks stats::lag()</code></pre>
 <p>然后告诉ggplot2需要绘制什么样类型的图形</p>
 <pre class="line-numbers language-none"><code class="language-none">&gt; p + geom_point()<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><img src="https://guangchuangyu.github.io/statistics_notes/_main_files/figure-html/ggplot2_fig1-1.png"></p>
+<p><img src="https://i.loli.net/2021/10/30/Izb7f6HAnKSykVN.png" alt="Rplot13.png"></p>
 <p>几何对象将在下面的小节介绍，这一节，关注的是数据和图形属性之间的映射。</p>
 <p>如果想将切工（cut）映射到形状属性。只需要：</p>
-<pre class="line-numbers language-none"><code class="language-none">&gt; p &lt;- ggplot(data&#x3D;small,mapping &#x3D; aes(x&#x3D;carat,y&#x3D;price,shape&#x3D;cut))
-&gt; p + geom_point()
+<pre class="line-numbers language-none"><code class="language-none">p &lt;- ggplot(data&#x3D;small,mapping &#x3D; aes(x&#x3D;carat,y&#x3D;price,shape&#x3D;cut))
+p + geom_point()
 Warning message:
 Using shapes for an ordinal variable is not advised <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="https://guangchuangyu.github.io/statistics_notes/_main_files/figure-html/ggplot2_fig2-1.png"></p>
+<p><img src="https://i.loli.net/2021/10/30/m9Z52LQ7OjFaUlE.png" alt="Rplot.png"></p>
 <p>通过点的形状来进行分组还不够的话，以及对其添加对应的颜色</p>
-<p><img src="https://guangchuangyu.github.io/statistics_notes/_main_files/figure-html/ggplot2_fig3-1.png"></p>
+<p><img src="https://i.loli.net/2021/10/30/Oj17t4uJBFsEXcQ.png"></p>
 <h2 id="几何对象（Geometric）"><a href="#几何对象（Geometric）" class="headerlink" title="几何对象（Geometric）"></a>几何对象（Geometric）</h2><p>在上面的例子中，各种属性映射由ggplot函数执行，只需要加一个图层，使用geom_point()告诉ggplot要画散点，于是所有的属性都映射到散点上。</p>
 <p>geom_point()完成的就是几何对象的映射，ggplot2提供了各种几何对象映射，如geom_histogram用于直方图，geom_bar用于画柱状图，geom_boxplot用于画箱式图等等。</p>
 <p>不同的几何对象，要求的属性会有些不同，这些属性也可以在几何对象映射时提供，比如上一图，也可以用以下语法来画：</p>
 <pre class="line-numbers language-none"><code class="language-none">p &lt;- ggplot(small)
 p+geom_point(aes(x&#x3D;carat, y&#x3D;price, shape&#x3D;cut, colour&#x3D;color))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<p>效果如下：<br><img src="https://i.loli.net/2021/10/30/CMKvPqOB8Scb4ut.png"></p>
 <p>ggplot2支持图层，我通常把不同的图层中共用的映射提供给ggplot函数，而某一几何对象才需要的映射参数提供给geom_xxx函数。</p>
 <p>这一小节我们来看一下各种常用的几何对象。</p>
 <h3 id="直方图"><a href="#直方图" class="headerlink" title="直方图"></a>直方图</h3><p>直方图最容易，提供一个x变量，画出数据的分布。</p>
 <pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(data&#x3D;small) + geom_histogram(aes(x&#x3D;price))
 
 &#96;stat_bin()&#96; using &#96;bins &#x3D; 30&#96;. Pick better value with &#96;binwidth&#96;.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><img src="https://guangchuangyu.github.io/statistics_notes/_main_files/figure-html/ggplot2_fig4-1.png"></p>
+<p><img src="https://i.loli.net/2021/10/30/MnmdKryYpJqt72A.png"></p>
 <p>将切工映射到直方图的颜色</p>
 <pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(data&#x3D;small) + 
-&gt; geom_histogram(aes(x&#x3D;price,fill&#x3D;cut))
+geom_histogram(aes(x&#x3D;price,fill&#x3D;cut))
 
 &#96;stat_bin()&#96; using &#96;bins &#x3D; 30&#96;. Pick better value with &#96;binwidth&#96;.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p><img src="https://guangchuangyu.github.io/statistics_notes/_main_files/figure-html/ggplot2_fig5-1.png"></p>
+<p><img src="https://i.loli.net/2021/10/30/NyrRkfF6eS9qwms.png" alt="Rplot04.png"></p>
 <pre class="line-numbers language-none"><code class="language-none">ggplot(small)+geom_bar(aes(x&#x3D;clarity))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>柱状图非常适合于画分类变量。在这里以透明度（clarity）变量为例。<br>按照不同透明度的钻石的数目画柱状图。</p>
-<p><img src="https://guangchuangyu.github.io/statistics_notes/_main_files/figure-html/ggplot2_fig8-1.png"></p>
+<p><img src="https://i.loli.net/2021/10/30/RIjhlfLEXyv57So.png" alt="Rplot05.png"></p>
 <p>柱状图的两个要素，一个是分类变量，一个是分类变量的数目，即柱子高度</p>
 <p><strong>直方图</strong>一般用来描述等距数据或等比数据；柱形<strong>图</strong>一般用来描述称名数据或顺序数据。 直观上，<strong>直方图</strong>矩形之间是衔接在一起的，表示数据间的数学关系；柱形<strong>图</strong>则留有空隙，表示仅作为两个或多个不同的类，而不具有数学相关性质。</p>
 <h3 id="密度函数图"><a href="#密度函数图" class="headerlink" title="密度函数图"></a>密度函数图</h3><p>说到直方图，就不得不说密度函数图，数据和映射和直方图是一样的，唯一不同的是几何对象，geom_histogram告诉ggplot要画直方图，而geom_density则说我们要画密度函数图，在我们熟悉前面语法的情况下，很容易画出：</p>
@@ -5046,7 +5046,7 @@ p &lt;- p+geom_segment(aes(x&#x3D;1, y&#x3D;1.1, xend&#x3D;2, yend&#x3D;1.1))
 p &lt;- p + annotate(&quot;text&quot;, x&#x3D;1.5, y&#x3D;1.08, label&#x3D;&quot;*&quot;)
 print(p)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>最终的形成的图形</p>
-<p><img src="https://guangchuangyu.github.io/statistics_notes/_main_files/figure-html/ggplot2_26-1.png"></p>
+<p><img src="https://i.loli.net/2021/10/30/Tm4yNewsSvW2BV3.png" alt="Rplot06.png"></p>
 <p>重新总结一下上面的R代码</p>
 <pre class="line-numbers language-none"><code class="language-none">Normal &lt;- c(0.83, 0.79, 0.99, 0.69)
 Cancer &lt;- c(0.56, 0.56, 0.64, 0.52)
@@ -5075,5 +5075,10 @@ print(p)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></
       <tags>
         <tag>ggplot2</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>STAR序列比对分析</title>
+    <url>/2021/10/30/STAR%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[]]></content>
   </entry>
 </search>
