@@ -3,6 +3,18 @@
  const header=document.querySelector('.site-header');
  const sizeHeader=()=>document.documentElement.style.setProperty('--nav-height',Math.ceil(header.getBoundingClientRect().height)+'px');
  sizeHeader();if(window.ResizeObserver)new ResizeObserver(sizeHeader).observe(header);else addEventListener('resize',sizeHeader);
+ const copyStatus=document.getElementById('profileCopyStatus');
+ document.querySelectorAll('[data-copy-profile]').forEach(button=>button.addEventListener('click',async()=>{
+  const value=button.dataset.copyProfile;
+  try{await navigator.clipboard.writeText(value);copyStatus.textContent=`已复制“${value}”。打开小红书，粘贴到搜索框即可。`}
+  catch{const input=document.getElementById('xiaohongshuId');if(value===input.value){input.focus();input.select()}copyStatus.textContent=`未能自动复制，请手动复制“${value}”，再到小红书搜索。`}
+ }));
+ const profileDialog=document.getElementById('profileDialog'),profilePreview=document.getElementById('profilePreview');
+ if(profileDialog&&typeof profileDialog.showModal==='function'){
+  profilePreview.addEventListener('click',event=>{event.preventDefault();profileDialog.showModal()});
+  profileDialog.addEventListener('click',event=>{if(event.target!==profileDialog)return;const r=profileDialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)profileDialog.close()});
+  profileDialog.addEventListener('close',()=>profilePreview.focus({preventScroll:true}));
+ }
  const search=document.getElementById('noteSearch');
  if(search){
   const rows=[...document.querySelectorAll('.note-row')],buttons=[...document.querySelectorAll('[data-filter]')];let selected='all';
