@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.2",
   "updatedAt": "2026-10-28",
   "sections": [
     {
@@ -20,7 +20,7 @@
           "updated": "2020-11-04",
           "category": "r",
           "empty": false,
-          "href": "/biostatistics/notes/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
+          "href": "/biostatistics/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
           "originalHref": "/biostatistics/archive/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/"
         },
         {
@@ -30,7 +30,7 @@
           "updated": "2020-11-04",
           "category": "r",
           "empty": false,
-          "href": "/biostatistics/notes/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
+          "href": "/biostatistics/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
           "originalHref": "/biostatistics/archive/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/"
         },
         {
@@ -40,7 +40,7 @@
           "updated": "2020-11-05",
           "category": "r",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/",
+          "href": "/biostatistics/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/",
           "originalHref": "/biostatistics/archive/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/"
         },
         {
@@ -50,7 +50,7 @@
           "updated": "2020-11-04",
           "category": "r",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/",
+          "href": "/biostatistics/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/",
           "originalHref": "/biostatistics/archive/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/"
         },
         {
@@ -60,7 +60,7 @@
           "updated": "2020-11-05",
           "category": "r",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/",
+          "href": "/biostatistics/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/",
           "originalHref": "/biostatistics/archive/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/"
         },
         {
@@ -70,7 +70,7 @@
           "updated": "2020-11-10",
           "category": "r",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/",
+          "href": "/biostatistics/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/",
           "originalHref": "/biostatistics/archive/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/"
         },
         {
@@ -80,7 +80,7 @@
           "updated": "2020-11-12",
           "category": "r",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/11/%E5%88%97%E8%A1%A8/",
+          "href": "/biostatistics/2020/11/11/%E5%88%97%E8%A1%A8/",
           "originalHref": "/biostatistics/archive/2020/11/11/%E5%88%97%E8%A1%A8/"
         },
         {
@@ -90,7 +90,7 @@
           "updated": "2020-11-15",
           "category": "r",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/",
+          "href": "/biostatistics/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/",
           "originalHref": "/biostatistics/archive/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/"
         },
         {
@@ -100,7 +100,7 @@
           "updated": "2020-11-17",
           "category": "r",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/15/%E6%95%B0%E6%8D%AE%E6%A1%86/",
+          "href": "/biostatistics/2020/11/15/%E6%95%B0%E6%8D%AE%E6%A1%86/",
           "originalHref": "/biostatistics/archive/2020/11/15/%E6%95%B0%E6%8D%AE%E6%A1%86/"
         },
         {
@@ -110,7 +110,7 @@
           "updated": "2020-11-19",
           "category": "r",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/",
+          "href": "/biostatistics/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/",
           "originalHref": "/biostatistics/archive/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/"
         },
         {
@@ -120,7 +120,7 @@
           "updated": "2020-11-20",
           "category": "visual",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/",
+          "href": "/biostatistics/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/",
           "originalHref": "/biostatistics/archive/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/"
         },
         {
@@ -130,7 +130,7 @@
           "updated": "2020-11-22",
           "category": "visual",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/",
+          "href": "/biostatistics/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/",
           "originalHref": "/biostatistics/archive/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/"
         },
         {
@@ -140,7 +140,7 @@
           "updated": "2020-11-30",
           "category": "omics",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/22/RNAseq-1-conda%E5%AE%89%E8%A3%85/",
+          "href": "/biostatistics/2020/11/22/RNAseq-1-conda%E5%AE%89%E8%A3%85/",
           "originalHref": "/biostatistics/archive/2020/11/22/RNAseq-1-conda%E5%AE%89%E8%A3%85/"
         },
         {
@@ -150,7 +150,7 @@
           "updated": "2020-11-30",
           "category": "omics",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/",
+          "href": "/biostatistics/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/",
           "originalHref": "/biostatistics/archive/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"
         },
         {
@@ -160,7 +160,7 @@
           "updated": "2020-11-30",
           "category": "omics",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/23/RNAseq-3-%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%8E%A7/",
+          "href": "/biostatistics/2020/11/23/RNAseq-3-%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%8E%A7/",
           "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-3-%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%8E%A7/"
         },
         {
@@ -170,7 +170,7 @@
           "updated": "2020-12-09",
           "category": "omics",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/",
+          "href": "/biostatistics/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/",
           "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/"
         },
         {
@@ -180,7 +180,7 @@
           "updated": "2020-11-30",
           "category": "omics",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/23/RNAseq-5-count%E4%B8%8E%E5%9F%BA%E5%9B%A0%E6%B3%A8%E9%87%8A/",
+          "href": "/biostatistics/2020/11/23/RNAseq-5-count%E4%B8%8E%E5%9F%BA%E5%9B%A0%E6%B3%A8%E9%87%8A/",
           "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-5-count%E4%B8%8E%E5%9F%BA%E5%9B%A0%E6%B3%A8%E9%87%8A/"
         },
         {
@@ -190,7 +190,7 @@
           "updated": "2020-11-30",
           "category": "omics",
           "empty": false,
-          "href": "/biostatistics/notes/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/",
+          "href": "/biostatistics/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/",
           "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/"
         },
         {
@@ -200,7 +200,7 @@
           "updated": "2020-12-12",
           "category": "visual",
           "empty": false,
-          "href": "/biostatistics/notes/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/",
+          "href": "/biostatistics/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/",
           "originalHref": "/biostatistics/archive/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/"
         },
         {
@@ -210,7 +210,7 @@
           "updated": "2020-12-10",
           "category": "omics",
           "empty": false,
-          "href": "/biostatistics/notes/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/",
+          "href": "/biostatistics/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/",
           "originalHref": "/biostatistics/archive/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"
         },
         {
@@ -220,7 +220,7 @@
           "updated": "2020-12-30",
           "category": "visual",
           "empty": false,
-          "href": "/biostatistics/notes/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/",
+          "href": "/biostatistics/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/",
           "originalHref": "/biostatistics/archive/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/"
         },
         {
@@ -230,7 +230,7 @@
           "updated": "2021-10-31",
           "category": "visual",
           "empty": false,
-          "href": "/biostatistics/notes/2021/10/29/ggplot2/",
+          "href": "/biostatistics/2021/10/29/ggplot2/",
           "originalHref": "/biostatistics/archive/2021/10/29/ggplot2/"
         },
         {
@@ -240,10 +240,11 @@
           "updated": "2021-10-30",
           "category": "omics",
           "empty": true,
-          "href": "/biostatistics/notes/2021/10/30/STAR%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E5%88%86%E6%9E%90/",
+          "href": "/biostatistics/2021/10/30/STAR%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E5%88%86%E6%9E%90/",
           "originalHref": "/biostatistics/archive/2021/10/30/STAR%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E5%88%86%E6%9E%90/"
         }
-      ]
+      ],
+      "presentation": "原版 Hexo 5.2.0 / NexT Gemini 8.0.0"
     },
     {
       "id": "teaching-plans",

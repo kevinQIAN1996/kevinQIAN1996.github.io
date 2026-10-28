@@ -1,0 +1,23 @@
+Hexo classic blog restoration
+
+Original blog: Hexo 5.2.0 / NexT Gemini 8.0.0.
+The original theme CSS, background, avatar, article HTML and original dates are retained.
+Only paths, locally hosted dependencies, a return-to-portal link and the companion layer were adapted.
+
+Classic companion:
+- live2d-widget.js 3.1.4, author xiazeyu, GPL-3.0.
+  https://github.com/xiazeyu/live2d-widget.js
+  Runtime, source and license: /biostatistics/vendor/live2d-widget/
+- Shizuku model, Live2D Inc.; distributed through live2d-widget-model-shizuku 1.0.5.
+  https://github.com/xiazeyu/live2d-widget-models
+  Model assets and package metadata: /biostatistics/vendor/shizuku/
+  The original user's model configuration was not present in the backed-up repository or its branches/history. Shizuku is the replacement classic companion, not a recovered original model.
+
+Other original-version theme dependencies:
+- anime.js 3.2.0, MIT; /biostatistics/vendor/anime/LICENSE.md
+- animate.css 3.1.1, MIT, Daniel Eden; https://github.com/animate-css/animate.css
+- Font Awesome Free 5.14.0; fonts SIL OFL 1.1, code MIT, icons CC BY 4.0; /biostatistics/vendor/fontawesome/LICENSE.txt
+- Valine 1.4.14; /biostatistics/vendor/valine/LICENSE
+
+Original public comment keys and comment thread paths are preserved from the original pages.
+Comment availability and old remote article images still depend on their original providers.
