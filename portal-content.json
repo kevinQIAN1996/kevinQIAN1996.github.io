@@ -1,0 +1,261 @@
+{
+  "version": "1.0",
+  "updatedAt": "2026-10-28",
+  "sections": [
+    {
+      "id": "courses",
+      "title": "BioCourse 互动课件",
+      "url": "/Biocourse/",
+      "managedIn": "kevinQIAN1996/Biocourse"
+    },
+    {
+      "id": "biostatistics",
+      "title": "生物统计与 R 语言",
+      "url": "/biostatistics/",
+      "posts": [
+        {
+          "file": "2020/10/31/R-数值型向量及其运算/index.html",
+          "title": "数值型向量及其运算",
+          "date": "2020-10-31",
+          "updated": "2020-11-04",
+          "category": "r",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
+          "originalHref": "/biostatistics/archive/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/"
+        },
+        {
+          "file": "2020/10/31/逻辑型向量及其运算/index.html",
+          "title": "逻辑型向量及其运算",
+          "date": "2020-10-31",
+          "updated": "2020-11-04",
+          "category": "r",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
+          "originalHref": "/biostatistics/archive/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/"
+        },
+        {
+          "file": "2020/11/01/字符型数据及处理/index.html",
+          "title": "字符型数据及处理",
+          "date": "2020-11-01",
+          "updated": "2020-11-05",
+          "category": "r",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/",
+          "originalHref": "/biostatistics/archive/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/"
+        },
+        {
+          "file": "2020/11/02/R向量下标和子集/index.html",
+          "title": "R向量下标和子集",
+          "date": "2020-11-02",
+          "updated": "2020-11-04",
+          "category": "r",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/",
+          "originalHref": "/biostatistics/archive/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/"
+        },
+        {
+          "file": "2020/11/05/数据类型及性质/index.html",
+          "title": "数据类型及性质",
+          "date": "2020-11-05",
+          "updated": "2020-11-05",
+          "category": "r",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/",
+          "originalHref": "/biostatistics/archive/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/"
+        },
+        {
+          "file": "2020/11/09/R因子类型/index.html",
+          "title": "R因子类型",
+          "date": "2020-11-09",
+          "updated": "2020-11-10",
+          "category": "r",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/",
+          "originalHref": "/biostatistics/archive/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/"
+        },
+        {
+          "file": "2020/11/11/列表/index.html",
+          "title": "列表",
+          "date": "2020-11-11",
+          "updated": "2020-11-12",
+          "category": "r",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/11/%E5%88%97%E8%A1%A8/",
+          "originalHref": "/biostatistics/archive/2020/11/11/%E5%88%97%E8%A1%A8/"
+        },
+        {
+          "file": "2020/11/14/矩阵和数组/index.html",
+          "title": "矩阵和数组",
+          "date": "2020-11-14",
+          "updated": "2020-11-15",
+          "category": "r",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/",
+          "originalHref": "/biostatistics/archive/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/"
+        },
+        {
+          "file": "2020/11/15/数据框/index.html",
+          "title": "数据框",
+          "date": "2020-11-15",
+          "updated": "2020-11-17",
+          "category": "r",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/15/%E6%95%B0%E6%8D%AE%E6%A1%86/",
+          "originalHref": "/biostatistics/archive/2020/11/15/%E6%95%B0%E6%8D%AE%E6%A1%86/"
+        },
+        {
+          "file": "2020/11/18/R输入输出/index.html",
+          "title": "R输入输出",
+          "date": "2020-11-18",
+          "updated": "2020-11-19",
+          "category": "r",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/",
+          "originalHref": "/biostatistics/archive/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/"
+        },
+        {
+          "file": "2020/11/20/ggplot2可视化入门/index.html",
+          "title": "ggplot2可视化入门及作图一般原则",
+          "date": "2020-11-20",
+          "updated": "2020-11-20",
+          "category": "visual",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/",
+          "originalHref": "/biostatistics/archive/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/"
+        },
+        {
+          "file": "2020/11/20/ggplot2散点图/index.html",
+          "title": "ggplot2散点图",
+          "date": "2020-11-20",
+          "updated": "2020-11-22",
+          "category": "visual",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/",
+          "originalHref": "/biostatistics/archive/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/"
+        },
+        {
+          "file": "2020/11/22/RNAseq-1-conda安装/index.html",
+          "title": "RNAseq_1_conda安装",
+          "date": "2020-11-22",
+          "updated": "2020-11-30",
+          "category": "omics",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/22/RNAseq-1-conda%E5%AE%89%E8%A3%85/",
+          "originalHref": "/biostatistics/archive/2020/11/22/RNAseq-1-conda%E5%AE%89%E8%A3%85/"
+        },
+        {
+          "file": "2020/11/22/RNAseq-2-原始测序数据处理/index.html",
+          "title": "RNAseq_2_原始测序数据处理",
+          "date": "2020-11-22",
+          "updated": "2020-11-30",
+          "category": "omics",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/",
+          "originalHref": "/biostatistics/archive/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"
+        },
+        {
+          "file": "2020/11/23/RNAseq-3-测序数据质控/index.html",
+          "title": "RNAseq_3_测序数据质控",
+          "date": "2020-11-23",
+          "updated": "2020-11-30",
+          "category": "omics",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/23/RNAseq-3-%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%8E%A7/",
+          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-3-%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%8E%A7/"
+        },
+        {
+          "file": "2020/11/23/RNAseq-4-序列比对以及samtools格式转换/index.html",
+          "title": "RNAseq_4_序列比对以及samtools格式转换",
+          "date": "2020-11-23",
+          "updated": "2020-12-09",
+          "category": "omics",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/",
+          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/"
+        },
+        {
+          "file": "2020/11/23/RNAseq-5-count与基因注释/index.html",
+          "title": "RNAseq_5_count与基因注释",
+          "date": "2020-11-23",
+          "updated": "2020-11-30",
+          "category": "omics",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/23/RNAseq-5-count%E4%B8%8E%E5%9F%BA%E5%9B%A0%E6%B3%A8%E9%87%8A/",
+          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-5-count%E4%B8%8E%E5%9F%BA%E5%9B%A0%E6%B3%A8%E9%87%8A/"
+        },
+        {
+          "file": "2020/11/23/RNAseq-6-无重复差异基因分析/index.html",
+          "title": "RNAseq_6_无重复差异基因分析",
+          "date": "2020-11-23",
+          "updated": "2020-11-30",
+          "category": "omics",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/",
+          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/"
+        },
+        {
+          "file": "2020/12/01/数据整理与tidyverse系统(一)/index.html",
+          "title": "数据整理与tidyverse系统(一)",
+          "date": "2020-12-01",
+          "updated": "2020-12-12",
+          "category": "visual",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/",
+          "originalHref": "/biostatistics/archive/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/"
+        },
+        {
+          "file": "2020/12/05/GEO数据库的使用及数据分析/index.html",
+          "title": "GEO数据库的使用及数据分析(练习)",
+          "date": "2020-12-05",
+          "updated": "2020-12-10",
+          "category": "omics",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/",
+          "originalHref": "/biostatistics/archive/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"
+        },
+        {
+          "file": "2020/12/22/数据整理与tidyverse系统（二）/index.html",
+          "title": "数据整理与tidyverse系统（二）",
+          "date": "2020-12-22",
+          "updated": "2020-12-30",
+          "category": "visual",
+          "empty": false,
+          "href": "/biostatistics/notes/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/",
+          "originalHref": "/biostatistics/archive/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/"
+        },
+        {
+          "file": "2021/10/29/ggplot2/index.html",
+          "title": "ggplot2科研绘图",
+          "date": "2021-10-29",
+          "updated": "2021-10-31",
+          "category": "visual",
+          "empty": false,
+          "href": "/biostatistics/notes/2021/10/29/ggplot2/",
+          "originalHref": "/biostatistics/archive/2021/10/29/ggplot2/"
+        },
+        {
+          "file": "2021/10/30/STAR序列比对分析/index.html",
+          "title": "STAR序列比对分析",
+          "date": "2021-10-30",
+          "updated": "2021-10-30",
+          "category": "omics",
+          "empty": true,
+          "href": "/biostatistics/notes/2021/10/30/STAR%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E5%88%86%E6%9E%90/",
+          "originalHref": "/biostatistics/archive/2021/10/30/STAR%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E5%88%86%E6%9E%90/"
+        }
+      ]
+    },
+    {
+      "id": "teaching-plans",
+      "title": "教案",
+      "url": "/teaching-plans/",
+      "items": []
+    },
+    {
+      "id": "scripts",
+      "title": "逐字稿",
+      "url": "/scripts/",
+      "items": []
+    }
+  ]
+}

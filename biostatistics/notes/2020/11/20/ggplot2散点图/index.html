@@ -1,0 +1,178 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102c2a"><meta name="description" content="基本的散点图以gapminder数据集作为输入数据， 做出简单的散点图， 并逐步进行改善。 这个数据集有多个国家在多个年份的期望寿命与人均GDP值， 作期望寿命对人均GDP的散点图， 每个国家的每个年份作为一个点。 散点图最重要的映射是x轴与y轴两个维度。 首先调用ggplot()函数， 指定数据集， 将人均GDP映射到x轴， 将期望寿命映射到y轴， 结果保存为一个R变量： &amp;gt; instal"><title>ggplot2散点图 · 生物教研空间</title><link rel="icon" href="/portal-assets/mark.svg" type="image/svg+xml"><link rel="canonical" href="https://kevinqian1996.github.io/biostatistics/notes/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/"><link rel="stylesheet" href="/portal-assets/portal.css"></head><body><a class="skip" href="#main">跳到主要内容</a><svg xmlns="http://www.w3.org/2000/svg" style="display:none"><symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol><symbol id="icon-book" viewBox="0 0 24 24"><path d="M12 6v15M12 6C8 3 5 3 2 4v15c4-1 7-1 10 2 3-3 6-3 10-2V4c-3-1-6-1-10 2Z"/></symbol><symbol id="icon-data" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-5 4 3 6-8"/></symbol><symbol id="icon-plan" viewBox="0 0 24 24"><path d="M7 3H4v19h16V3h-3M7 1h10v5H7zM8 11h8M8 15h8M8 19h4"/></symbol><symbol id="icon-script" viewBox="0 0 24 24"><path d="M4 3h16v14H9l-5 4V3ZM8 7h8M8 11h6"/></symbol></svg><header class="site-header"><div class="shell header-inner"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">b<span>·</span></span><span>生物教研空间<small>BIOLOGY / TEACHING / RESEARCH</small></span></a><nav aria-label="主导航"><a  href="/">首页</a><a href="/Biocourse/">互动课件</a><a aria-current="page" href="/biostatistics/">生物统计与 R</a><a  href="/teaching-plans/">教案</a><a  href="/scripts/">逐字稿</a></nav><a class="header-extra" href="/Biocourse/#community">教研交流 ↗</a></div></header><main id="main"><div class="reading-progress" id="readingProgress" aria-hidden="true"></div><section class="shell article-heading"><a class="breadcrumb" href="/biostatistics/?topic=visual">← 返回数据整理与可视化</a><p class="eyebrow">RESEARCH NOTEBOOK / 原文阅读</p><h1>ggplot2散点图</h1><div class="article-meta"><span>数据整理与可视化</span><time datetime="2020-11-20">原发表于 2020-11-20</time><span>原文最后修改 2020-11-22</span><span>作者：WENJU QIAN</span></div><p class="history-banner">历史笔记 · 本次整理未改动原文。文中工具、链接与方法记录对应当时的版本和实践。</p></section><div class="shell reading-layout"><aside class="reading-aside"><a href="/biostatistics/"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> 全部研究笔记</a><h2>本篇目录</h2><nav id="articleTOC" aria-label="文章目录"></nav><a class="original-link" href="/biostatistics/archive/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/">查看旧版原始页面 ↗</a></aside><div class="reading-main"><article class="article-body" id="articleBody">
+        <h2 id="基本的散点图"><a href="#基本的散点图" class="headerlink" title="基本的散点图"></a>基本的散点图</h2><p>以gapminder数据集作为输入数据， 做出简单的散点图， 并逐步进行改善。 这个数据集有多个国家在多个年份的期望寿命与人均GDP值， 作期望寿命对人均GDP的散点图， 每个国家的每个年份作为一个点。 散点图最重要的映射是x轴与y轴两个维度。</p>
+<p>首先调用ggplot()函数， 指定数据集， 将人均GDP映射到x轴， 将期望寿命映射到y轴， 结果保存为一个R变量：</p>
+<pre><code>&gt; install.packages(&quot;gapminder&quot;)
+
+&gt; library(gapminder)
+
+&gt; head(gapminder,20)
+# A tibble: 20 x 6
+   country     continent  year lifeExp     pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8.43e6      779.
+ 2 Afghanistan Asia       1957    30.3  9.24e6      821.
+ 3 Afghanistan Asia       1962    32.0  1.03e7      853.
+ 4 Afghanistan Asia       1967    34.0  1.15e7      836.
+ 5 Afghanistan Asia       1972    36.1  1.31e7      740.
+ 6 Afghanistan Asia       1977    38.4  1.49e7      786.
+ 7 Afghanistan Asia       1982    39.9  1.29e7      978.
+ 8 Afghanistan Asia       1987    40.8  1.39e7      852.
+ 9 Afghanistan Asia       1992    41.7  1.63e7      649.
+10 Afghanistan Asia       1997    41.8  2.22e7      635.
+11 Afghanistan Asia       2002    42.1  2.53e7      727.
+12 Afghanistan Asia       2007    43.8  3.19e7      975.
+13 Albania     Europe     1952    55.2  1.28e6     1601.
+14 Albania     Europe     1957    59.3  1.48e6     1942.
+15 Albania     Europe     1962    64.8  1.73e6     2313.
+16 Albania     Europe     1967    66.2  1.98e6     2760.
+17 Albania     Europe     1972    67.7  2.26e6     3313.
+18 Albania     Europe     1977    68.9  2.51e6     3533.
+19 Albania     Europe     1982    70.4  2.78e6     3631.
+20 Albania     Europe     1987    72    3.08e6     3739.
+
+&gt; p &lt;- ggplot(data = gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp))</code></pre>
+<p>ggplot()的调用中， 可以省略data =, mapping =, x =, y =， 写成：</p>
+<pre><code>&gt; p &lt;- ggplot(gapminder, aes(gdpPercap, lifeExp))</code></pre>
+<p>在如上指定了数据和映射后， 只要用geom_xxx()指定一个图形类型， 并与ggplot()的结果用加号连接就可以作图了，如：</p>
+<pre><code>&gt; p + geom_point()</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01b-1.png"></p>
+<p>实际上，上面的程序等同于调用<code>print(p + geom_point())</code>。 在R函数中或者在循环中需要显式地调用print()， 否则不会显示结果。 当载入了tidyverse系统时可以写成 <code>(p + geom_point()) %&gt;% print()</code>。</p>
+<h2 id="逐步改善"><a href="#逐步改善" class="headerlink" title="逐步改善"></a>逐步改善</h2><p>指定数据集、指定映射、选择适当的图形类型就可以做出基本的图形， 随后可以逐步对坐标系、坐标系刻度、标签与图例、配色等进行改善。 实际上，ggplot2包已经提供了十分合理的预设值， 用户只要进行一些必要的改动即可。</p>
+<p><strong>作图步骤之间用加号连接</strong>，这是ggplot包特有的语法。 例如， 用相同的映射做出拟合曲线图：</p>
+<pre><code>&gt; p + geom_smooth()
+`geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01c-1.png"></p>
+<pre><code>&gt; p + geom_smooth() + geom_point()
+`geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01d-1.png"></p>
+<pre><code>&gt; p + geom_point() + geom_smooth(method=&quot;lm&quot;)
+`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01e-1.png"></p>
+<p>注意geom_xxx()函数计算所需的变量值是从ggplot()函数保存在变量p中的信息提取的。</p>
+<p>在以上的所有图形中， x轴变量（人均GDP）分布非正态，严重右偏， 使得大多数散点重叠地分布在直角坐标系的左下角。 将x轴用对数刻度可以改善， 函数为scale_x_log10():</p>
+<pre><code>&gt; p + geom_point() + geom_smooth() + scale_x_log10(labels=scales::dollar)
+
+
+## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01g-1.png"></p>
+<p>scale_xxx()的labels选项指定如何标出坐标刻度数字， 参数值是一个函数对象， 如果scales包中找不到适当的功能， 可以自定义一个函数将数值转换为字符串。 scales包提供了comma, date, dollar, math, number, ordinal, pvalue, scientific, time等坐标刻度值转换函数。</p>
+<h2 id="颜色、符号、线型等映射"><a href="#颜色、符号、线型等映射" class="headerlink" title="颜色、符号、线型等映射"></a>颜色、符号、线型等映射</h2><p>在ggplot()函数的mapping参数的aes()设定中将变量映射到x、y轴， 颜色、符号、线型等图形元素类型， 也可以作为图形设置将某些图形元素设置为固定值。</p>
+<p>例如， 用不同颜色表示不同大洲， 就是将continent变量映射到color:</p>
+<pre><code>&gt; p &lt;- ggplot(data=gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp,
++                 color = continent))</code></pre>
+<p>程序中仅指定了将大洲映射到颜色维， 并不具体指定所用的颜色。</p>
+<p>作带有局部多项式曲线拟合的散点图：</p>
+<pre><code>&gt; p + geom_point() + geom_smooth(method =&quot;loess&quot;) + scale_x_log10(labels=scales::dollar)
+
+`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point02b-1.png"></p>
+<p>可以看出， 不同散点用了不同颜色表示其continent变量的值， 五个大洲分别进行了曲线拟合， 曲线使用了不同颜色但置信域颜色相同， 使得难以认读。 在图形右侧自动生成了颜色与continent变量值的对应关系图例。</p>
+<p>下面的图形仍分不同大洲作曲线拟合， 并将置信区间阴影的颜色也用不同大洲区分， 方法是在aes()中将color和fill都指定为变量continent:</p>
+<pre><code>&gt; p &lt;- ggplot(data=gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp,
++                 color = continent,
++                 fill = continent))
+
+&gt; p + geom_point() + geom_smooth(method =&quot;loess&quot;) + scale_x_log10(labels=scales::dollar)
+
+`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point03-1.png"></p>
+<pre><code>&gt; p &lt;- ggplot(data=gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp,
++                 color = &quot;chartreuse4&quot;))
+
+&gt; p + geom_point() +
++     geom_smooth(method=&quot;loess&quot;) +
++     scale_x_log10(labels=scales::dollar)</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point04-bad-1.png"></p>
+<p>我们发现，散点并没有使用草绿色，而且图形右侧有一个chartreuse4图例。 这是因为， aes()仅用来指定变量与图形元素类型的映射，所以实际上是生成了一个仅有一个常数值”chartreuse4”的新变量， 用颜色表示这个新变量。 为了指定固定颜色， 应将color=作为geom_xxx()函数的选项， 而不是放在aes()映射中，如：</p>
+<pre><code>&gt; p &lt;- ggplot(data=gapminder,
+  mapping = aes(
+    x = gdpPercap,
+    y = lifeExp))
+
+&gt; p + geom_point(color=&quot;chartreuse4&quot;) +
++ geom_smooth(method=&quot;loess&quot;) +
++     scale_x_log10(labels=scales::dollar)
+
+`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point05-1.png"></p>
+<p>geom_xxx()函数接受许多关于颜色、透明度、符号、线型的设置参数。 比如， 下面的程序指定了散点的透明度， 以及拟合直线的粗细：</p>
+<pre><code>&gt; p + geom_point(alpha=0.5) +
++ geom_smooth(method = &quot;lm&quot;,color=&quot;cadetblue1&quot;,se=FALSE,size=4,alpha=0.3) + scale_x_log10(labels=scales::dollar)
+
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point05b-1.png"></p>
+<p>程序中size指定了线的以毫米为单位的粗细， se = FALSE关闭了置信区间显示。 用alpha =设置了透明度， 取0和1之间的值， 数值越小越透明。</p>
+<p>下面用labs()函数给图形加上适当的标题：</p>
+<pre><code>&gt; p + geom_point(alpha=0.5) + 
++     geom_smooth(method = &quot;gam&quot;) +
++     scale_x_log10(labels=scales::dollar) + 
++     labs(
++         x=&quot;人均GDP&quot;,
++         y=&quot;期望寿命(年数)&quot;,
++         title = &quot;经济增长与期望寿命&quot;,
++         subtitle = &quot;数据点为每个国家每年&quot;,
++         caption = &quot;数据来源：gapminder&quot;)</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point06-1.png"></p>
+<p>可以看出， labs()规定了上方的标题、小标题， x轴、y轴的标题， 右下方的标注(caption)。 坐标轴刻度数值的规定则需要在scale_xxx()函数中给出</p>
+<h2 id="在geom函数中映射变量"><a href="#在geom函数中映射变量" class="headerlink" title="在geom函数中映射变量"></a>在geom函数中映射变量</h2><p>在前面的一个例图中， 在ggplot()函数中将color和fill映射到了continent变量， 使得不仅散点颜色代表了不同大洲， 还使得每个大洲单独拟合了曲线。 如果希望所有大洲拟合同一条曲线怎么办？</p>
+<p>在必要时， 可以在geom_xxx()函数中用mapping = aes(&lt;…&gt;)单独指定变量映射。 例如下面的程序在geom_point()中将不同大洲映射为不同颜色， 而不影响geom_smooth()中的颜色以及分组：</p>
+<pre><code>&gt; library(ggplot2)
+&gt; library(gapminder)
+&gt; p &lt;- ggplot(data=gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp))
+&gt; p + geom_point(mapping = aes(color = continent)) +
++     geom_smooth(method=&quot;loess&quot;) +
++     scale_x_log10(labels=scales::dollar)
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point07-1.png"></p>
+<pre><code>&gt; library(dplyr)
+&gt; p &lt;- ggplot(data = filter(gapminder, year == 2007),
++   mapping = aes(
++     x = gdpPercap,
++     y = lifeExp, 
++     shape = continent))
+&gt; p + geom_point(alpha = 0.4, size = 4) +
++   scale_x_log10(labels=scales::dollar)</code></pre>
+<p><img src="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point08-1.png"></p>
+<p>这种映射仅适用于点数比较少的情况， 还用了size参数指定符号的大小（单位：毫米）。 如果所有点使用同一符号并需要指定符号， 可以在geom_point()中用shape参数指定， 可以用0到25的整数值表示， 比如19为实心点， 也可以用字符串符号名称表示， 如”circle”表示实心点。 参见ggplot2帮助目录中的vignette ggplot2: ggplot2-specs。</p>
+<p>注意， 绘图时参与映射的分类变量会自动产生分类效果， color映射与fill映射到分类变量时常常会起到与添加group维相同的作用， 但为了逻辑清晰起见， 需要分组时还应该显式地映射group维。</p>
+<h2 id="连续变量的颜色映射"><a href="#连续变量的颜色映射" class="headerlink" title="连续变量的颜色映射"></a>连续变量的颜色映射</h2><p>也可以将连续变量映射为渐变色。 除了表示二元函数的等值线图以外这种方法并不利于读者认读。</p>
+<p>例如， 将人口数取自然对数映射为渐变色：</p>
+<pre><code>&gt; p &lt;- ggplot(data=gapminder,
++             mapping = aes(
++                 x = gdpPercap,
++                 y = lifeExp,
++                 color = log(pop)))
+&gt; p + geom_point() +
++     geom_smooth(method=&quot;loess&quot;) +
++     scale_x_log10(labels=scales::dollar)
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p>这里不同散点的颜色是连续变化的， 右侧的图例仅显示了有限的一些代表值。</p>
+<h2 id="保存图像"><a href="#保存图像" class="headerlink" title="保存图像"></a>保存图像</h2><p>如果使用Rmarkdown制作图文， 图像会自动进入编译的结果（如PDF、Word、HTML）中， 图像大小、输出大小可以用Rmarkdown的设置调整。</p>
+<p>为了将最近生成的图形保存为PNG格式，用命令如</p>
+<pre><code>&gt; ggsave(filename=&quot;文件名.png&quot;)</code></pre>
+<p>保存为PDF格式：</p>
+<pre><code>&gt; ggsave(filename=&quot;文件名.pdf&quot;)</code></pre>
+<p>可以将制作的图形保存到了一个R变量中， 在ggsave()中可以用plot=参数指定，如</p>
+<pre><code>&gt; ggout01 &lt;- p + geom_point()
+&gt; ggsave(filename=&quot;文件名.pdf&quot;, plot=ggout01)</code></pre>
+<p>在ggsave()中可以用scale =指定放大比例， 用height =指定高度， 用width =指定宽度，用units =指定高度和宽度的单位，如：</p>
+<pre><code>&gt; ggsave(filename=&quot;文件名.pdf&quot;, plot=ggout01,
+       height=12, width=8, units=&quot;cm&quot;)</code></pre>
+<p>单位可以是in, cm, mm。</p>
+
+    </article><div class="article-end"><span>正文原样保留 / 2026-10-28 归档整理</span><a href="#main">回到顶部 ↑</a></div><div class="article-neighbors"><a href="/biostatistics/notes/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/"><small>同主题 · 上一篇</small>ggplot2可视化入门及作图一般原则 ←</a><a href="/biostatistics/notes/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/"><small>同主题 · 下一篇</small>数据整理与tidyverse系统(一) →</a></div></div></div></main><footer class="footer shell"><div><a class="footer-brand" href="/">生物教研空间<span class="accent"> / </span>BIO</a><p>让课堂中的问题，连接探索、数据与理解。</p></div><div class="footer-links"><a href="/Biocourse/">BioCourse</a><a href="/biostatistics/">生物统计与 R</a><a href="/Biocourse/#feedback">课件反馈 ↗</a><small>门户 v1.0 · 整理于 2026-10-28<br>历史文章保留原始写作日期</small></div></footer><script src="/portal-assets/portal.js" defer></script></body></html>

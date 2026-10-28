@@ -1,0 +1,72 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102c2a"><meta name="description" content="conda简介Conda 是一个开源的软件包管理系统和环境管理系统，用于安装多个版本的软件包及其依赖关系，并在它们之间轻松切换。 Conda 是为 Python 程序创建的，适用于 Linux，OS X 和Windows，也可以打包和分发其他软件。 安装condaconda分为anaconda和miniconda。anaconda是包含一些常用包的版本（这里的常用不代表你常用），miniconda"><title>RNAseq_1_conda安装 · 生物教研空间</title><link rel="icon" href="/portal-assets/mark.svg" type="image/svg+xml"><link rel="canonical" href="https://kevinqian1996.github.io/biostatistics/notes/2020/11/22/RNAseq-1-conda%E5%AE%89%E8%A3%85/"><link rel="stylesheet" href="/portal-assets/portal.css"></head><body><a class="skip" href="#main">跳到主要内容</a><svg xmlns="http://www.w3.org/2000/svg" style="display:none"><symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol><symbol id="icon-book" viewBox="0 0 24 24"><path d="M12 6v15M12 6C8 3 5 3 2 4v15c4-1 7-1 10 2 3-3 6-3 10-2V4c-3-1-6-1-10 2Z"/></symbol><symbol id="icon-data" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-5 4 3 6-8"/></symbol><symbol id="icon-plan" viewBox="0 0 24 24"><path d="M7 3H4v19h16V3h-3M7 1h10v5H7zM8 11h8M8 15h8M8 19h4"/></symbol><symbol id="icon-script" viewBox="0 0 24 24"><path d="M4 3h16v14H9l-5 4V3ZM8 7h8M8 11h6"/></symbol></svg><header class="site-header"><div class="shell header-inner"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">b<span>·</span></span><span>生物教研空间<small>BIOLOGY / TEACHING / RESEARCH</small></span></a><nav aria-label="主导航"><a  href="/">首页</a><a href="/Biocourse/">互动课件</a><a aria-current="page" href="/biostatistics/">生物统计与 R</a><a  href="/teaching-plans/">教案</a><a  href="/scripts/">逐字稿</a></nav><a class="header-extra" href="/Biocourse/#community">教研交流 ↗</a></div></header><main id="main"><div class="reading-progress" id="readingProgress" aria-hidden="true"></div><section class="shell article-heading"><a class="breadcrumb" href="/biostatistics/?topic=omics">← 返回组学与生信分析</a><p class="eyebrow">RESEARCH NOTEBOOK / 原文阅读</p><h1>RNAseq_1_conda安装</h1><div class="article-meta"><span>组学与生信分析</span><time datetime="2020-11-22">原发表于 2020-11-22</time><span>原文最后修改 2020-11-30</span><span>作者：WENJU QIAN</span></div><p class="history-banner">历史笔记 · 本次整理未改动原文。文中工具、链接与方法记录对应当时的版本和实践。</p></section><div class="shell reading-layout"><aside class="reading-aside"><a href="/biostatistics/"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> 全部研究笔记</a><h2>本篇目录</h2><nav id="articleTOC" aria-label="文章目录"></nav><a class="original-link" href="/biostatistics/archive/2020/11/22/RNAseq-1-conda%E5%AE%89%E8%A3%85/">查看旧版原始页面 ↗</a></aside><div class="reading-main"><article class="article-body" id="articleBody">
+        <h2 id="conda简介"><a href="#conda简介" class="headerlink" title="conda简介"></a>conda简介</h2><p>Conda 是一个开源的软件包管理系统和环境管理系统，用于安装多个版本的软件包及其依赖关系，并在它们之间轻松切换。 Conda 是为 Python 程序创建的，适用于 Linux，OS X 和Windows，也可以打包和分发其他软件。</p>
+<h2 id="安装conda"><a href="#安装conda" class="headerlink" title="安装conda"></a>安装conda</h2><p>conda分为anaconda和miniconda。anaconda是包含一些常用包的版本（这里的常用不代表你常用），miniconda则是精简版，需要啥装啥，所以推荐使用miniconda。</p>
+<h3 id="下载网址"><a href="#下载网址" class="headerlink" title="下载网址"></a>下载网址</h3><blockquote>
+<p>conda官网：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://conda.io/miniconda.html">https://conda.io/miniconda.html</a></p>
+</blockquote>
+<p>选择适合自己的版本，用wget命令下载。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget -c https:&#x2F;&#x2F;repo.continuum.io&#x2F;miniconda&#x2F;Miniconda3-latest-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+
+
+<p>安装命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 Miniconda3-latest-Linux-x86_64.sh #给执行权限</span><br><span class="line">bash Miniconda3-latest-Linux-x86_64.sh #运行</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>一路yes，安装成功</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1_1.webp" alt="安装完成"></p>
+<h4 id="激活conda"><a href="#激活conda" class="headerlink" title="激活conda"></a>激活conda</h4><p>找到你刚才安装的miniconda，如果没有更改过安装位置的话应该是在/home下面，cd到miniconda3的bin目录下面，能看到有一个activate</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-2.webp"></p>
+<p>给activate添加一下权限才能使用</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#添加权限</span><br><span class="line">chmod 777 activate </span><br></pre></td></tr></table></figure>
+<p>接下来启动conda</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">. .&#x2F;active</span><br><span class="line">#这两个点不是连在一起的</span><br></pre></td></tr></table></figure>
+<p>需要注意一下的是/active前面的两个点之间不是连着一起的.<br>需要分开，其实这条命令也相当于source ./active</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-3.webp" alt="conda list"><br>当命令行前面出现(base)的时候说明现在已经在conda的环境中了。这时候输入conda list 命令就有反应了</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda list</span><br></pre></td></tr></table></figure>
+<p>以下是输入conda list 显示的结果</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-4.webp"></p>
+<h2 id="利用conda安装生物信息软件"><a href="#利用conda安装生物信息软件" class="headerlink" title="利用conda安装生物信息软件"></a>利用conda安装生物信息软件</h2><h3 id="安装命令"><a href="#安装命令" class="headerlink" title="安装命令:"></a>安装命令:</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install samtools</span><br></pre></td></tr></table></figure>
+
+<h3 id="搜索需要的安装包"><a href="#搜索需要的安装包" class="headerlink" title="搜索需要的安装包:"></a>搜索需要的安装包:</h3><p>提供一个网址,用于事先查找想安装的软件存不存在<br><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://bioconda.github.io/recipes">conda available packages</a></p>
+<p>当然, 也可以用这个命令进行搜索</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda search samtools</span><br></pre></td></tr></table></figure>
+<p>提示错误，PackagesNotFoundError: The following packages are not available from current channels:，主要是没有为conda添加相应的下载软件安装包的channel</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-4.webp"></p>
+<p>添加生物信息分析常用的channel，添加的是清华的镜像channel</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;free&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;main&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;cloud&#x2F;conda-forge&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;cloud&#x2F;bioconda&#x2F;</span><br></pre></td></tr></table></figure>
+<p>另外对channel常用的操作</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">显示安装的频道</span><br><span class="line"> conda config --set show_channel_urls yes </span><br><span class="line"></span><br><span class="line">查看已经添加的channels</span><br><span class="line">conda config --get channels</span><br><span class="line"></span><br><span class="line">已添加的channel在哪里查看</span><br><span class="line">vim ~&#x2F;.condarc</span><br></pre></td></tr></table></figure>
+
+
+<p>添加完channel之后继续下载</p>
+<p>利用conda安装生物信息软件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install samtools</span><br></pre></td></tr></table></figure>
+
+<p>提示安装进程，显示安装完成</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-5.webp"></p>
+<p>安装完成后，可以用“which 软件名”来查看该软件安装的位置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">which samtools</span><br></pre></td></tr></table></figure>
+<p>显示samtools的安装路径</p>
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-7.webp"></p>
+<p>搜索目前软件包有哪几个版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda search samtools</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/1-6.webp"></p>
+<p>如需要安装特定的版本:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install 软件名&#x3D;版本号</span><br><span class="line">conda samtools&#x3D;1.10</span><br></pre></td></tr></table></figure>
+<p>这时conda会先卸载已安装版本，然后重新安装指定版本。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查看已安装软件:</span><br><span class="line">conda list</span><br></pre></td></tr></table></figure>
+
+
+<p>更新指定软件:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda update samtools</span><br></pre></td></tr></table></figure>
+
+<p>卸载指定软件:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda remove gatk</span><br></pre></td></tr></table></figure>
+
+<p>退出conda环境<br>退出也很简单，之前我们是. ./activate 或者 (. ~/miniconda3/bin/activate)现在退出只要:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">. .&#x2F;deactivate</span><br></pre></td></tr></table></figure>
+<p>就退出当前的环境了</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/edaa744ea47d">参考链接</a></p>
+
+    </article><div class="article-end"><span>正文原样保留 / 2026-10-28 归档整理</span><a href="#main">回到顶部 ↑</a></div><div class="article-neighbors"><span></span><a href="/biostatistics/notes/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"><small>同主题 · 下一篇</small>RNAseq_2_原始测序数据处理 →</a></div></div></div></main><footer class="footer shell"><div><a class="footer-brand" href="/">生物教研空间<span class="accent"> / </span>BIO</a><p>让课堂中的问题，连接探索、数据与理解。</p></div><div class="footer-links"><a href="/Biocourse/">BioCourse</a><a href="/biostatistics/">生物统计与 R</a><a href="/Biocourse/#feedback">课件反馈 ↗</a><small>门户 v1.0 · 整理于 2026-10-28<br>历史文章保留原始写作日期</small></div></footer><script src="/portal-assets/portal.js" defer></script></body></html>

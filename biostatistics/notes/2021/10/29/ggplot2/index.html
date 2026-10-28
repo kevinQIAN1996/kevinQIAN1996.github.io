@@ -1,0 +1,251 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102c2a"><meta name="description" content="ggplot2基本要素 数据（Data）和映射（Mapping） 几何对象（Geometric） 标尺（Scale） 统计变换（Statistics） 坐标系统（Coordinante） 图层（Layer） 分面（Facet） 主题（Theme） 这里将从这些基本要素对ggplot2进行介绍。 数据（Data）和映射（Mapping)下面以一份钻石的数据为例，这份"><title>ggplot2科研绘图 · 生物教研空间</title><link rel="icon" href="/portal-assets/mark.svg" type="image/svg+xml"><link rel="canonical" href="https://kevinqian1996.github.io/biostatistics/notes/2021/10/29/ggplot2/"><link rel="stylesheet" href="/portal-assets/portal.css"></head><body><a class="skip" href="#main">跳到主要内容</a><svg xmlns="http://www.w3.org/2000/svg" style="display:none"><symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol><symbol id="icon-book" viewBox="0 0 24 24"><path d="M12 6v15M12 6C8 3 5 3 2 4v15c4-1 7-1 10 2 3-3 6-3 10-2V4c-3-1-6-1-10 2Z"/></symbol><symbol id="icon-data" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-5 4 3 6-8"/></symbol><symbol id="icon-plan" viewBox="0 0 24 24"><path d="M7 3H4v19h16V3h-3M7 1h10v5H7zM8 11h8M8 15h8M8 19h4"/></symbol><symbol id="icon-script" viewBox="0 0 24 24"><path d="M4 3h16v14H9l-5 4V3ZM8 7h8M8 11h6"/></symbol></svg><header class="site-header"><div class="shell header-inner"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">b<span>·</span></span><span>生物教研空间<small>BIOLOGY / TEACHING / RESEARCH</small></span></a><nav aria-label="主导航"><a  href="/">首页</a><a href="/Biocourse/">互动课件</a><a aria-current="page" href="/biostatistics/">生物统计与 R</a><a  href="/teaching-plans/">教案</a><a  href="/scripts/">逐字稿</a></nav><a class="header-extra" href="/Biocourse/#community">教研交流 ↗</a></div></header><main id="main"><div class="reading-progress" id="readingProgress" aria-hidden="true"></div><section class="shell article-heading"><a class="breadcrumb" href="/biostatistics/?topic=visual">← 返回数据整理与可视化</a><p class="eyebrow">RESEARCH NOTEBOOK / 原文阅读</p><h1>ggplot2科研绘图</h1><div class="article-meta"><span>数据整理与可视化</span><time datetime="2021-10-29">原发表于 2021-10-29</time><span>原文最后修改 2021-10-31</span><span>作者：WENJU QIAN</span></div><p class="history-banner">历史笔记 · 本次整理未改动原文。文中工具、链接与方法记录对应当时的版本和实践。</p></section><div class="shell reading-layout"><aside class="reading-aside"><a href="/biostatistics/"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> 全部研究笔记</a><h2>本篇目录</h2><nav id="articleTOC" aria-label="文章目录"></nav><a class="original-link" href="/biostatistics/archive/2021/10/29/ggplot2/">查看旧版原始页面 ↗</a></aside><div class="reading-main"><article class="article-body" id="articleBody">
+        <h2 id="ggplot2基本要素"><a href="#ggplot2基本要素" class="headerlink" title="ggplot2基本要素"></a>ggplot2基本要素</h2><ul>
+<li>  数据（Data）和映射（Mapping）</li>
+<li>  几何对象（Geometric）</li>
+<li>  标尺（Scale）</li>
+<li>  统计变换（Statistics）</li>
+<li>  坐标系统（Coordinante）</li>
+<li>  图层（Layer）</li>
+<li>  分面（Facet）</li>
+<li>  主题（Theme）</li>
+</ul>
+<p>这里将从这些基本要素对ggplot2进行介绍。</p>
+<h2 id="数据（Data）和映射（Mapping"><a href="#数据（Data）和映射（Mapping" class="headerlink" title="数据（Data）和映射（Mapping)"></a>数据（Data）和映射（Mapping)</h2><p>下面以一份钻石的数据为例，这份数据非常大，随机取一个子集来画图。</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; require(ggplot2)
+载入需要的程辑包：ggplot2
+&gt; data(&quot;diamonds&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>#<strong>sample基本用法</strong><br>参数解释：x表示所要抽样数据，size表示抽样个数，replace为T表示采取有重复的抽样 , <code>sample(nrow(),1000)</code>表示抽取1000行，如果不加上<code>nrow</code>的话表示按列抽取</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; small &lt;- diamonds[sample(nrow(diamonds),1000),]
+&gt; head(small)
+
+ A tibble: 6 x 10
+  carat cut       color clarity depth table price     x     y     z
+  &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1  1.03 Premium   E     SI2      61.8    59  4845  6.47  6.42  3.98
+2  0.56 Premium   D     SI1      61.9    58  1723  5.27  5.33  3.28
+3  0.65 Premium   E     SI2      61.4    59  1640  5.57  5.52  3.41
+4  0.41 Very Good F     VS1      60.7    56  1007  4.77  4.82  2.91
+5  0.53 Ideal     F     VS1      61.5    56  1624  5.21  5.25  3.22
+6  0.55 Ideal     G     VVS1     61.2    56  2077  5.27  5.3   3.24
+&gt; summary(small)
+     carat               cut      color      clarity        depth           table      
+ Min.   :0.2300   Fair     : 37   D:132   SI1    :243   Min.   :55.20   Min.   :51.00  
+ 1st Qu.:0.3900   Good     : 89   E:181   VS2    :210   1st Qu.:61.10   1st Qu.:56.00  
+ Median :0.7100   Very Good:228   F:174   SI2    :176   Median :61.90   Median :57.00  
+ Mean   :0.8085   Premium  :258   G:202   VS1    :152   Mean   :61.81   Mean   :57.47  
+ 3rd Qu.:1.0400   Ideal    :388   H:155   VVS2   : 86   3rd Qu.:62.60   3rd Qu.:59.00  
+ Max.   :5.0100                   I:108   VVS1   : 74   Max.   :70.20   Max.   :67.00  
+                                  J: 48   (Other): 59                                  
+     price               x                y                z        
+ Min.   :  367.0   Min.   : 3.920   Min.   : 3.960   Min.   :2.380  
+ 1st Qu.:  932.8   1st Qu.: 4.690   1st Qu.: 4.700   1st Qu.:2.900  
+ Median : 2586.5   Median : 5.730   Median : 5.735   Median :3.545  
+ Mean   : 3973.2   Mean   : 5.747   Mean   : 5.745   Mean   :3.552  
+ 3rd Qu.: 5458.8   3rd Qu.: 6.543   3rd Qu.: 6.530   3rd Qu.:4.040  
+ Max.   :18741.0   Max.   :10.740   Max.   :10.540   Max.   :6.980 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>将数据映射，即将数据通过映射到图形上，比如这里以克拉(carat)数为X轴变量，价格(price)为Y轴变量</p>
+ <pre class="line-numbers language-none"><code class="language-none">&gt; p &lt;- ggplot(data&#x3D;small,mapping&#x3D;aes(x&#x3D;carat,y&#x3D;price))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>然后告诉ggplot2需要绘制什么样类型的图形</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; p + geom_point()<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://i.loli.net/2021/10/30/Izb7f6HAnKSykVN.png" alt="Rplot13.png"></p>
+<p>几何对象将在下面的小节介绍，这一节，关注的是数据和图形属性之间的映射。</p>
+<p>如果想将切工（cut）映射到形状属性。只需要：</p>
+<pre class="line-numbers language-none"><code class="language-none">p &lt;- ggplot(data&#x3D;small,mapping &#x3D; aes(x&#x3D;carat,y&#x3D;price,shape&#x3D;cut))
+p + geom_point()
+Warning message:
+Using shapes for an ordinal variable is not advised <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://i.loli.net/2021/10/30/m9Z52LQ7OjFaUlE.png" alt="Rplot.png"></p>
+<p>通过点的形状来进行分组还不够的话，以及对其添加对应的颜色</p>
+<p><img src="https://i.loli.net/2021/10/30/Oj17t4uJBFsEXcQ.png"></p>
+<h2 id="几何对象（Geometric）"><a href="#几何对象（Geometric）" class="headerlink" title="几何对象（Geometric）"></a>几何对象（Geometric）</h2><p>在上面的例子中，各种属性映射由ggplot函数执行，只需要加一个图层，使用geom_point()告诉ggplot要画散点，于是所有的属性都映射到散点上。</p>
+<p>geom_point()完成的就是几何对象的映射，ggplot2提供了各种几何对象映射，如geom_histogram用于直方图，geom_bar用于画柱状图，geom_boxplot用于画箱式图等等。</p>
+<p>不同的几何对象，要求的属性会有些不同，这些属性也可以在几何对象映射时提供，比如上一图，也可以用以下语法来画：</p>
+<pre class="line-numbers language-none"><code class="language-none">p &lt;- ggplot(small)
+p+geom_point(aes(x&#x3D;carat, y&#x3D;price, shape&#x3D;cut, colour&#x3D;color))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>效果如下：<br><img src="https://i.loli.net/2021/10/30/CMKvPqOB8Scb4ut.png"></p>
+<p>ggplot2支持图层，我通常把不同的图层中共用的映射提供给ggplot函数，而某一几何对象才需要的映射参数提供给geom_xxx函数。</p>
+<p>这一小节我们来看一下各种常用的几何对象。</p>
+<h3 id="直方图"><a href="#直方图" class="headerlink" title="直方图"></a>直方图</h3><p>直方图最容易，提供一个x变量，画出数据的分布。</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(data&#x3D;small) + geom_histogram(aes(x&#x3D;price))
+
+&#96;stat_bin()&#96; using &#96;bins &#x3D; 30&#96;. Pick better value with &#96;binwidth&#96;.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://i.loli.net/2021/10/30/MnmdKryYpJqt72A.png"></p>
+<p>将切工映射到直方图的颜色</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(data&#x3D;small) + 
+geom_histogram(aes(x&#x3D;price,fill&#x3D;cut))
+
+&#96;stat_bin()&#96; using &#96;bins &#x3D; 30&#96;. Pick better value with &#96;binwidth&#96;.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="https://i.loli.net/2021/10/30/NyrRkfF6eS9qwms.png" alt="Rplot04.png"></p>
+<pre class="line-numbers language-none"><code class="language-none">ggplot(small)+geom_bar(aes(x&#x3D;clarity))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>柱状图非常适合于画分类变量。在这里以透明度（clarity）变量为例。<br>按照不同透明度的钻石的数目画柱状图。</p>
+<p><img src="https://i.loli.net/2021/10/30/RIjhlfLEXyv57So.png" alt="Rplot05.png"></p>
+<p>柱状图的两个要素，一个是分类变量，一个是分类变量的数目，即柱子高度</p>
+<p><strong>直方图</strong>一般用来描述等距数据或等比数据；柱形<strong>图</strong>一般用来描述称名数据或顺序数据。 直观上，<strong>直方图</strong>矩形之间是衔接在一起的，表示数据间的数学关系；柱形<strong>图</strong>则留有空隙，表示仅作为两个或多个不同的类，而不具有数学相关性质。</p>
+<h3 id="密度函数图"><a href="#密度函数图" class="headerlink" title="密度函数图"></a>密度函数图</h3><p>说到直方图，就不得不说密度函数图，数据和映射和直方图是一样的，唯一不同的是几何对象，geom_histogram告诉ggplot要画直方图，而geom_density则说我们要画密度函数图，在我们熟悉前面语法的情况下，很容易画出：</p>
+<pre class="line-numbers language-none"><code class="language-none">ggplot(small) + geom_density(aes(x&#x3D;price,color&#x3D;cut))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="https://i.loli.net/2021/10/28/dWA6RuXKVs3fwJh.png" alt="Rplot11.png"></p>
+<p>也可以按照分类变量进行填充</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(small) + geom_density(aes(x&#x3D;price,fill&#x3D;clarity))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="https://i.loli.net/2021/10/28/ekhU6p9i3wl7PTg.png" alt="Rplot01.png"></p>
+<p><em>note: 对于用 ggplot 画图而言，colour参数是指定曲线的颜色，而对于fill是对图形进行填充</em></p>
+<h3 id="箱式图"><a href="#箱式图" class="headerlink" title="箱式图"></a>箱式图</h3><p>数据量比较大的时候，用直方图和密度函数图是表示数据分布的好方法，而在数据量较少的时候，比如很多的生物实验，很多时候大家都是使用柱状图+errorbar的形式来表示，不过这种方法的信息量非常低，这种情况推荐使用boxplot。</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(small) + geom_boxplot(aes(x&#x3D;cut, y&#x3D;price, fill&#x3D;cut))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="https://i.loli.net/2021/10/28/4Cigs6P7aUHXNFb.png" alt="Rplot.png"></p>
+<p>或者也可以按照切工（cut）进行分类，然后对价格（price）画箱线图，然后再用colour进行分类填充</p>
+<p><img src="https://i.loli.net/2021/10/28/FozQE9WILdhmkyr.png" alt="Rplot01.png"></p>
+<h2 id="标尺（Scale）"><a href="#标尺（Scale）" class="headerlink" title="标尺（Scale）"></a>标尺（Scale）</h2><p>前面我们已经看到了，画图就是在做映射，不管是映射到不同的几何对象上，还是映射各种图形属性。这一小节介绍标尺，在对图形属性进行映射之后，使用标尺可以控制这些属性的显示方式，比如坐标刻度，可能通过标尺，将坐标进行对数变换；比如颜色属性，也可以通过标尺，进行改变。</p>
+<p>比如可以通过添加scale_clolur_manual()参数来定义图形的颜色</p>
+<pre class="line-numbers language-none"><code class="language-none">ggplot(small)+geom_point(aes(x&#x3D;carat, y&#x3D;price, shape&#x3D;cut, colour&#x3D;color))+scale_colour_manual(values&#x3D;rainbow(7))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="https://i.loli.net/2021/10/28/PieyFspKTcAlLJM.png" alt="Rplot.png"></p>
+<p>另外也可以通过scale参数来改变Y轴的坐标尺度，如也可以额外再添加一个<code>scale_y_log10()</code>参数</p>
+<pre class="line-numbers language-none"><code class="language-none">ggplot(small)+geom_point(aes(x&#x3D;carat, y&#x3D;price, shape&#x3D;cut, colour&#x3D;color))+scale_y_log10()+scale_colour_manual(values&#x3D;rainbow(7))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>加完之后的图形就会变成下面的形式</p>
+<p><img src="https://i.loli.net/2021/10/28/47SYjRzOAbfVdP6.png" alt="Rplot.png"></p>
+<h2 id="统计变换（Statistics）"><a href="#统计变换（Statistics）" class="headerlink" title="统计变换（Statistics）"></a>统计变换（Statistics）</h2><p>统计变换对原始数据进行某种计算，然后在图上表示出来，例如对散点图上加一条回归线。</p>
+<p><img src="https://i.loli.net/2021/10/28/Nl31geWLPyoTmBh.png" alt="Rplot02.png"></p>
+<p>由于这次主要是对其进行线性回归，于是就不采用按照cut进行颜色分类什么的了，这样的话会使得整个图形比较乱，如果还是想通过不同颜色进行分类展示的话，建议可以分成不同的面板展示，后期会介绍。</p>
+<p>这里，aes所提供的参数，就通过ggplot提供，而不是提供给geom_point，<strong>因为ggplot里的参数，相当于全局变量</strong>，geom_point()和stat_smooth()都知道x,y的映射，如果只提供给geom_point()，则相当于是局部变量，geom_point知道这种映射，而stat_smooth不知道，当然你再给stat_smooth也提供x,y的映射，不过共用的映射，还是提供给ggplot好。</p>
+<p>ggplot2提供了多种统计变换方式：</p>
+<pre class="line-numbers language-none"><code class="language-none">stat_abline       stat_contour      stat_identity     stat_summary
+stat_bin          stat_density      stat_qq           stat_summary2d
+stat_bin2d        stat_density2d    stat_quantile     stat_summary_hex
+stat_bindot       stat_ecdf         stat_smooth       stat_unique
+stat_binhex       stat_function     stat_spoke        stat_vline
+stat_boxplot      stat_hline        stat_sum          stat_ydensity<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>统计变换是非常重要的功能，我们可以自己写函数，基于原始数据做某种计算，并在图上表现出来。</p>
+<h2 id="坐标系统（Coordinante）"><a href="#坐标系统（Coordinante）" class="headerlink" title="坐标系统（Coordinante）"></a>坐标系统（Coordinante）</h2><p>坐标系统控制坐标轴，可以进行变换，例如XY轴翻转，极坐标转换等以满足我们的各种需求。</p>
+<p>如坐标轴翻转由coord_flip()实现</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(small,aes(x&#x3D;cut,fill&#x3D;cut)) + geom_bar() + scale_fill_manual(values &#x3D; rainbow(5)) + coord_flip()<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://i.loli.net/2021/10/28/AKpMRECu76PHj4y.png" alt="Rplot03.png"></p>
+<p>而转换成极坐标可以由<code>coord_polar()</code>实现：</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(small,aes(x&#x3D;cut,fill&#x3D;cut)) + geom_bar() + scale_fill_manual(values &#x3D; rainbow(5)) + coord_polar()<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://i.loli.net/2021/10/28/iougJQsedVNGzcv.png" alt="Rplot.png"></p>
+<p>如果直接添加的就是下面的这种形状，因为<code>coord_polar()</code>作用是把把笛卡尔坐标变换为极坐标。该函数有theta,start,direction三个参数，后者顶多是图的微调，需要了解可以查看帮助文件，theta才是关键。极坐标参数theta有两个指标半径和角度，就饼图而言，各部分内容的角度不同，半径相同；而<strong>默认theta=”x”,即将x映射为角度，剩下的y映射为半径。</strong></p>
+<p>当然也可以自己设置theta=”y”, 即将y映射为角度，剩下的x为映射为半径</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(small,aes(x&#x3D;cut,fill&#x3D;cut)) + geom_bar() + scale_fill_manual(values &#x3D; rainbow(5)) + coord_polar(theta &#x3D; &quot;y&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://i.loli.net/2021/10/29/dWFHsuZN1XfVJTe.png" alt="Rplot01.png"></p>
+<p>另外还有一种图形的表现形式是将其变成等半径的饼图形式</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(small,aes(x&#x3D;factor(1),fill&#x3D;cut)) + geom_bar() + scale_fill_manual(values &#x3D; rainbow(5)) + coord_polar(theta&#x3D;&quot;y&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="https://i.loli.net/2021/10/29/ziYwaDI38NKB1Xy.png" alt="Rplot02.png"></p>
+<p>饼图实际上就是柱状图，只不过是使用极坐标而已，柱状图的高度，对应于饼图的弧度。</p>
+<h2 id="分面（Facet）"><a href="#分面（Facet）" class="headerlink" title="分面（Facet）"></a>分面（Facet）</h2><p>分面可以让我们按照分类条件，对其进行分组，然后各自进行画图<br>需要额外添加个<code>facet_wrap(~cut)</code>这个参数</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; ggplot(data&#x3D;small,aes(x&#x3D;carat,y&#x3D;price)) + geom_point(aes(colour&#x3D;cut)) + scale_y_log10() + scale_color_manual(values &#x3D; rainbow(5)) + stat_smooth() + facet_wrap(~cut)
+
+
+&#96;geom_smooth()&#96; using method &#x3D; &#39;loess&#39; and formula &#39;y ~ x&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://i.loli.net/2021/10/29/IZdsvKLR7SUNmO5.png" alt="Rplot12.png"></p>
+<h2 id="主题（Theme）"><a href="#主题（Theme）" class="headerlink" title="主题（Theme）"></a>主题（Theme）</h2><p>通过ggplot画图之后，我们可能还需要对图进行定制，像title, xlab, ylab这些高频需要用到的，自不用说，ggplot2提供了ggtitle(), xlab()和ylab()来实现。 比如：</p>
+<p><img src="https://i.loli.net/2021/10/29/txPEmZAF1C6YcjW.png" alt="Rplot01.png"></p>
+<p>如果需要将标题置中的话，需要再添加<code>theme(plot.title = element_text(hjust = 0.5))</code>这个参数</p>
+<pre class="line-numbers language-none"><code class="language-none">ggplot(small,aes(cut,price,fill&#x3D;cut)) + geom_boxplot() + xlab(&quot;CUT&quot;) + ylab(&quot;RPICE&quot;) + ggtitle(subtitle  &#x3D; &quot;price vs cut&quot;,label &#x3D; &quot;TEST&quot;) + theme(plot.title &#x3D; element_text(hjust &#x3D; 0.5))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://i.loli.net/2021/10/29/MovmdVTcZIJbqKj.png" alt="Rplot01.png"></p>
+<p>虽然可以通过<code>xlab()</code>之类的参数进行，但是仍然远不能满足需求</p>
+<p>我们需要改变字体，字体大小，坐标轴，背景等各种元素，这需要通过<code>theme()</code>函数来完成。</p>
+<p>ggplot2提供一些已经写好的主题，比如theme_grey()为默认主题，我经常用的theme_bw()为白色背景的主题，还有theme_classic()主题，和R的基础画图函数较像。</p>
+<p>别外ggthemes包提供了一些主题可供使用，包括：</p>
+<pre class="line-numbers language-none"><code class="language-none">theme_economist theme_economist_white
+theme_wsj       theme_excel
+theme_few       theme_foundation
+theme_igray     theme_solarized
+theme_stata     theme_tufte<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>示例：用的是<code>theme_classic()</code>参数</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; require(ggthemes)
+载入需要的程辑包：ggthemes
+&gt; ggplot(small,aes(cut,price,fill&#x3D;cut)) + geom_boxplot() + xlab(&quot;CUT&quot;) + ylab(&quot;RPICE&quot;) + ggtitle(label &#x3D; &quot;TEST&quot;) + theme_classic() + theme(plot.title &#x3D; element_text(hjust &#x3D; 0.5))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://i.loli.net/2021/10/29/pLDuxa35XRJEkO2.png" alt="Rplot03.png"></p>
+<p>最后以生物界中常用的柱状图+误差图为实例，展示ggplot2非常灵活的图层。这个实例展示了图层，标尺，主题，注释和各种细节微调多种元素。</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; Normal &lt;- c(0.83, 0.79, 0.99, 0.69)
+&gt; Cancer &lt;- c(0.56, 0.56, 0.64, 0.52)
+&gt; m &lt;- c(mean(Normal),mean(Cancer))
+&gt; d &lt;- data.frame(V&#x3D;c(&quot;Normal&quot;,&quot;Cancer&quot;),mean&#x3D;m,sd&#x3D;s)
+&gt; d
+       V  mean         sd
+1 Normal 0.825 0.12476645
+2 Cancer 0.570 0.05033223
+
+#将数据框里面的Normal和Cancer转变成两个因子（factor）
+&gt; d$V &lt;- factor(d$V,levels &#x3D; c(&quot;Normal&quot;,&quot;Cancer&quot;))
+
+#转变成因子之后也可以再确认一下
+&gt; attributes(d$V)
+$levels
+[1] &quot;Normal&quot; &quot;Cancer&quot;
+
+$class
+[1] &quot;factor&quot;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接下来通过ggplot2进行作图</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; p &lt;- ggplot(d,aes(x&#x3D;V,y&#x3D;mean,fill&#x3D;V,width&#x3D;0.5))
+#绘制误差线
+&gt; p &lt;- p + geom_errorbar(aes(ymin&#x3D;mean,ymax&#x3D;mean+sd,width&#x3D;.2),position &#x3D; position_dodge(width &#x3D; .8))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>这里<code>geom_errorbar()</code>的<code>position</code>参数用了<code>position_dodge()</code>函数说明两个条形之间的距离。 <code>geom_errorbar()</code>的<code>width</code>参数是条形端线的宽度， 如果<code>width=0</code>就没有了端线。</p>
+<pre class="line-numbers language-none"><code class="language-none">&gt; p &lt;- p + geom_bar(stat&#x3D;&quot;identity&quot;, position&#x3D;position_dodge(width&#x3D;.8), colour&#x3D;&quot;black&quot;)
+&gt; p &lt;- p + scale_fill_manual(values&#x3D;c(&quot;grey80&quot;, &quot;white&quot;))
+&gt; p &lt;- p + theme_bw() +theme(legend.position&#x3D;&quot;none&quot;) + xlab(&quot;&quot;) + ylab(&quot;&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>使用geom_bar()函数绘制条形图，条形图的高度通常表示两种情况之一：每组中的数据的个数，或数据框中列的值，高度表示的含义是由geom_bar()函数的参数stat决定的，stat在geom_bar()函数中有两个有效值：<strong>count和identity</strong>。默认情况下，stat=”count”，这意味着每个条的高度等于每组中的数据的个数，并且，它与映射到y的图形属性不相容，所以，当设置stat=”count”时，不能设置映射函数aes()中的y参数。如果设置stat=”identity”，这意味着条形的高度表示数据数据的值，而数据的值是由aes()函数的y参数决定的，就是说，把值映射到y，所以，当设置stat=”identity”时，必须设置映射函数中的y参数，把它映射到数值变量。</p>
+<p>geom_bar()函数的定义是：</p>
+<blockquote>
+<p>geom_bar(mapping = NULL, data = NULL, stat = “count”, width=0.9, position=”stack”)</p>
+</blockquote>
+<p>参数注释：</p>
+<ul>
+<li>  <strong>stat</strong>：设置统计方法，有效值是count（默认值） 和 identity，其中，count表示条形的高度是变量的数量，identity表示条形的高度是变量的值；</li>
+<li>  <strong>position</strong>：位置调整，有效值是stack、dodge和fill，默认值是stack（堆叠），是指两个条形图堆叠摆放，dodge是指两个条形图并行摆放，fill是指按照比例来堆叠条形图，每个条形图的高度都相等，但是高度表示的数量是不尽相同的。</li>
+<li>  <strong>width</strong>：条形图的宽度，是个比值，默认值是0.9</li>
+<li>  <strong>color</strong>：条形图的线条颜色</li>
+<li>  <strong>fill</strong>：条形图的填充色</li>
+</ul>
+<p>关于<strong>stat参数</strong>，有三个有效值，分别是count、identity和bin：</p>
+<ul>
+<li>  count是对离散的数据进行计数，计数的结果用一个特殊的变量..count.. 来表示，</li>
+<li>  bin是对连续变量进行统计转换，转换的结果使用变量..density..来表示</li>
+<li>  而identity是直接引用数据集中变量的值</li>
+</ul>
+<pre class="line-numbers language-none"><code class="language-none">#对x及y轴进行加粗
+p &lt;- p + theme(axis.text.x &#x3D; element_text(face&#x3D;&quot;bold&quot;, size&#x3D;12), 
+               axis.text.y &#x3D; element_text(face&#x3D;&quot;bold&quot;, size&#x3D;12))
+#设置坐标原点为（0,0）,并且调整纵坐标的刻度线的间距为0.2一刻度，且是从0到1.2
+p &lt;- p+scale_y_continuous(expand&#x3D;c(0,0), limits&#x3D;c(0, 1.2), breaks&#x3D;seq(0, 1.2, by&#x3D;.2))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>绘制表示显著性的线条</p>
+<pre class="line-numbers language-none"><code class="language-none">p &lt;- p+geom_segment(aes(x&#x3D;1, y&#x3D;.98, xend&#x3D;1, yend&#x3D;1.1))
+p &lt;- p+geom_segment(aes(x&#x3D;2, y&#x3D;.65, xend&#x3D;2, yend&#x3D;1.1))
+p &lt;- p+geom_segment(aes(x&#x3D;1, y&#x3D;1.1, xend&#x3D;2, yend&#x3D;1.1))
+p &lt;- p + annotate(&quot;text&quot;, x&#x3D;1.5, y&#x3D;1.08, label&#x3D;&quot;*&quot;)
+print(p)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最终的形成的图形</p>
+<p><img src="https://i.loli.net/2021/10/30/Tm4yNewsSvW2BV3.png" alt="Rplot06.png"></p>
+<p>重新总结一下上面的R代码</p>
+<pre class="line-numbers language-none"><code class="language-none">Normal &lt;- c(0.83, 0.79, 0.99, 0.69)
+Cancer &lt;- c(0.56, 0.56, 0.64, 0.52)
+m &lt;- c(mean(Normal), mean(Cancer))
+s &lt;- c(sd(Normal), sd(Cancer))
+d &lt;- data.frame(V&#x3D;c(&quot;Normal&quot;, &quot;Cancer&quot;), mean&#x3D;m, sd&#x3D;s)
+d$V &lt;- factor(d$V, levels&#x3D;c(&quot;Normal&quot;, &quot;Cancer&quot;))
+
+p &lt;- ggplot(d, aes(V, mean, fill&#x3D;V, width&#x3D;.5))
+p &lt;- p+geom_errorbar(aes(ymin&#x3D;mean, ymax&#x3D;mean+sd, width&#x3D;.2), 
+                     position&#x3D;position_dodge(width&#x3D;.8))
+p &lt;- p + geom_bar(stat&#x3D;&quot;identity&quot;, position&#x3D;position_dodge(width&#x3D;.8), colour&#x3D;&quot;black&quot;)
+p &lt;- p + scale_fill_manual(values&#x3D;c(&quot;grey80&quot;, &quot;white&quot;))
+p &lt;- p + theme_bw() +theme(legend.position&#x3D;&quot;none&quot;) + xlab(&quot;&quot;) + ylab(&quot;&quot;)
+p &lt;- p + theme(axis.text.x &#x3D; element_text(face&#x3D;&quot;bold&quot;, size&#x3D;12), 
+               axis.text.y &#x3D; element_text(face&#x3D;&quot;bold&quot;, size&#x3D;12))
+p &lt;- p+scale_y_continuous(expand&#x3D;c(0,0), limits&#x3D;c(0, 1.2), breaks&#x3D;seq(0, 1.2, by&#x3D;.2))
+p &lt;- p+geom_segment(aes(x&#x3D;1, y&#x3D;.98, xend&#x3D;1, yend&#x3D;1.1))
+p &lt;- p+geom_segment(aes(x&#x3D;2, y&#x3D;.65, xend&#x3D;2, yend&#x3D;1.1))
+p &lt;- p+geom_segment(aes(x&#x3D;1, y&#x3D;1.1, xend&#x3D;2, yend&#x3D;1.1))
+p &lt;- p + annotate(&quot;text&quot;, x&#x3D;1.5, y&#x3D;1.08, label&#x3D;&quot;*&quot;)
+print(p)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>资料参考：<br><a target="_blank" rel="noopener" href="https://guangchuangyu.github.io/statistics_notes/ggplot2.html#section-3.11">https://guangchuangyu.github.io/statistics_notes/ggplot2.html#section-3.11</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ljhdo/p/5555858.html">https://www.cnblogs.com/ljhdo/p/5555858.html</a><br><a target="_blank" rel="noopener" href="https://shixiangwang.github.io/home/cn/post/">https://shixiangwang.github.io/home/cn/post/</a><br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1593274">https://cloud.tencent.com/developer/article/1593274</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/aa9154786dd2">https://www.jianshu.com/p/aa9154786dd2</a></p>
+
+    </article><div class="article-end"><span>正文原样保留 / 2026-10-28 归档整理</span><a href="#main">回到顶部 ↑</a></div><div class="article-neighbors"><a href="/biostatistics/notes/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/"><small>同主题 · 上一篇</small>数据整理与tidyverse系统（二） ←</a><a href="/biostatistics/?topic=visual"><small>已经读到本主题最后一篇</small>返回笔记目录 →</a></div></div></div></main><footer class="footer shell"><div><a class="footer-brand" href="/">生物教研空间<span class="accent"> / </span>BIO</a><p>让课堂中的问题，连接探索、数据与理解。</p></div><div class="footer-links"><a href="/Biocourse/">BioCourse</a><a href="/biostatistics/">生物统计与 R</a><a href="/Biocourse/#feedback">课件反馈 ↗</a><small>门户 v1.0 · 整理于 2026-10-28<br>历史文章保留原始写作日期</small></div></footer><script src="/portal-assets/portal.js" defer></script></body></html>

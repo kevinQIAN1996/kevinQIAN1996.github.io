@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /biostatistics/archive/
+Sitemap: https://kevinqian1996.github.io/sitemap.xml

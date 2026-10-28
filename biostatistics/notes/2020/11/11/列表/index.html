@@ -1,0 +1,152 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102c2a"><meta name="description" content="列表R中列表(list)类型来保存不同类型的数据。 一个主要目的是提供R分析结果输出包装： 输出一个变量， 这个变量包括回归系数、预测值、残差、检验结果等等一系列不能放到规则形状数据结构中的内容。 实际上，数据框也是列表的一种， 但是数据框要求各列等长， 而列表不要求。 列表可以有多个元素， 但是与向量不同的是， 列表的不同元素的类型可以不同， 比如， 一个元素是数值型向量， 一个元素是字符串，"><title>列表 · 生物教研空间</title><link rel="icon" href="/portal-assets/mark.svg" type="image/svg+xml"><link rel="canonical" href="https://kevinqian1996.github.io/biostatistics/notes/2020/11/11/%E5%88%97%E8%A1%A8/"><link rel="stylesheet" href="/portal-assets/portal.css"></head><body><a class="skip" href="#main">跳到主要内容</a><svg xmlns="http://www.w3.org/2000/svg" style="display:none"><symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol><symbol id="icon-book" viewBox="0 0 24 24"><path d="M12 6v15M12 6C8 3 5 3 2 4v15c4-1 7-1 10 2 3-3 6-3 10-2V4c-3-1-6-1-10 2Z"/></symbol><symbol id="icon-data" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-5 4 3 6-8"/></symbol><symbol id="icon-plan" viewBox="0 0 24 24"><path d="M7 3H4v19h16V3h-3M7 1h10v5H7zM8 11h8M8 15h8M8 19h4"/></symbol><symbol id="icon-script" viewBox="0 0 24 24"><path d="M4 3h16v14H9l-5 4V3ZM8 7h8M8 11h6"/></symbol></svg><header class="site-header"><div class="shell header-inner"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">b<span>·</span></span><span>生物教研空间<small>BIOLOGY / TEACHING / RESEARCH</small></span></a><nav aria-label="主导航"><a  href="/">首页</a><a href="/Biocourse/">互动课件</a><a aria-current="page" href="/biostatistics/">生物统计与 R</a><a  href="/teaching-plans/">教案</a><a  href="/scripts/">逐字稿</a></nav><a class="header-extra" href="/Biocourse/#community">教研交流 ↗</a></div></header><main id="main"><div class="reading-progress" id="readingProgress" aria-hidden="true"></div><section class="shell article-heading"><a class="breadcrumb" href="/biostatistics/?topic=r">← 返回R 语言基础</a><p class="eyebrow">RESEARCH NOTEBOOK / 原文阅读</p><h1>列表</h1><div class="article-meta"><span>R 语言基础</span><time datetime="2020-11-11">原发表于 2020-11-11</time><span>原文最后修改 2020-11-12</span><span>作者：WENJU QIAN</span></div><p class="history-banner">历史笔记 · 本次整理未改动原文。文中工具、链接与方法记录对应当时的版本和实践。</p></section><div class="shell reading-layout"><aside class="reading-aside"><a href="/biostatistics/"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> 全部研究笔记</a><h2>本篇目录</h2><nav id="articleTOC" aria-label="文章目录"></nav><a class="original-link" href="/biostatistics/archive/2020/11/11/%E5%88%97%E8%A1%A8/">查看旧版原始页面 ↗</a></aside><div class="reading-main"><article class="article-body" id="articleBody">
+        <h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>R中列表(list)类型来保存<strong>不同类型</strong>的数据。 一个主要目的是提供R分析结果输出包装： 输出一个变量， 这个变量包括回归系数、预测值、残差、检验结果等等一系列不能放到规则形状数据结构中的内容。 实际上，数据框也是列表的一种， 但是<u>数据框要求各列等长， 而列表不要求</u>。</p>
+<p>列表可以有多个元素， 但是与向量不同的是， 列表的不同元素的类型可以不同， 比如， 一个元素是数值型向量， 一个元素是字符串， 一个元素是标量， 一个元素是另一个列表。</p>
+<p>定义列表用函数list(), 如</p>
+<pre><code>&gt; rec &lt;- list(name=&quot;李明&quot;, age=30,
++scores=c(85, 76, 90))
+&gt; rec</code></pre>
+<p><br>执行结果：</p>
+<pre><code>$name
+[1] &quot;李明&quot;
+
+$age
+[1] 30
+
+$scores
+[1] 85 76 90</code></pre>
+<p>用typeof()函数判断一个列表， 返回结果为list。 可以用is.list()函数判断某个对象是否列表类型。</p>
+<pre><code>&gt; typeof(rec)
+
+
+[1] &quot;list&quot;</code></pre>
+<h2 id="列表元素访问"><a href="#列表元素访问" class="headerlink" title="列表元素访问"></a>列表元素访问</h2><p>列表的一个元素也可以称为列表的一个“变量”， 单个列表元素必须用两重方括号格式访问，如</p>
+<pre><code>&gt; rec[[3]][2]
+[1] 76
+
+&gt; rec[[&quot;age&quot;]]
+[1] 30
+&gt; rec[[&quot;scores&quot;]]
+[1] 85 76 90</code></pre>
+<p>列表的单个元素也可以用$格式访问，如</p>
+<pre><code>&gt; rec$age
+[1] 30</code></pre>
+<p>如果使用单重方括号对列表取子集， 结果还是列表而不是列表元素，如</p>
+<pre><code>&gt; rec[3]
+$scores
+[1] 85 76 90
+
+&gt; typeof(rec[3])
+[1] &quot;list&quot;</code></pre>
+<p>列表一般都应该有元素名， 元素名可以看成是变量名， 列表中的每个元素看成一个变量。 用names()函数查看和修改元素名。 如</p>
+<pre><code>&gt; names(rec)
+[1] &quot;name&quot;   &quot;age&quot;    &quot;scores&quot;
+
+&gt; typeof(names(rec))
+[1] &quot;character&quot;
+
+&gt; names(rec)[names(rec)==&quot;scores&quot;] &lt;- &quot;三科分数&quot;
+&gt; names(rec)
+[1] &quot;name&quot;     &quot;age&quot;      &quot;三科分数&quot;
+
+&gt; rec[[&quot;三科分数&quot;]]
+[1] 85 76 90</code></pre>
+<p>可以修改列表元素内容。 如</p>
+<pre><code>&gt; rec$三科分数[2] &lt;- 0
+&gt; rec
+$name
+[1] &quot;李明&quot;
+
+$age
+[1] 30
+
+$三科分数
+[1] 85  0 90</code></pre>
+<p>直接给列表<strong>不存在的元素名定义元素值就添加了新元素</strong>， 而且不同于使用向量，对于列表而言这是很正常的做法，比如</p>
+<pre><code>&gt; rec[&quot;身高&quot;] &lt;- 183
+&gt; rec
+$name
+[1] &quot;李明&quot;
+
+$age
+[1] 30
+
+$三科分数
+[1] 85  0 90
+
+$身高
+[1] 183</code></pre>
+<p>把某个列表元素赋值为NULL就删掉这个元素。 如</p>
+<pre><code>&gt; rec$三科分数 &lt;- NULL
+&gt; rec
+$name
+[1] &quot;李明&quot;
+
+$age
+[1] 30
+
+$身高
+[1] 183</code></pre>
+<p>在list()函数中允许定义元素为NULL，这样的元素是存在的，如：</p>
+<pre><code>&gt; li &lt;- list(a=120, b=&quot;F&quot;, c=NULL)
+&gt; li
+$a
+[1] 120
+
+$b
+[1] &quot;F&quot;
+
+$c
+NULL</code></pre>
+<p>但是，要把已经存在的元素修改为NULL值而不是删除此元素， 或者给列表增加一个取值为NULL的元素， 这时需要用单重的方括号取子集， 这样的子集会保持其列表类型， 给这样的子列表赋值为list(NULL)，如：</p>
+<pre><code>&gt; li[&quot;b&quot;] &lt;- list(NULL)
+&gt; li
+$a
+[1] 120
+
+$b
+NULL
+
+$c
+NULL</code></pre>
+<h2 id="列表类型转换"><a href="#列表类型转换" class="headerlink" title="列表类型转换"></a>列表类型转换</h2><p>用as.list()把一个其它类型的对象转换成列表； 如</p>
+<pre><code>&gt; li1 &lt;- as.list(li1)
+
+&gt; li1    </code></pre>
+<br>
+
+<pre><code>[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+
+[[3]]
+[1] 3</code></pre>
+<p>用unlist()函数把列表转换成基本向量</p>
+<pre><code>&gt; li2 &lt;- list(x=1, y=c(2,3))
+&gt; li2
+$x
+[1] 1
+
+$y
+[1] 2 3
+
+&gt; unlist(li2)
+ x y1 y2 
+ 1  2  3 </code></pre>
+<h2 id="返回列表的函数示例–-strsplit"><a href="#返回列表的函数示例–-strsplit" class="headerlink" title="返回列表的函数示例– strsplit()"></a>返回列表的函数示例– strsplit()</h2><p>strsplit()输入一个字符型向量并指定一个分隔符， 返回一个项数与字符型向量元素个数相同的列表， 列表每项对应于字符型向量中一个元素的拆分结果。 如</p>
+<pre><code>&gt; x &lt;- c(&quot;10, 8, 7&quot;, &quot;5, 2, 2&quot;, &quot;3, 7, 8&quot;, &quot;8, 8, 9&quot;)
+&gt; res &lt;- strsplit(x, &quot;,&quot;); res
+[[1]]
+[1] &quot;10&quot; &quot; 8&quot; &quot; 7&quot;
+
+[[2]]
+[1] &quot;5&quot;  &quot; 2&quot; &quot; 2&quot;
+
+[[3]]
+[1] &quot;3&quot;  &quot; 7&quot; &quot; 8&quot;
+
+[[4]]
+[1] &quot;8&quot;  &quot; 8&quot; &quot; 9&quot;</code></pre>
+
+    </article><div class="article-end"><span>正文原样保留 / 2026-10-28 归档整理</span><a href="#main">回到顶部 ↑</a></div><div class="article-neighbors"><a href="/biostatistics/notes/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/"><small>同主题 · 上一篇</small>R因子类型 ←</a><a href="/biostatistics/notes/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/"><small>同主题 · 下一篇</small>矩阵和数组 →</a></div></div></div></main><footer class="footer shell"><div><a class="footer-brand" href="/">生物教研空间<span class="accent"> / </span>BIO</a><p>让课堂中的问题，连接探索、数据与理解。</p></div><div class="footer-links"><a href="/Biocourse/">BioCourse</a><a href="/biostatistics/">生物统计与 R</a><a href="/Biocourse/#feedback">课件反馈 ↗</a><small>门户 v1.0 · 整理于 2026-10-28<br>历史文章保留原始写作日期</small></div></footer><script src="/portal-assets/portal.js" defer></script></body></html>
