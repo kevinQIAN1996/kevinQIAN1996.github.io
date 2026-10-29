@@ -7,7 +7,18 @@
     "description": "Student From Shanghai Institute of Nutrition and Health, CAS",
     "avatar": "/biostatistics/images/avatar.jpg",
     "footer": "学习、记录与分享",
-    "links": []
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/qianwenju",
+        "visible": true
+      },
+      {
+        "label": "E-Mail",
+        "url": "mailto:qianwenju2018@sibs.ac.cn",
+        "visible": true
+      }
+    ]
   },
   "appearance": {
     "fontSize": 17,

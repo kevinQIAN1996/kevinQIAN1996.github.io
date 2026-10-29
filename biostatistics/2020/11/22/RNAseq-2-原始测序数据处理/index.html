@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"kevinqian1996.github.io","root":"/biostatistics/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="1、fastq文件一般我们从公司里得到的原始测序数据都是属于fastq.gz文件, .gz是一种压缩格式的缩写，于是首先第一步是对这些压缩格式进行解压操作  gzip -d 19R576_combined_R1.fastq.gz 19R576_combined_R2.fastq.gz 19R577_combined_R1.fastq.gz 19R577_combined_R2.fastq.gz 解">
+  <meta name="description" content="1、fastq文件一般我们从公司里得到的原始测序数据都是属于fastq.gz文件, .gz是一种压缩格式的缩写，于是首先第一步是对这些压缩格式进行解压操作 gzip -d 19R576_combined_R1.fastq">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RNAseq_2_原始测序数据处理">
 <meta property="og:url" content="https://kevinqian1996.github.io/biostatistics/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/index.html">
 <meta property="og:site_name" content="林默然 · 生物统计笔记">
-<meta property="og:description" content="1、fastq文件一般我们从公司里得到的原始测序数据都是属于fastq.gz文件, .gz是一种压缩格式的缩写，于是首先第一步是对这些压缩格式进行解压操作  gzip -d 19R576_combined_R1.fastq.gz 19R576_combined_R2.fastq.gz 19R577_combined_R1.fastq.gz 19R577_combined_R2.fastq.gz 解">
+<meta property="og:description" content="1、fastq文件一般我们从公司里得到的原始测序数据都是属于fastq.gz文件, .gz是一种压缩格式的缩写，于是首先第一步是对这些压缩格式进行解压操作 gzip -d 19R576_combined_R1.fastq">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/2_1.webp">
 <meta property="og:image" content="https://raw.githubusercontent.com/kevinQIAN1996/Figurebed/main/img/2_2.jpg">
@@ -219,14 +219,7 @@
       </div>
   </nav>
 </div>
-  <div class="links-of-author animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/qianwenju" title="GitHub → https://github.com/qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
-  </div>
+  <div class="links-of-author animated"><span class="links-of-author-item"><a href="https://github.com/qianwenju" target="_blank" rel="noopener">GitHub</a></span><span class="links-of-author-item"><a href="mailto:qianwenju2018@sibs.ac.cn" target="_blank" rel="noopener">E-Mail</a></span></div>
 
 
 
@@ -263,12 +256,12 @@
 
     <span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/biostatistics/images/avatar.jpg">
-      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="name" content="林默然">
       <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
     </span>
 
     <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+      <meta itemprop="name" content="林默然 · 生物统计笔记">
     </span>
 
     

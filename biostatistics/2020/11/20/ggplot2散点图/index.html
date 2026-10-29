@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"kevinqian1996.github.io","root":"/biostatistics/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="基本的散点图以gapminder数据集作为输入数据， 做出简单的散点图， 并逐步进行改善。 这个数据集有多个国家在多个年份的期望寿命与人均GDP值， 作期望寿命对人均GDP的散点图， 每个国家的每个年份作为一个点。 散点图最重要的映射是x轴与y轴两个维度。 首先调用ggplot()函数， 指定数据集， 将人均GDP映射到x轴， 将期望寿命映射到y轴， 结果保存为一个R变量： > instal">
+  <meta name="description" content="基本的散点图以gapminder数据集作为输入数据， 做出简单的散点图， 并逐步进行改善。 这个数据集有多个国家在多个年份的期望寿命与人均GDP值， 作期望寿命对人均GDP的散点图， 每个国家的每个年份作为一个点。 散点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ggplot2散点图">
 <meta property="og:url" content="https://kevinqian1996.github.io/biostatistics/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/index.html">
 <meta property="og:site_name" content="林默然 · 生物统计笔记">
-<meta property="og:description" content="基本的散点图以gapminder数据集作为输入数据， 做出简单的散点图， 并逐步进行改善。 这个数据集有多个国家在多个年份的期望寿命与人均GDP值， 作期望寿命对人均GDP的散点图， 每个国家的每个年份作为一个点。 散点图最重要的映射是x轴与y轴两个维度。 首先调用ggplot()函数， 指定数据集， 将人均GDP映射到x轴， 将期望寿命映射到y轴， 结果保存为一个R变量： > instal">
+<meta property="og:description" content="基本的散点图以gapminder数据集作为输入数据， 做出简单的散点图， 并逐步进行改善。 这个数据集有多个国家在多个年份的期望寿命与人均GDP值， 作期望寿命对人均GDP的散点图， 每个国家的每个年份作为一个点。 散点">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01b-1.png">
 <meta property="og:image" content="https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/ggplot_files/figure-html/ggplot2-start-gapminder-point01c-1.png">
@@ -218,14 +218,7 @@
       </div>
   </nav>
 </div>
-  <div class="links-of-author animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/qianwenju" title="GitHub → https://github.com/qianwenju" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:qianwenju2018@sibs.ac.cn" title="E-Mail → mailto:qianwenju2018@sibs.ac.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
-  </div>
+  <div class="links-of-author animated"><span class="links-of-author-item"><a href="https://github.com/qianwenju" target="_blank" rel="noopener">GitHub</a></span><span class="links-of-author-item"><a href="mailto:qianwenju2018@sibs.ac.cn" target="_blank" rel="noopener">E-Mail</a></span></div>
 
 
 
@@ -262,12 +255,12 @@
 
     <span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/biostatistics/images/avatar.jpg">
-      <meta itemprop="name" content="WENJU QIAN">
+      <meta itemprop="name" content="林默然">
       <meta itemprop="description" content="Student From Shanghai Institute of Nutrition and Health, CAS">
     </span>
 
     <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WENJU QIAN‘s tech blog">
+      <meta itemprop="name" content="林默然 · 生物统计笔记">
     </span>
 
     
