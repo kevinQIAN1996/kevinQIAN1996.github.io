@@ -98,16 +98,6 @@
     }
   ],
   "posts": {
-    "biostatistics/2021/10/30/STAR序列比对分析/index.html": {
-      "title": "STAR序列比对分析",
-      "date": "2021-10-30",
-      "updated": "2026-10-29",
-      "tags": [],
-      "category": "rnaseq",
-      "summary": "测试",
-      "series": "RNA-seq 入门",
-      "order": 7
-    },
     "biostatistics/2021/10/29/ggplot2/index.html": {
       "title": "ggplot2科研绘图",
       "date": "2021-10-29",
@@ -413,5 +403,17 @@
       "icon": "arrow-left",
       "visible": true
     }
-  ]
+  ],
+  "deletedPosts": {
+    "biostatistics/2021/10/30/STAR序列比对分析/index.html": {
+      "title": "STAR序列比对分析",
+      "date": "2021-10-30",
+      "updated": "2026-10-29",
+      "tags": [],
+      "category": "rnaseq",
+      "summary": "测试",
+      "series": "RNA-seq 入门",
+      "order": 7
+    }
+  }
 }
