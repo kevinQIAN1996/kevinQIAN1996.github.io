@@ -35,7 +35,7 @@
         "id": "intro",
         "title": "个人介绍",
         "format": "html",
-        "source": "<p>I’m WENJU QIAN, a student majoring in BioMedical sciences. I have a large passion for continuously learning new skills, especially in the area of data analysis. I enjoy helping others discover the wondrous world of R programming and want to help them get better by providing tutorials and workshops, which is partially why this blog exists.</p>",
+        "source": "<p>I’m MORAN LIN, a student majoring in BioMedical sciences. I have a large passion for continuously learning new skills, especially in the area of data analysis. I enjoy helping others discover the wondrous world of R programming and want to help them get better by providing tutorials and workshops, which is partially why this blog exists.</p>",
         "visible": true
       },
       {
@@ -49,7 +49,7 @@
         "id": "contact-0",
         "title": "E-Mail",
         "format": "html",
-        "source": "<a href=\"mailto:qianwenju2018@sibs.ac.cn\">qianwenju2018@sibs.ac.cn</a>",
+        "source": "<a href=\"mailto:bioqwj@gmail.com\">bioqwj@gmail.com</a>",
         "visible": true
       },
       {
@@ -64,7 +64,7 @@
         "title": "Wechat",
         "format": "html",
         "source": "qian18852957995",
-        "visible": true
+        "visible": false
       },
       {
         "id": "contact-3",
