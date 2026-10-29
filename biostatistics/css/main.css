@@ -3063,3 +3063,8 @@ body {
 .popup {
   opacity: 0.88;
 }
+
+/* Same original background, responsive encoding. Original JPG retained as fallback. */
+body { background-image: url("/biostatistics/images/background-desktop.webp"); background-image: image-set(url("/biostatistics/images/background-desktop.webp") type("image/webp"), url("/biostatistics/images/background.jpg") type("image/jpeg")); }
+@media(max-width:700px){body{background-image:url("/biostatistics/images/background-mobile.webp");background-image:image-set(url("/biostatistics/images/background-mobile.webp") type("image/webp"),url("/biostatistics/images/background.jpg") type("image/jpeg"))}}
+#valine-comments button{font:inherit;border:1px solid #aaa;background:#fff;padding:8px 16px;cursor:pointer}#valine-comments button:disabled{opacity:.5}
