@@ -1,6 +1,6 @@
 {
-  "version": "1.2",
-  "updatedAt": "2026-10-28",
+  "version": "2.0",
+  "updatedAt": "2026-10-30",
   "sections": [
     {
       "id": "courses",
@@ -18,230 +18,342 @@
           "title": "数值型向量及其运算",
           "date": "2020-10-31",
           "updated": "2020-11-04",
-          "category": "r",
+          "category": "r-basics",
           "empty": false,
           "href": "/biostatistics/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
-          "originalHref": "/biostatistics/archive/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/"
+          "originalHref": "/biostatistics/archive/2020/10/31/R-%E6%95%B0%E5%80%BC%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
+          "tags": [
+            "R"
+          ],
+          "summary": "用 c 函数创建数值向量，练习逐元素运算、循环使用规则、排序与统计函数。适合作为 R 数据操作的入门笔记。",
+          "series": "R 基础",
+          "order": 1
         },
         {
           "file": "2020/10/31/逻辑型向量及其运算/index.html",
           "title": "逻辑型向量及其运算",
           "date": "2020-10-31",
           "updated": "2020-11-04",
-          "category": "r",
+          "category": "r-basics",
           "empty": false,
           "href": "/biostatistics/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
-          "originalHref": "/biostatistics/archive/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/"
+          "originalHref": "/biostatistics/archive/2020/10/31/%E9%80%BB%E8%BE%91%E5%9E%8B%E5%90%91%E9%87%8F%E5%8F%8A%E5%85%B6%E8%BF%90%E7%AE%97/",
+          "tags": [
+            "R"
+          ],
+          "summary": "理解 TRUE、FALSE 与 NA，练习比较和逻辑运算，为条件判断与数据筛选建立基础。",
+          "series": "R 基础",
+          "order": 2
         },
         {
           "file": "2020/11/01/字符型数据及处理/index.html",
           "title": "字符型数据及处理",
           "date": "2020-11-01",
           "updated": "2020-11-05",
-          "category": "r",
+          "category": "r-basics",
           "empty": false,
           "href": "/biostatistics/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/",
-          "originalHref": "/biostatistics/archive/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/"
+          "originalHref": "/biostatistics/archive/2020/11/01/%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%8F%8A%E5%A4%84%E7%90%86/",
+          "tags": [
+            "R"
+          ],
+          "summary": "从字符向量开始，练习拼接、大小写转换、截取、拆分、替换和正则表达式，处理数据中的文本信息。",
+          "series": "R 基础",
+          "order": 3
         },
         {
           "file": "2020/11/02/R向量下标和子集/index.html",
           "title": "R向量下标和子集",
           "date": "2020-11-02",
           "updated": "2020-11-04",
-          "category": "r",
+          "category": "r-basics",
           "empty": false,
           "href": "/biostatistics/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/",
-          "originalHref": "/biostatistics/archive/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/"
+          "originalHref": "/biostatistics/archive/2020/11/02/R%E5%90%91%E9%87%8F%E4%B8%8B%E6%A0%87%E5%92%8C%E5%AD%90%E9%9B%86/",
+          "tags": [
+            "R"
+          ],
+          "summary": "练习正负下标、逻辑筛选、元素名与集合运算，掌握从向量中取值、修改和提取子集的方法。",
+          "series": "R 基础",
+          "order": 4
         },
         {
           "file": "2020/11/05/数据类型及性质/index.html",
           "title": "数据类型及性质",
           "date": "2020-11-05",
           "updated": "2020-11-05",
-          "category": "r",
+          "category": "r-basics",
           "empty": false,
           "href": "/biostatistics/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/",
-          "originalHref": "/biostatistics/archive/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/"
+          "originalHref": "/biostatistics/archive/2020/11/05/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%80%A7%E8%B4%A8/",
+          "tags": [
+            "R"
+          ],
+          "summary": "区分 R 的基本数据类型，练习类型转换与属性检查，认识 names、dim、attributes 和 str 等工具。",
+          "series": "R 基础",
+          "order": 5
         },
         {
           "file": "2020/11/09/R因子类型/index.html",
           "title": "R因子类型",
           "date": "2020-11-09",
           "updated": "2020-11-10",
-          "category": "r",
+          "category": "r-basics",
           "empty": false,
           "href": "/biostatistics/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/",
-          "originalHref": "/biostatistics/archive/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/"
+          "originalHref": "/biostatistics/archive/2020/11/09/R%E5%9B%A0%E5%AD%90%E7%B1%BB%E5%9E%8B/",
+          "tags": [
+            "R"
+          ],
+          "summary": "用因子表达分类变量，认识水平值与有序因子，并练习 tapply 和 forcats 的相关操作。适合处理分组数据的读者。",
+          "series": "R 基础",
+          "order": 6
         },
         {
           "file": "2020/11/11/列表/index.html",
           "title": "列表",
           "date": "2020-11-11",
           "updated": "2020-11-12",
-          "category": "r",
+          "category": "r-basics",
           "empty": false,
           "href": "/biostatistics/2020/11/11/%E5%88%97%E8%A1%A8/",
-          "originalHref": "/biostatistics/archive/2020/11/11/%E5%88%97%E8%A1%A8/"
+          "originalHref": "/biostatistics/archive/2020/11/11/%E5%88%97%E8%A1%A8/",
+          "tags": [
+            "R"
+          ],
+          "summary": "认识可容纳不同类型数据的 list，练习元素访问、类型转换与 strsplit 的返回结果，理解复杂分析结果的组织方式。",
+          "series": "R 基础",
+          "order": 7
         },
         {
           "file": "2020/11/14/矩阵和数组/index.html",
           "title": "矩阵和数组",
           "date": "2020-11-14",
           "updated": "2020-11-15",
-          "category": "r",
+          "category": "r-basics",
           "empty": false,
           "href": "/biostatistics/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/",
-          "originalHref": "/biostatistics/archive/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/"
+          "originalHref": "/biostatistics/archive/2020/11/14/%E7%9F%A9%E9%98%B5%E5%92%8C%E6%95%B0%E7%BB%84/",
+          "tags": [],
+          "summary": "从矩阵的创建与索引开始，练习行列拼接、四则运算、矩阵乘法和多维数组，理解 R 中规则形状的数据结构。",
+          "series": "R 基础",
+          "order": 8
         },
         {
           "file": "2020/11/15/数据框/index.html",
           "title": "数据框",
           "date": "2020-11-15",
           "updated": "2020-11-17",
-          "category": "r",
+          "category": "r-basics",
           "empty": false,
           "href": "/biostatistics/2020/11/15/%E6%95%B0%E6%8D%AE%E6%A1%86/",
-          "originalHref": "/biostatistics/archive/2020/11/15/%E6%95%B0%E6%8D%AE%E6%A1%86/"
+          "originalHref": "/biostatistics/archive/2020/11/15/%E6%95%B0%E6%8D%AE%E6%A1%86/",
+          "tags": [
+            "R"
+          ],
+          "summary": "认识 data.frame 与 tibble，练习访问行列、使用行名，并比较数据框与矩阵。适合开始处理结构化表格数据的读者。",
+          "series": "R 基础",
+          "order": 9
         },
         {
           "file": "2020/11/18/R输入输出/index.html",
           "title": "R输入输出",
           "date": "2020-11-18",
-          "updated": "2020-11-19",
-          "category": "r",
+          "updated": "2020-11-20",
+          "category": "r-basics",
           "empty": false,
           "href": "/biostatistics/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/",
-          "originalHref": "/biostatistics/archive/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/"
+          "originalHref": "/biostatistics/archive/2020/11/18/R%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/",
+          "tags": [],
+          "summary": "练习 print、cat、CSV 读写、文件访问与连接，理解数据如何进入 R、分析结果如何输出。",
+          "series": "R 基础",
+          "order": 10
         },
         {
           "file": "2020/11/20/ggplot2可视化入门/index.html",
           "title": "ggplot2可视化入门及作图一般原则",
           "date": "2020-11-20",
           "updated": "2020-11-20",
-          "category": "visual",
+          "category": "plots",
           "empty": false,
           "href": "/biostatistics/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/",
-          "originalHref": "/biostatistics/archive/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/"
+          "originalHref": "/biostatistics/archive/2020/11/20/ggplot2%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%A5%E9%97%A8/",
+          "tags": [
+            "数据可视化"
+          ],
+          "summary": "认识 ggplot2 的图形语法与基本作图步骤，理解数据、图形类型和视觉映射之间的关系。适合作为绘图学习的起点。",
+          "series": "科研绘图",
+          "order": 2
         },
         {
           "file": "2020/11/20/ggplot2散点图/index.html",
           "title": "ggplot2散点图",
           "date": "2020-11-20",
           "updated": "2020-11-22",
-          "category": "visual",
+          "category": "plots",
           "empty": false,
           "href": "/biostatistics/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/",
-          "originalHref": "/biostatistics/archive/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/"
+          "originalHref": "/biostatistics/archive/2020/11/20/ggplot2%E6%95%A3%E7%82%B9%E5%9B%BE/",
+          "tags": [],
+          "summary": "以 gapminder 数据为例，从基本散点图逐步调整颜色、符号和变量映射，并保存图像。适合用具体案例练习 ggplot2。",
+          "series": "科研绘图",
+          "order": 1
         },
         {
           "file": "2020/11/22/RNAseq-1-conda安装/index.html",
           "title": "RNAseq_1_conda安装",
           "date": "2020-11-22",
           "updated": "2020-11-30",
-          "category": "omics",
+          "category": "rnaseq",
           "empty": false,
           "href": "/biostatistics/2020/11/22/RNAseq-1-conda%E5%AE%89%E8%A3%85/",
-          "originalHref": "/biostatistics/archive/2020/11/22/RNAseq-1-conda%E5%AE%89%E8%A3%85/"
+          "originalHref": "/biostatistics/archive/2020/11/22/RNAseq-1-conda%E5%AE%89%E8%A3%85/",
+          "tags": [
+            "RNAseq"
+          ],
+          "summary": "认识 Conda 的包与环境管理用途，记录 Miniconda 的安装、激活和生物信息软件安装命令。适合搭建分析环境的初学者。",
+          "series": "RNA-seq 入门",
+          "order": 1
         },
         {
           "file": "2020/11/22/RNAseq-2-原始测序数据处理/index.html",
           "title": "RNAseq_2_原始测序数据处理",
           "date": "2020-11-22",
           "updated": "2020-11-30",
-          "category": "omics",
+          "category": "rnaseq",
           "empty": false,
           "href": "/biostatistics/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/",
-          "originalHref": "/biostatistics/archive/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"
+          "originalHref": "/biostatistics/archive/2020/11/22/RNAseq-2-%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/",
+          "tags": [],
+          "summary": "认识 FASTQ 文件与双端测序数据，记录压缩文件处理及 Trimmomatic 质控用法，为后续比对做准备。",
+          "series": "RNA-seq 入门",
+          "order": 2
         },
         {
           "file": "2020/11/23/RNAseq-3-测序数据质控/index.html",
           "title": "RNAseq_3_测序数据质控",
           "date": "2020-11-23",
           "updated": "2020-11-30",
-          "category": "omics",
+          "category": "rnaseq",
           "empty": false,
           "href": "/biostatistics/2020/11/23/RNAseq-3-%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%8E%A7/",
-          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-3-%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%8E%A7/"
+          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-3-%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%8E%A7/",
+          "tags": [
+            "RNAseq"
+          ],
+          "summary": "记录 FastQC 的使用与质量报告读取，帮助初学者认识 FASTQ 测序数据的质控输出。",
+          "series": "RNA-seq 入门",
+          "order": 3
         },
         {
           "file": "2020/11/23/RNAseq-4-序列比对以及samtools格式转换/index.html",
           "title": "RNAseq_4_序列比对以及samtools格式转换",
           "date": "2020-11-23",
-          "updated": "2020-12-09",
-          "category": "omics",
+          "updated": "2020-12-10",
+          "category": "rnaseq",
           "empty": false,
           "href": "/biostatistics/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/",
-          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/"
+          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-4-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E4%BB%A5%E5%8F%8Asamtools%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/",
+          "tags": [
+            "RNAseq"
+          ],
+          "summary": "理解 RNA-seq 比对的目的，记录 HISAT2 索引、比对结果及 samtools 格式转换操作。适合处理已完成质控的测序数据。",
+          "series": "RNA-seq 入门",
+          "order": 4
         },
         {
           "file": "2020/11/23/RNAseq-5-count与基因注释/index.html",
           "title": "RNAseq_5_count与基因注释",
           "date": "2020-11-23",
           "updated": "2020-11-30",
-          "category": "omics",
+          "category": "rnaseq",
           "empty": false,
           "href": "/biostatistics/2020/11/23/RNAseq-5-count%E4%B8%8E%E5%9F%BA%E5%9B%A0%E6%B3%A8%E9%87%8A/",
-          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-5-count%E4%B8%8E%E5%9F%BA%E5%9B%A0%E6%B3%A8%E9%87%8A/"
+          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-5-count%E4%B8%8E%E5%9F%BA%E5%9B%A0%E6%B3%A8%E9%87%8A/",
+          "tags": [
+            "RNAseq"
+          ],
+          "summary": "从基因、转录本等定量层次出发，记录计数结果的输出、表达矩阵合并与基因注释。适合衔接序列比对和下游分析。",
+          "series": "RNA-seq 入门",
+          "order": 5
         },
         {
           "file": "2020/11/23/RNAseq-6-无重复差异基因分析/index.html",
           "title": "RNAseq_6_无重复差异基因分析",
           "date": "2020-11-23",
-          "updated": "2020-11-30",
-          "category": "omics",
+          "updated": "2020-12-01",
+          "category": "rnaseq",
           "empty": false,
           "href": "/biostatistics/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/",
-          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/"
+          "originalHref": "/biostatistics/archive/2020/11/23/RNAseq-6-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%B7%AE%E5%BC%82%E5%9F%BA%E5%9B%A0%E5%88%86%E6%9E%90/",
+          "tags": [
+            "RNAseq"
+          ],
+          "summary": "记录无重复样本情境下的 edgeR 操作练习，涵盖计数矩阵、DGEList 对象与差异表达分析步骤。",
+          "series": "RNA-seq 入门",
+          "order": 6
         },
         {
           "file": "2020/12/01/数据整理与tidyverse系统(一)/index.html",
           "title": "数据整理与tidyverse系统(一)",
           "date": "2020-12-01",
           "updated": "2020-12-12",
-          "category": "visual",
+          "category": "data",
           "empty": false,
           "href": "/biostatistics/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/",
-          "originalHref": "/biostatistics/archive/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/"
+          "originalHref": "/biostatistics/archive/2020/12/01/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F(%E4%B8%80)/",
+          "tags": [],
+          "summary": "认识整洁数据与 tibble，练习筛选行列、抽样、去重、处理缺失值和排序。适合开始用 R 整理表格数据的读者。",
+          "series": "数据整理",
+          "order": 1
         },
         {
           "file": "2020/12/05/GEO数据库的使用及数据分析/index.html",
           "title": "GEO数据库的使用及数据分析(练习)",
           "date": "2020-12-05",
           "updated": "2020-12-10",
-          "category": "omics",
+          "category": "database",
           "empty": false,
           "href": "/biostatistics/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/",
-          "originalHref": "/biostatistics/archive/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"
+          "originalHref": "/biostatistics/archive/2020/12/05/GEO%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/",
+          "tags": [
+            "GEO Database"
+          ],
+          "summary": "以 GSE61763 为例，记录 GEO 数据获取、表达矩阵整理、注释及差异分析，并绘制热图与火山图。适合跟随案例熟悉分析流程。",
+          "series": "",
+          "order": 1
         },
         {
           "file": "2020/12/22/数据整理与tidyverse系统（二）/index.html",
           "title": "数据整理与tidyverse系统（二）",
           "date": "2020-12-22",
           "updated": "2020-12-30",
-          "category": "visual",
+          "category": "data",
           "empty": false,
           "href": "/biostatistics/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/",
-          "originalHref": "/biostatistics/archive/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/"
+          "originalHref": "/biostatistics/archive/2020/12/22/%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86%E4%B8%8Etidyverse%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%BA%8C%EF%BC%89/",
+          "tags": [
+            "R"
+          ],
+          "summary": "练习重命名与生成变量、管道操作、拆分列和数据框合并，把多步数据整理连接起来。适合已了解行列筛选的读者。",
+          "series": "数据整理",
+          "order": 2
         },
         {
           "file": "2021/10/29/ggplot2/index.html",
           "title": "ggplot2科研绘图",
           "date": "2021-10-29",
           "updated": "2021-10-31",
-          "category": "visual",
+          "category": "plots",
           "empty": false,
           "href": "/biostatistics/2021/10/29/ggplot2/",
-          "originalHref": "/biostatistics/archive/2021/10/29/ggplot2/"
-        },
-        {
-          "file": "2021/10/30/STAR序列比对分析/index.html",
-          "title": "STAR序列比对分析",
-          "date": "2021-10-30",
-          "updated": "2021-10-30",
-          "category": "omics",
-          "empty": true,
-          "href": "/biostatistics/2021/10/30/STAR%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E5%88%86%E6%9E%90/",
-          "originalHref": "/biostatistics/archive/2021/10/30/STAR%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E5%88%86%E6%9E%90/"
+          "originalHref": "/biostatistics/archive/2021/10/29/ggplot2/",
+          "tags": [
+            "ggplot2"
+          ],
+          "summary": "从数据映射和几何对象出发，梳理 ggplot2 的图层、标尺、分面与主题。适合希望系统理解科研绘图结构的 R 学习者。",
+          "series": "科研绘图",
+          "order": 3
         }
       ],
       "presentation": "原版 Hexo 5.2.0 / NexT Gemini 8.0.0"
@@ -258,5 +370,6 @@
       "url": "/scripts/",
       "items": []
     }
-  ]
+  ],
+  "homeContent": "/portal-assets/content.json"
 }

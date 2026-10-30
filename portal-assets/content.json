@@ -1,0 +1,306 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-30T00:40:13.776Z",
+  "counts": {
+    "topics": 22,
+    "versions": 29,
+    "books": 3,
+    "publicNotes": 22
+  },
+  "books": [
+    {
+      "title": "必修 1 · 分子与细胞",
+      "topics": 17,
+      "versions": 23
+    },
+    {
+      "title": "必修 2 · 遗传与进化",
+      "topics": 4,
+      "versions": 5
+    },
+    {
+      "title": "选择性必修 2 · 生物与环境",
+      "topics": 1,
+      "versions": 1
+    }
+  ],
+  "featured": [
+    {
+      "id": "replication",
+      "title": "DNA 的复制",
+      "href": "/Biocourse/courses/replication/original/",
+      "route": "courses/replication/original/",
+      "summary": "从三种假说到半保留复制的实验依据。",
+      "features": [
+        "保守、半保留和分散复制的预测",
+        "不同代数密度分布比较",
+        "模板配对、复制条件与局部过程演示"
+      ],
+      "approach": "先预测实验差异，再配对新链，把模型推理与结构机制联系起来。",
+      "curriculum": {
+        "publisher": "人民教育出版社",
+        "book": "必修 2 · 遗传与进化",
+        "chapter": 3,
+        "chapterTitle": "基因的本质",
+        "sections": [
+          {
+            "number": 3,
+            "title": "DNA的复制"
+          }
+        ],
+        "integrated": false,
+        "label": "第3章 · 第3节"
+      },
+      "version": {
+        "id": "original",
+        "label": "1.0",
+        "edition": "原版",
+        "published": "2026-10-28",
+        "platformUpdated": "2026-10-28",
+        "dateNote": "本站首次公开日期；不等同于课件创作日期"
+      },
+      "source": {
+        "sourceId": "course-catalog",
+        "topicId": "replication",
+        "versionId": "original"
+      }
+    },
+    {
+      "id": "enzyme",
+      "title": "降低活化能的酶",
+      "href": "/Biocourse/courses/enzyme/original/",
+      "route": "courses/enzyme/original/",
+      "summary": "通过对照实验与能量路径理解酶的催化作用。",
+      "features": [
+        "不同条件反应速率比较与活化能路径",
+        "酶和底物结合的逐步演示",
+        "温度、pH 测点记录及复温情境"
+      ],
+      "approach": "从实验现象提出解释，再改变一个条件建立有依据的判断。",
+      "curriculum": {
+        "publisher": "人民教育出版社",
+        "book": "必修 1 · 分子与细胞",
+        "chapter": 5,
+        "chapterTitle": "细胞的能量供应和利用",
+        "sections": [
+          {
+            "number": 1,
+            "title": "降低化学反应活化能的酶"
+          }
+        ],
+        "integrated": false,
+        "label": "第5章 · 第1节"
+      },
+      "version": {
+        "id": "original",
+        "label": "1.0",
+        "edition": "原版",
+        "published": "2026-10-28",
+        "platformUpdated": "2026-10-28",
+        "dateNote": "本站首次公开日期；不等同于课件创作日期"
+      },
+      "source": {
+        "sourceId": "course-catalog",
+        "topicId": "enzyme",
+        "versionId": "original"
+      }
+    },
+    {
+      "id": "respiration",
+      "title": "细胞呼吸",
+      "href": "/Biocourse/courses/respiration/original/",
+      "route": "courses/respiration/original/",
+      "summary": "追踪物质与能量，比较有氧和无氧途径。",
+      "features": [
+        "有氧呼吸与无氧途径的过程观察",
+        "通过情境比较物质去向与能量变化",
+        "课堂问题、诊断练习与科学资料说明"
+      ],
+      "approach": "沿碳的去向组织过程，再比较氧条件下的差异。",
+      "curriculum": {
+        "publisher": "人民教育出版社",
+        "book": "必修 1 · 分子与细胞",
+        "chapter": 5,
+        "chapterTitle": "细胞的能量供应和利用",
+        "sections": [
+          {
+            "number": 3,
+            "title": "细胞呼吸的原理和应用"
+          }
+        ],
+        "integrated": false,
+        "label": "第5章 · 第3节"
+      },
+      "version": {
+        "id": "original",
+        "label": "1.0",
+        "edition": "原版",
+        "published": "2026-10-28",
+        "platformUpdated": "2026-10-28",
+        "dateNote": "本站首次公开日期；不等同于课件创作日期"
+      },
+      "source": {
+        "sourceId": "course-catalog",
+        "topicId": "respiration",
+        "versionId": "original"
+      }
+    }
+  ],
+  "updates": [
+    {
+      "id": "portal-2.0",
+      "date": "2026-10-30",
+      "type": "website",
+      "label": "网站更新",
+      "title": "门户 v2.0：从互动课件开始",
+      "summary": "现在可以先看真实课堂画面，直接打开示例课件，也能更快找到所需章节。",
+      "href": "/#featured",
+      "dateNote": "门户网站改版日期；不表示课件内容在此日更新。",
+      "source": {
+        "kind": "release",
+        "sourceId": "portal-release",
+        "version": "2.0"
+      }
+    },
+    {
+      "id": "course-platform-c6ec546",
+      "date": "2026-10-28",
+      "type": "platform",
+      "label": "课件平台更新",
+      "title": "课件平台：统一列表与教材标签筛选",
+      "summary": "你可以在同一个列表里浏览课件，用教材、章节和小节标签缩小范围，也可以直接搜索关键词。",
+      "href": "/Biocourse/#courses",
+      "dateNote": "日期来自课件平台 Git 提交；不作为课堂内容新版本日期。",
+      "source": {
+        "kind": "git",
+        "sourceId": "course-platform-history",
+        "revision": "c6ec546a013c14aa6b25d2cfdb31d4302afb2f48",
+        "subject": "Replace expanded textbook groups with compact catalog and sticky tag filters"
+      }
+    },
+    {
+      "id": "course-first-publication-2026-10-28",
+      "date": "2026-10-28",
+      "type": "publication",
+      "label": "课件首次公开",
+      "title": "16 个课件版本首次公开",
+      "summary": "你可以在线打开DNA 的复制、降低活化能的酶、细胞呼吸等课件。日期为本站首次公开时间。",
+      "href": "/Biocourse/#courses",
+      "dateNote": "依据 catalog.json 的 published 与 dateNote；导入方案和历史归档不计入首次公开。",
+      "source": {
+        "kind": "catalog",
+        "sourceId": "course-catalog",
+        "field": "versions[].published",
+        "versions": [
+          {
+            "topicId": "cell-stem",
+            "versionId": "original"
+          },
+          {
+            "topicId": "textbook-atlas",
+            "versionId": "original"
+          },
+          {
+            "topicId": "secretion",
+            "versionId": "original"
+          },
+          {
+            "topicId": "active",
+            "versionId": "original"
+          },
+          {
+            "topicId": "enzyme",
+            "versionId": "original"
+          },
+          {
+            "topicId": "atp",
+            "versionId": "original"
+          },
+          {
+            "topicId": "respiration",
+            "versionId": "original"
+          },
+          {
+            "topicId": "photosynthesis",
+            "versionId": "original"
+          },
+          {
+            "topicId": "division",
+            "versionId": "original"
+          },
+          {
+            "topicId": "differentiation",
+            "versionId": "original"
+          },
+          {
+            "topicId": "aging",
+            "versionId": "original"
+          },
+          {
+            "topicId": "mendel",
+            "versionId": "original"
+          },
+          {
+            "topicId": "chromosome",
+            "versionId": "original"
+          },
+          {
+            "topicId": "dna-evidence",
+            "versionId": "original"
+          },
+          {
+            "topicId": "replication",
+            "versionId": "original"
+          },
+          {
+            "topicId": "population",
+            "versionId": "original"
+          }
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "course-catalog",
+      "repository": "kevinQIAN1996/Biocourse",
+      "path": "catalog.json",
+      "revision": "af791c3429f8c4d3b4f0db70d170188ac4724ffb",
+      "sha256": "48ee851fc04a9ed650a4b317b52cb8dbca0e14bc7263b54fb7f982b89f7e7b90"
+    },
+    {
+      "id": "course-files",
+      "repository": "kevinQIAN1996/Biocourse",
+      "path": "courses.json",
+      "sha256": "f9d2893671a451603bfcd84aea6f40eec3d7761aab34797c4e4c9d621dd768a1",
+      "role": "与 catalog.json 核对版本文件清单"
+    },
+    {
+      "id": "blog-public-posts",
+      "repository": "kevinQIAN1996/kevinQIAN1996.github.io",
+      "path": "biostatistics/blog-config.json",
+      "revision": "49431131e6a3492eb7a1a4955cee1af17966b10b",
+      "sha256": "784254eb4ad3cb43eb80f4576c8a2f1e99eecb316f4cf33427e0eaa4dc558d0d",
+      "role": "仅统计 posts 中存在公开页面的条目；排除隐藏、草稿与 deletedPosts",
+      "excludedDeletedPosts": 1
+    },
+    {
+      "id": "course-platform-history",
+      "repository": "kevinQIAN1996/Biocourse",
+      "paths": [
+        "catalog.json",
+        "curriculum.json",
+        "assets/app.js"
+      ],
+      "role": "读取最近一次课件目录或平台界面的 Git 提交；不使用本地文件修改时间"
+    },
+    {
+      "id": "portal-release",
+      "repository": "kevinQIAN1996/kevinQIAN1996.github.io",
+      "path": "index.html",
+      "version": "2.0",
+      "date": "2026-10-30",
+      "role": "门户改版记录，由构建脚本中的发布说明声明"
+    }
+  ]
+}
