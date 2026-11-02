@@ -1,22 +1,27 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-01T14:12:12.230Z",
+  "generatedAt": "2026-11-02T12:22:04.092Z",
   "counts": {
-    "topics": 35,
-    "versions": 49,
-    "books": 3,
+    "topics": 38,
+    "versions": 56,
+    "books": 4,
     "publicNotes": 22
   },
   "books": [
     {
       "title": "必修 1 · 分子与细胞",
       "topics": 20,
-      "versions": 25
+      "versions": 28
     },
     {
       "title": "必修 2 · 遗传与进化",
       "topics": 14,
       "versions": 23
+    },
+    {
+      "title": "选择性必修 1 · 稳态与调节",
+      "topics": 3,
+      "versions": 4
     },
     {
       "title": "选择性必修 2 · 生物与环境",
@@ -56,27 +61,28 @@
         "label": "1.0",
         "edition": "原版",
         "published": "2026-10-28",
-        "platformUpdated": "2026-10-28",
+        "platformUpdated": "2026-11-02",
         "dateNote": "本站首次公开日期；不等同于课件创作日期"
       },
       "source": {
         "sourceId": "course-catalog",
         "topicId": "replication",
         "versionId": "original"
-      }
+      },
+      "design": "先预测三种复制模型的结果，再用条带与配对检验解释。"
     },
     {
       "id": "enzyme",
       "title": "降低活化能的酶",
-      "href": "/Biocourse/courses/enzyme/original/",
-      "route": "courses/enzyme/original/",
-      "summary": "通过对照实验与能量路径理解酶的催化作用。",
+      "href": "/Biocourse/courses/enzyme/workbuddy/",
+      "route": "courses/enzyme/workbuddy/",
+      "summary": "用四管实验与闯关比喻解释活化能降低。",
       "features": [
-        "不同条件反应速率比较与活化能路径",
-        "酶和底物结合的逐步演示",
-        "温度、pH 测点记录及复温情境"
+        "过氧化氢四管实验和检测记录",
+        "无催化、Fe³⁺、酶的能量路径比较",
+        "酶本质的科学史档案与练习"
       ],
-      "approach": "从实验现象提出解释，再改变一个条件建立有依据的判断。",
+      "approach": "先做条件对照，再用能量曲线解释催化，最后讨论酶的本质。",
       "curriculum": {
         "publisher": "人民教育出版社",
         "book": "必修 1 · 分子与细胞",
@@ -92,31 +98,32 @@
         "label": "第5章 · 第1节"
       },
       "version": {
-        "id": "original",
-        "label": "1.0",
-        "edition": "原版",
+        "id": "workbuddy",
+        "label": "2.0",
+        "edition": "WorkBuddy 版",
         "published": "2026-10-28",
-        "platformUpdated": "2026-10-28",
-        "dateNote": "本站首次公开日期；不等同于课件创作日期"
+        "platformUpdated": "2026-11-02",
+        "dateNote": "本站导入日期；编号用于区分讲授方案，不代表全面替代原版"
       },
       "source": {
         "sourceId": "course-catalog",
         "topicId": "enzyme",
-        "versionId": "original"
-      }
+        "versionId": "workbuddy"
+      },
+      "design": "并排对照实验与能量路径，把反应快慢和催化原因对应起来。"
     },
     {
       "id": "respiration",
       "title": "细胞呼吸",
-      "href": "/Biocourse/courses/respiration/original/",
-      "route": "courses/respiration/original/",
-      "summary": "追踪物质与能量，比较有氧和无氧途径。",
+      "href": "/Biocourse/courses/respiration/workbuddy/",
+      "route": "courses/respiration/workbuddy/",
+      "summary": "从酵母菌实验到呼吸途径，再走向生活应用。",
       "features": [
-        "有氧呼吸与无氧途径的过程观察",
-        "通过情境比较物质去向与能量变化",
-        "课堂问题、诊断练习与科学资料说明"
+        "酵母菌实验中 CO₂ 和酒精检测",
+        "有氧呼吸三阶段与两类无氧途径",
+        "氧浓度曲线、生活应用与练习"
       ],
-      "approach": "沿碳的去向组织过程，再比较氧条件下的差异。",
+      "approach": "先根据检测结果判断呼吸方式，再分区追踪过程并迁移到应用。",
       "curriculum": {
         "publisher": "人民教育出版社",
         "book": "必修 1 · 分子与细胞",
@@ -132,18 +139,19 @@
         "label": "第5章 · 第3节"
       },
       "version": {
-        "id": "original",
-        "label": "1.0",
-        "edition": "原版",
+        "id": "workbuddy",
+        "label": "2.0",
+        "edition": "WorkBuddy 版",
         "published": "2026-10-28",
-        "platformUpdated": "2026-10-28",
-        "dateNote": "本站首次公开日期；不等同于课件创作日期"
+        "platformUpdated": "2026-11-02",
+        "dateNote": "本站导入日期；编号用于区分讲授方案，不代表全面替代原版"
       },
       "source": {
         "sourceId": "course-catalog",
         "topicId": "respiration",
-        "versionId": "original"
-      }
+        "versionId": "workbuddy"
+      },
+      "design": "用碳与能量的去向追踪反应，再对照有氧和无氧途径。"
     }
   ],
   "updates": [
