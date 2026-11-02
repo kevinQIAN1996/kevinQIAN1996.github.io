@@ -28,7 +28,7 @@
     {
       "id": "replication",
       "title": "DNA 的复制",
-      "href": "https://linmoran-biocourse.bioqwj.chatgpt.site/courses/replication/original/",
+      "href": "/Biocourse/courses/replication/original/",
       "route": "courses/replication/original/",
       "summary": "从三种假说到半保留复制的实验依据。",
       "features": [
@@ -68,7 +68,7 @@
     {
       "id": "enzyme",
       "title": "降低活化能的酶",
-      "href": "https://linmoran-biocourse.bioqwj.chatgpt.site/courses/enzyme/original/",
+      "href": "/Biocourse/courses/enzyme/original/",
       "route": "courses/enzyme/original/",
       "summary": "通过对照实验与能量路径理解酶的催化作用。",
       "features": [
@@ -108,7 +108,7 @@
     {
       "id": "respiration",
       "title": "细胞呼吸",
-      "href": "https://linmoran-biocourse.bioqwj.chatgpt.site/courses/respiration/original/",
+      "href": "/Biocourse/courses/respiration/original/",
       "route": "courses/respiration/original/",
       "summary": "追踪物质与能量，比较有氧和无氧途径。",
       "features": [
@@ -169,7 +169,7 @@
       "label": "课件平台更新",
       "title": "课件平台：统一列表与教材标签筛选",
       "summary": "你可以在同一个列表里浏览课件，用教材、章节和小节标签缩小范围，也可以直接搜索关键词。",
-      "href": "https://linmoran-biocourse.bioqwj.chatgpt.site/#courses",
+      "href": "/Biocourse/#courses",
       "dateNote": "日期来自课件平台 Git 提交；不作为课堂内容新版本日期。",
       "source": {
         "kind": "git",
@@ -185,7 +185,7 @@
       "label": "课件首次公开",
       "title": "16 个课件版本首次公开",
       "summary": "你可以在线打开DNA 的复制、降低活化能的酶、细胞呼吸等课件。日期为本站首次公开时间。",
-      "href": "https://linmoran-biocourse.bioqwj.chatgpt.site/#courses",
+      "href": "/Biocourse/#courses",
       "dateNote": "依据 catalog.json 的 published 与 dateNote；导入方案和历史归档不计入首次公开。",
       "source": {
         "kind": "catalog",
