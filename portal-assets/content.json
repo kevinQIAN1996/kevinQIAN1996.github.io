@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-02T12:22:04.092Z",
+  "generatedAt": "2026-11-03T07:41:21.666Z",
   "counts": {
-    "topics": 38,
-    "versions": 56,
+    "topics": 41,
+    "versions": 59,
     "books": 4,
     "publicNotes": 22
   },
@@ -20,8 +20,8 @@
     },
     {
       "title": "选择性必修 1 · 稳态与调节",
-      "topics": 3,
-      "versions": 4
+      "topics": 6,
+      "versions": 7
     },
     {
       "title": "选择性必修 2 · 生物与环境",
@@ -155,6 +155,34 @@
     }
   ],
   "updates": [
+    {
+      "id": "biocourse-4.7",
+      "date": "2026-11-03",
+      "type": "publication",
+      "label": "课件更新",
+      "title": "神经调节新增3课：电生理、分级调节与人脑高级功能",
+      "summary": "通过离子流、损伤回路、言语与记忆对照探索神经调节；新课件包含高对比度图示、分步操作和姓名奖状。",
+      "href": "/Biocourse/?release=4.7#courses",
+      "dateNote": "新增3个课堂专题的本站首次公开日期，不等同于全部课程更新日期。",
+      "source": {
+        "kind": "catalog",
+        "sourceId": "course-catalog",
+        "versions": [
+          {
+            "topicId": "neural-impulse",
+            "versionId": "electrophysiology-v1"
+          },
+          {
+            "topicId": "neural-hierarchy",
+            "versionId": "hierarchical-control-v1"
+          },
+          {
+            "topicId": "higher-brain",
+            "versionId": "cognition-v1"
+          }
+        ]
+      }
+    },
     {
       "id": "portal-2.0",
       "date": "2026-10-30",
