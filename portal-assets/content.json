@@ -153,19 +153,19 @@
   ],
   "updates": [
     {
-      "id": "course-platform-0f17d4d",
+      "id": "course-platform-d9f9469",
       "date": "2026-11-04",
       "type": "platform",
       "label": "课件平台更新",
       "title": "课件平台更新",
-      "summary": "课件目录或平台页面已更新：Improve secretion animation with ribosome targeting and Golgi processing",
+      "summary": "课件目录或平台页面已更新：Align release checksum with normalized HTML payload",
       "href": "/Biocourse/#courses",
       "dateNote": "日期来自课件平台 Git 提交；不作为课堂内容新版本日期。",
       "source": {
         "kind": "git",
         "sourceId": "course-platform-history",
-        "revision": "0f17d4d42e9930e986620d514efc441e8fa137ca",
-        "subject": "Improve secretion animation with ribosome targeting and Golgi processing"
+        "revision": "d9f946937ec3c825e8abce52320ab0a34e15d690",
+        "subject": "Align release checksum with normalized HTML payload"
       }
     },
     {
@@ -230,8 +230,8 @@
       "id": "course-catalog",
       "repository": "kevinQIAN1996/Biocourse",
       "path": "catalog.json",
-      "revision": "0f17d4d42e9930e986620d514efc441e8fa137ca",
-      "sha256": "6070e5664ed7fa49f18d870cf8f5274b2aa23f7bb2c916ef902a5732b555ea8f"
+      "revision": "d9f946937ec3c825e8abce52320ab0a34e15d690",
+      "sha256": "e9599ba5bbaa8167f8d08b22d7200edf4b6607203050711610dab5dffb685671"
     },
     {
       "id": "course-files",
@@ -244,7 +244,7 @@
       "id": "blog-public-posts",
       "repository": "kevinQIAN1996/kevinQIAN1996.github.io",
       "path": "biostatistics/blog-config.json",
-      "revision": "0cda422cd57d6384a91fd5b3d39a7b0ab0adfe33",
+      "revision": "50a4ee4ef28a1f5531a2bd030370383adbffd2a6",
       "sha256": "0aed07decde5c6aa91a9d426ee8752feb768c3fdf6b3bac12ab36503900f704f",
       "role": "仅统计 posts 中存在公开页面的条目；排除隐藏、草稿与 deletedPosts",
       "excludedDeletedPosts": 1
