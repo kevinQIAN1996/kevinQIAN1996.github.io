@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-03T07:41:21.666Z",
+  "generatedAt": "2026-11-04T00:00:00.000Z",
   "counts": {
-    "topics": 41,
-    "versions": 59,
+    "topics": 45,
+    "versions": 67,
     "books": 4,
     "publicNotes": 22
   },
@@ -11,7 +11,7 @@
     {
       "title": "必修 1 · 分子与细胞",
       "topics": 20,
-      "versions": 28
+      "versions": 29
     },
     {
       "title": "必修 2 · 遗传与进化",
@@ -20,8 +20,8 @@
     },
     {
       "title": "选择性必修 1 · 稳态与调节",
-      "topics": 6,
-      "versions": 7
+      "topics": 10,
+      "versions": 14
     },
     {
       "title": "选择性必修 2 · 生物与环境",
@@ -61,28 +61,27 @@
         "label": "1.0",
         "edition": "原版",
         "published": "2026-10-28",
-        "platformUpdated": "2026-11-02",
+        "platformUpdated": "2026-11-04",
         "dateNote": "本站首次公开日期；不等同于课件创作日期"
       },
       "source": {
         "sourceId": "course-catalog",
         "topicId": "replication",
         "versionId": "original"
-      },
-      "design": "先预测三种复制模型的结果，再用条带与配对检验解释。"
+      }
     },
     {
       "id": "enzyme",
       "title": "降低活化能的酶",
-      "href": "/Biocourse/courses/enzyme/workbuddy/",
-      "route": "courses/enzyme/workbuddy/",
-      "summary": "用四管实验与闯关比喻解释活化能降低。",
+      "href": "/Biocourse/courses/enzyme/original/",
+      "route": "courses/enzyme/original/",
+      "summary": "通过对照实验与能量路径理解酶的催化作用。",
       "features": [
-        "过氧化氢四管实验和检测记录",
-        "无催化、Fe³⁺、酶的能量路径比较",
-        "酶本质的科学史档案与练习"
+        "不同条件反应速率比较与活化能路径",
+        "酶和底物结合的逐步演示",
+        "温度、pH 测点记录及复温情境"
       ],
-      "approach": "先做条件对照，再用能量曲线解释催化，最后讨论酶的本质。",
+      "approach": "从实验现象提出解释，再改变一个条件建立有依据的判断。",
       "curriculum": {
         "publisher": "人民教育出版社",
         "book": "必修 1 · 分子与细胞",
@@ -98,32 +97,31 @@
         "label": "第5章 · 第1节"
       },
       "version": {
-        "id": "workbuddy",
-        "label": "2.0",
-        "edition": "WorkBuddy 版",
+        "id": "original",
+        "label": "1.0",
+        "edition": "原版",
         "published": "2026-10-28",
-        "platformUpdated": "2026-11-02",
-        "dateNote": "本站导入日期；编号用于区分讲授方案，不代表全面替代原版"
+        "platformUpdated": "2026-11-04",
+        "dateNote": "本站首次公开日期；不等同于课件创作日期"
       },
       "source": {
         "sourceId": "course-catalog",
         "topicId": "enzyme",
-        "versionId": "workbuddy"
-      },
-      "design": "并排对照实验与能量路径，把反应快慢和催化原因对应起来。"
+        "versionId": "original"
+      }
     },
     {
       "id": "respiration",
       "title": "细胞呼吸",
-      "href": "/Biocourse/courses/respiration/workbuddy/",
-      "route": "courses/respiration/workbuddy/",
-      "summary": "从酵母菌实验到呼吸途径，再走向生活应用。",
+      "href": "/Biocourse/courses/respiration/original/",
+      "route": "courses/respiration/original/",
+      "summary": "追踪物质与能量，比较有氧和无氧途径。",
       "features": [
-        "酵母菌实验中 CO₂ 和酒精检测",
-        "有氧呼吸三阶段与两类无氧途径",
-        "氧浓度曲线、生活应用与练习"
+        "有氧呼吸与无氧途径的过程观察",
+        "通过情境比较物质去向与能量变化",
+        "课堂问题、诊断练习与科学资料说明"
       ],
-      "approach": "先根据检测结果判断呼吸方式，再分区追踪过程并迁移到应用。",
+      "approach": "沿碳的去向组织过程，再比较氧条件下的差异。",
       "curriculum": {
         "publisher": "人民教育出版社",
         "book": "必修 1 · 分子与细胞",
@@ -139,46 +137,70 @@
         "label": "第5章 · 第3节"
       },
       "version": {
-        "id": "workbuddy",
-        "label": "2.0",
-        "edition": "WorkBuddy 版",
+        "id": "original",
+        "label": "1.0",
+        "edition": "原版",
         "published": "2026-10-28",
-        "platformUpdated": "2026-11-02",
-        "dateNote": "本站导入日期；编号用于区分讲授方案，不代表全面替代原版"
+        "platformUpdated": "2026-11-04",
+        "dateNote": "本站首次公开日期；不等同于课件创作日期"
       },
       "source": {
         "sourceId": "course-catalog",
         "topicId": "respiration",
-        "versionId": "workbuddy"
-      },
-      "design": "用碳与能量的去向追踪反应，再对照有氧和无氧途径。"
+        "versionId": "original"
+      }
     }
   ],
   "updates": [
     {
-      "id": "biocourse-4.7",
-      "date": "2026-11-03",
+      "id": "course-platform-2727dcb",
+      "date": "2026-11-04",
+      "type": "platform",
+      "label": "课件平台更新",
+      "title": "课件平台更新",
+      "summary": "课件目录或平台页面已更新：Publish eight new lesson editions with previews and version histories",
+      "href": "/Biocourse/#courses",
+      "dateNote": "日期来自课件平台 Git 提交；不作为课堂内容新版本日期。",
+      "source": {
+        "kind": "git",
+        "sourceId": "course-platform-history",
+        "revision": "2727dcb345c765131b097c52e1ae269afef75a16",
+        "subject": "Publish eight new lesson editions with previews and version histories"
+      }
+    },
+    {
+      "id": "course-first-publication-2026-11-04",
+      "date": "2026-11-04",
       "type": "publication",
-      "label": "课件更新",
-      "title": "神经调节新增3课：电生理、分级调节与人脑高级功能",
-      "summary": "通过离子流、损伤回路、言语与记忆对照探索神经调节；新课件包含高对比度图示、分步操作和姓名奖状。",
-      "href": "/Biocourse/?release=4.7#courses",
-      "dateNote": "新增3个课堂专题的本站首次公开日期，不等同于全部课程更新日期。",
+      "label": "课件首次公开",
+      "title": "5 个课件版本首次公开",
+      "summary": "你可以在线打开细胞核的结构和功能、激素与内分泌系统、激素与内分泌系统等课件。日期为本站首次公开时间。",
+      "href": "/Biocourse/#courses",
+      "dateNote": "依据 catalog.json 的 published 与 dateNote；导入方案和历史归档不计入首次公开。",
       "source": {
         "kind": "catalog",
         "sourceId": "course-catalog",
+        "field": "versions[].published",
         "versions": [
           {
-            "topicId": "neural-impulse",
-            "versionId": "electrophysiology-v1"
+            "topicId": "nucleus",
+            "versionId": "prometheus-v2"
           },
           {
-            "topicId": "neural-hierarchy",
-            "versionId": "hierarchical-control-v1"
+            "topicId": "endocrine-system",
+            "versionId": "legend-v2"
           },
           {
-            "topicId": "higher-brain",
-            "versionId": "cognition-v1"
+            "topicId": "endocrine-system",
+            "versionId": "legend-v1"
+          },
+          {
+            "topicId": "hormone-regulation",
+            "versionId": "regulation-v2"
+          },
+          {
+            "topicId": "hormone-regulation",
+            "versionId": "regulation-v1"
           }
         ]
       }
@@ -197,95 +219,6 @@
         "sourceId": "portal-release",
         "version": "2.0"
       }
-    },
-    {
-      "id": "course-platform-c6ec546",
-      "date": "2026-10-28",
-      "type": "platform",
-      "label": "课件平台更新",
-      "title": "课件平台：统一列表与教材标签筛选",
-      "summary": "你可以在同一个列表里浏览课件，用教材、章节和小节标签缩小范围，也可以直接搜索关键词。",
-      "href": "/Biocourse/#courses",
-      "dateNote": "日期来自课件平台 Git 提交；不作为课堂内容新版本日期。",
-      "source": {
-        "kind": "git",
-        "sourceId": "course-platform-history",
-        "revision": "c6ec546a013c14aa6b25d2cfdb31d4302afb2f48",
-        "subject": "Replace expanded textbook groups with compact catalog and sticky tag filters"
-      }
-    },
-    {
-      "id": "course-first-publication-2026-10-28",
-      "date": "2026-10-28",
-      "type": "publication",
-      "label": "课件首次公开",
-      "title": "16 个课件版本首次公开",
-      "summary": "你可以在线打开DNA 的复制、降低活化能的酶、细胞呼吸等课件。日期为本站首次公开时间。",
-      "href": "/Biocourse/#courses",
-      "dateNote": "依据 catalog.json 的 published 与 dateNote；导入方案和历史归档不计入首次公开。",
-      "source": {
-        "kind": "catalog",
-        "sourceId": "course-catalog",
-        "field": "versions[].published",
-        "versions": [
-          {
-            "topicId": "secretion",
-            "versionId": "original"
-          },
-          {
-            "topicId": "active",
-            "versionId": "original"
-          },
-          {
-            "topicId": "enzyme",
-            "versionId": "original"
-          },
-          {
-            "topicId": "atp",
-            "versionId": "original"
-          },
-          {
-            "topicId": "respiration",
-            "versionId": "original"
-          },
-          {
-            "topicId": "photosynthesis",
-            "versionId": "original"
-          },
-          {
-            "topicId": "division",
-            "versionId": "original"
-          },
-          {
-            "topicId": "differentiation",
-            "versionId": "original"
-          },
-          {
-            "topicId": "aging",
-            "versionId": "original"
-          },
-          {
-            "topicId": "mendel",
-            "versionId": "original"
-          },
-          {
-            "topicId": "chromosome",
-            "versionId": "original"
-          },
-          {
-            "topicId": "dna-evidence",
-            "versionId": "original"
-          },
-          {
-            "topicId": "replication",
-            "versionId": "original"
-          },
-          {
-            "topicId": "population",
-            "versionId": "original"
-          }
-        ]
-      }
     }
   ],
   "sources": [
@@ -293,22 +226,22 @@
       "id": "course-catalog",
       "repository": "kevinQIAN1996/Biocourse",
       "path": "catalog.json",
-      "revision": "af791c3429f8c4d3b4f0db70d170188ac4724ffb",
-      "sha256": "48ee851fc04a9ed650a4b317b52cb8dbca0e14bc7263b54fb7f982b89f7e7b90"
+      "revision": "2727dcb345c765131b097c52e1ae269afef75a16",
+      "sha256": "578ad2b4fc7c74c84c2c3cffcf4f895751679630e7fa24f6a17cb947a929cabf"
     },
     {
       "id": "course-files",
       "repository": "kevinQIAN1996/Biocourse",
       "path": "courses.json",
-      "sha256": "f9d2893671a451603bfcd84aea6f40eec3d7761aab34797c4e4c9d621dd768a1",
+      "sha256": "51d944b01430cfea2843322890011c592e6854869a5de03aad2e1fd981bcd4c8",
       "role": "与 catalog.json 核对版本文件清单"
     },
     {
       "id": "blog-public-posts",
       "repository": "kevinQIAN1996/kevinQIAN1996.github.io",
       "path": "biostatistics/blog-config.json",
-      "revision": "49431131e6a3492eb7a1a4955cee1af17966b10b",
-      "sha256": "784254eb4ad3cb43eb80f4576c8a2f1e99eecb316f4cf33427e0eaa4dc558d0d",
+      "revision": "4f6a7489590608da1a782a2e817d2809b33ac398",
+      "sha256": "0aed07decde5c6aa91a9d426ee8752feb768c3fdf6b3bac12ab36503900f704f",
       "role": "仅统计 posts 中存在公开页面的条目；排除隐藏、草稿与 deletedPosts",
       "excludedDeletedPosts": 1
     },
