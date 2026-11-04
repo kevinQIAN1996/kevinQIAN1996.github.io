@@ -3,7 +3,7 @@
   "generatedAt": "2026-11-04T00:00:00.000Z",
   "counts": {
     "topics": 45,
-    "versions": 67,
+    "versions": 68,
     "books": 4,
     "publicNotes": 22
   },
@@ -11,7 +11,7 @@
     {
       "title": "必修 1 · 分子与细胞",
       "topics": 20,
-      "versions": 29
+      "versions": 30
     },
     {
       "title": "必修 2 · 遗传与进化",
@@ -153,19 +153,19 @@
   ],
   "updates": [
     {
-      "id": "course-platform-2727dcb",
+      "id": "course-platform-0f17d4d",
       "date": "2026-11-04",
       "type": "platform",
       "label": "课件平台更新",
       "title": "课件平台更新",
-      "summary": "课件目录或平台页面已更新：Publish eight new lesson editions with previews and version histories",
+      "summary": "课件目录或平台页面已更新：Improve secretion animation with ribosome targeting and Golgi processing",
       "href": "/Biocourse/#courses",
       "dateNote": "日期来自课件平台 Git 提交；不作为课堂内容新版本日期。",
       "source": {
         "kind": "git",
         "sourceId": "course-platform-history",
-        "revision": "2727dcb345c765131b097c52e1ae269afef75a16",
-        "subject": "Publish eight new lesson editions with previews and version histories"
+        "revision": "0f17d4d42e9930e986620d514efc441e8fa137ca",
+        "subject": "Improve secretion animation with ribosome targeting and Golgi processing"
       }
     },
     {
@@ -173,8 +173,8 @@
       "date": "2026-11-04",
       "type": "publication",
       "label": "课件首次公开",
-      "title": "5 个课件版本首次公开",
-      "summary": "你可以在线打开细胞核的结构和功能、激素与内分泌系统、激素与内分泌系统等课件。日期为本站首次公开时间。",
+      "title": "6 个课件版本首次公开",
+      "summary": "你可以在线打开分泌蛋白、细胞核的结构和功能、激素与内分泌系统等课件。日期为本站首次公开时间。",
       "href": "/Biocourse/#courses",
       "dateNote": "依据 catalog.json 的 published 与 dateNote；导入方案和历史归档不计入首次公开。",
       "source": {
@@ -182,6 +182,10 @@
         "sourceId": "course-catalog",
         "field": "versions[].published",
         "versions": [
+          {
+            "topicId": "secretion",
+            "versionId": "signal-golgi-v1-2"
+          },
           {
             "topicId": "nucleus",
             "versionId": "prometheus-v2"
@@ -226,21 +230,21 @@
       "id": "course-catalog",
       "repository": "kevinQIAN1996/Biocourse",
       "path": "catalog.json",
-      "revision": "2727dcb345c765131b097c52e1ae269afef75a16",
-      "sha256": "578ad2b4fc7c74c84c2c3cffcf4f895751679630e7fa24f6a17cb947a929cabf"
+      "revision": "0f17d4d42e9930e986620d514efc441e8fa137ca",
+      "sha256": "6070e5664ed7fa49f18d870cf8f5274b2aa23f7bb2c916ef902a5732b555ea8f"
     },
     {
       "id": "course-files",
       "repository": "kevinQIAN1996/Biocourse",
       "path": "courses.json",
-      "sha256": "51d944b01430cfea2843322890011c592e6854869a5de03aad2e1fd981bcd4c8",
+      "sha256": "1bf190addd922fdd83b53e8d8b0ca34dd3629a63c683bbfd43f9ee270544ed00",
       "role": "与 catalog.json 核对版本文件清单"
     },
     {
       "id": "blog-public-posts",
       "repository": "kevinQIAN1996/kevinQIAN1996.github.io",
       "path": "biostatistics/blog-config.json",
-      "revision": "4f6a7489590608da1a782a2e817d2809b33ac398",
+      "revision": "0cda422cd57d6384a91fd5b3d39a7b0ab0adfe33",
       "sha256": "0aed07decde5c6aa91a9d426ee8752feb768c3fdf6b3bac12ab36503900f704f",
       "role": "仅统计 posts 中存在公开页面的条目；排除隐藏、草稿与 deletedPosts",
       "excludedDeletedPosts": 1
