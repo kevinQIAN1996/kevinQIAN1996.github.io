@@ -29,6 +29,17 @@
           "about": true,
           "footer": false
         }
+      },
+      {
+        "id": "forum",
+        "label": "交流论坛",
+        "url": "/forum/",
+        "visible": true,
+        "placements": {
+          "sidebar": true,
+          "about": true,
+          "footer": true
+        }
       }
     ],
     "descriptionPlacements": {
@@ -84,8 +95,8 @@
         "id": "contact-2",
         "title": "Wechat",
         "format": "html",
-        "source": "qian18852957995",
-        "visible": false
+        "source": "<a href=\"/forum/#wechat-contact\">微信二维码 · 教研交流</a>",
+        "visible": true
       },
       {
         "id": "contact-3",
