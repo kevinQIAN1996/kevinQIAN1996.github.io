@@ -4,7 +4,7 @@
 (()=>{
  const updateCounts=async()=>{
   try{
-   const response=await fetch('/Biocourse/catalog.json?release=5.2',{credentials:'omit',signal:AbortSignal.timeout(7000)});
+   const response=await fetch('/Biocourse/catalog.json?release=5.3',{credentials:'omit',signal:AbortSignal.timeout(7000)});
    if(!response.ok)return;
    const catalog=await response.json();
    if(!Array.isArray(catalog)||!catalog.length||catalog.some(t=>!t.id||!Array.isArray(t.versions)))return;

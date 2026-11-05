@@ -433,12 +433,97 @@
     ]
   },
   {
+    "id": "specific-immunity",
+    "title": "特异性免疫",
+    "book": "选择性必修 1 · 稳态与调节",
+    "chapter": "第4章 · 第2节",
+    "versions": [
+      "膜的两边·双窗探究版 v2.0",
+      "微观史诗·分镜版 v1.0"
+    ]
+  },
+  {
+    "id": "immune-disorders",
+    "title": "免疫失调",
+    "book": "选择性必修 1 · 稳态与调节",
+    "chapter": "第4章 · 第3节",
+    "versions": [
+      "三个偏差·课堂推理版 v2.0",
+      "脆弱宙斯盾·暗场展厅版 v1.0"
+    ]
+  },
+  {
+    "id": "immunity-applications",
+    "title": "免疫学的应用",
+    "book": "选择性必修 1 · 稳态与调节",
+    "chapter": "第4章 · 第4节",
+    "versions": [
+      "机制图谱·学术图版 v2.0",
+      "免疫工具·过程探究版 v1.0"
+    ]
+  },
+  {
+    "id": "auxin",
+    "title": "植物生长素",
+    "book": "选择性必修 1 · 稳态与调节",
+    "chapter": "第5章 · 第1节",
+    "versions": [
+      "实验到机制·图谱版 v1.0"
+    ]
+  },
+  {
+    "id": "other-plant-hormones",
+    "title": "其他植物激素",
+    "book": "选择性必修 1 · 稳态与调节",
+    "chapter": "第5章 · 第2节",
+    "versions": [
+      "植物激素·互作图谱版 v1.0"
+    ]
+  },
+  {
+    "id": "plant-regulators",
+    "title": "植物生长调节剂的应用",
+    "book": "选择性必修 1 · 稳态与调节",
+    "chapter": "第5章 · 第3节",
+    "versions": [
+      "分子到生根·证据修订版 v2.0",
+      "分子到生根·初版 v1.0"
+    ]
+  },
+  {
+    "id": "plant-environment",
+    "title": "环境因素参与调节植物的生命活动",
+    "book": "选择性必修 1 · 稳态与调节",
+    "chapter": "第5章 · 第4节",
+    "versions": [
+      "植物环境·信号图谱版 v1.0"
+    ]
+  },
+  {
     "id": "population",
     "title": "种群及其动态",
     "book": "选择性必修 2 · 生物与环境",
     "chapter": "第1章 · 第1—3节综合",
     "versions": [
       "原版 v1.0"
+    ]
+  },
+  {
+    "id": "population-traits",
+    "title": "种群的数量特征",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第1章 · 第1节",
+    "versions": [
+      "种群生态·定量图谱版 v1.0"
+    ]
+  },
+  {
+    "id": "population-growth",
+    "title": "种群的数量变化",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第1章 · 第2节",
+    "versions": [
+      "种群动力学·图谱版 v1.0"
     ]
   },
   {
