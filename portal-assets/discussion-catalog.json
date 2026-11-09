@@ -534,5 +534,212 @@
     "versions": [
       "种群调控·统计图谱版 v1.0"
     ]
+  },
+  {
+    "id": "community-structure",
+    "title": "群落的结构",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第2章 · 第1节",
+    "versions": [
+      "群落结构与生态位 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "community-types-succession",
+    "title": "群落的主要类型与演替",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第2章 · 第2–3节合讲",
+    "versions": [
+      "群落时空图谱 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "ecosystem-structure",
+    "title": "生态系统的结构",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第3章 · 第1节",
+    "versions": [
+      "生态网络与营养路径 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "ecosystem-energy",
+    "title": "生态系统的能量流动",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第3章 · 第2节",
+    "versions": [
+      "能量账本与生态金字塔 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "ecosystem-material-cycle",
+    "title": "生态系统的物质循环",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第3章 · 第3节",
+    "versions": [
+      "WorkBuddy · 碳循环与生物富集 v1.0"
+    ]
+  },
+  {
+    "id": "ecosystem-information",
+    "title": "生态系统的信息传递",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第3章 · 第4节",
+    "versions": [
+      "生态信号网络 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "ecosystem-stability",
+    "title": "生态系统的稳定性",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第3章 · 第5节",
+    "versions": [
+      "反馈与恢复力 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "human-environment-impact",
+    "title": "人类活动对生态环境的影响",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第4章 · 第1节",
+    "versions": [
+      "生态足迹与全球变化 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "biodiversity-conservation",
+    "title": "生物多样性及其保护",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第4章 · 第2节",
+    "versions": [
+      "景观连通与保护 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "ecological-engineering",
+    "title": "生态工程",
+    "book": "选择性必修 2 · 生物与环境",
+    "chapter": "第4章 · 第3节",
+    "versions": [
+      "循环农业与生态修复 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "traditional-fermentation",
+    "title": "传统发酵技术的应用",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第1章 · 第1节",
+    "versions": [
+      "微生物代谢与发酵装置 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "microbial-culture",
+    "title": "微生物的培养技术及应用",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第1章 · 第2节",
+    "versions": [
+      "纯培养与定量筛选 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "industrial-fermentation",
+    "title": "发酵工程及其应用",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第1章 · 第3节",
+    "versions": [
+      "从发酵罐到工业产品 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "plant-cell-engineering",
+    "title": "植物细胞工程",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第2章 · 第1节",
+    "versions": [
+      "从外植体到再生植株 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "animal-cell-engineering",
+    "title": "动物细胞工程",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第2章 · 第2节",
+    "versions": [
+      "从传代培养到克隆证据 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "embryo-engineering",
+    "title": "胚胎工程",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第2章 · 第3节",
+    "versions": [
+      "从受精到胚胎移植 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "recombinant-dna-tools",
+    "title": "重组DNA技术的基本工具",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第3章 · 第1节",
+    "versions": [
+      "从酶切末端到质粒 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "gene-engineering-procedure",
+    "title": "基因工程的基本操作程序",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第3章 · 第2节",
+    "versions": [
+      "从 PCR 到抗虫证据 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "gene-engineering-applications",
+    "title": "基因工程的应用",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第3章 · 第3节",
+    "versions": [
+      "从性状改良到产品制造 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "protein-engineering",
+    "title": "蛋白质工程的原理和应用",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第3章 · 第4节",
+    "versions": [
+      "从功能倒推到实验验证 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "gm-product-safety",
+    "title": "转基因产品的安全性",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第4章 · 第1节",
+    "versions": [
+      "从证据审查到风险管理 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "reproductive-cloning",
+    "title": "关注生殖性克隆人",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第4章 · 第2节",
+    "versions": [
+      "从多莉到伦理审查 · 学术图谱 v1.0"
+    ]
+  },
+  {
+    "id": "biological-weapons-ban",
+    "title": "禁止生物武器",
+    "book": "选择性必修 3 · 生物技术与工程",
+    "chapter": "第4章 · 第3节",
+    "versions": [
+      "从公共卫生证据到国际公约 · 学术图谱 v1.0"
+    ]
   }
 ]
