@@ -1,12 +1,22 @@
 {
   "version": "2.0",
-  "updatedAt": "2026-11-12",
+  "updatedAt": "2026-11-13",
   "sections": [
     {
       "id": "courses",
       "title": "BioCourse 互动课件",
       "url": "/Biocourse/",
-      "managedIn": "kevinQIAN1996/Biocourse"
+      "managedIn": "kevinQIAN1996/Biocourse",
+      "items": [
+        {
+          "id": "steady-atlas",
+          "title": "稳态与调节 · 18 节互动图谱",
+          "href": "/Biocourse/steady-atlas/",
+          "kind": "全册课件",
+          "date": "2026-11-13",
+          "count": 18
+        }
+      ]
     },
     {
       "id": "biostatistics",
