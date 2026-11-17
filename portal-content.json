@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "updatedAt": "2026-11-13",
+  "updatedAt": "2026-11-17",
   "sections": [
     {
       "id": "courses",
@@ -380,6 +380,14 @@
           "href": "/teaching-plans/#blackboards",
           "date": "2026-11-12",
           "count": 19
+        },
+        {
+          "id": "compulsory-1-board-supplements",
+          "kind": "专题板书",
+          "title": "必修 1 · 专题板书 8 张",
+          "href": "/teaching-plans/#board-supplements",
+          "date": "2026-11-17",
+          "count": 8
         }
       ]
     },
@@ -388,6 +396,20 @@
       "title": "逐字稿",
       "url": "/scripts/",
       "items": []
+    },
+    {
+      "id": "tools",
+      "title": "实用小工具",
+      "url": "/tools/",
+      "items": [
+        {
+          "id": "handwriting",
+          "title": "自在字帖 V5",
+          "href": "/tools/handwriting/",
+          "summary": "输入喜欢的文字，生成行楷或楷书临摹字帖。支持横排、竖排、A4 / A5，可打印或保存为 PDF。",
+          "date": "2026-11-17"
+        }
+      ]
     }
   ],
   "homeContent": "/portal-assets/content.json"
